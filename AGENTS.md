@@ -125,6 +125,9 @@ docs/architecture.md  current design
 - Hour labels in the active column are semibold.
 - Display toggles must change the rendered row, not only stored state.
 - Keep keyboard shortcuts working outside inputs and open dialogs.
+  Left/Right shift the visible window by 6 hours; Alt+Left/Right nudge focus
+  by an hour, Shift+Left/Right extend the range, and the focus slider uses
+  Left/Right for selection-step nudging.
 - Escape closes overlays first, then clears the range, then returns focus to Now
   and the initial board state. Pointer hover tracking is global to the board.
 - Test with axe; do not introduce color-only status.

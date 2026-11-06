@@ -145,6 +145,9 @@
         extendRange: (minutes) => {
           boardStore.extendRange(minutes);
         },
+        shiftWindow: (hours) => {
+          boardStore.shiftWindow(hours);
+        },
         shiftDay: (days) => {
           boardStore.shiftDay(days);
         },

@@ -6,6 +6,7 @@ function makeHandlers() {
     now: vi.fn(),
     nudge: vi.fn(),
     extendRange: vi.fn(),
+    shiftWindow: vi.fn(),
     shiftDay: vi.fn(),
     setDayEdge: vi.fn(),
     openAddZone: vi.fn(),
@@ -21,7 +22,9 @@ it('maps keys to actions', () => {
   window.dispatchEvent(new KeyboardEvent('keydown', { key: 't' }));
   expect(handlers.now).toHaveBeenCalled();
   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
-  expect(handlers.nudge).toHaveBeenCalledWith(15);
+  expect(handlers.shiftWindow).toHaveBeenCalledWith(6);
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+  expect(handlers.shiftWindow).toHaveBeenCalledWith(-6);
   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', altKey: true }));
   expect(handlers.nudge).toHaveBeenCalledWith(-60);
   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'End' }));
@@ -55,10 +58,10 @@ it('reads the step size lazily', () => {
   const handlers = makeHandlers();
   let step = 15;
   const stop = installShortcuts(handlers, window, () => step);
-  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
-  expect(handlers.nudge).toHaveBeenLastCalledWith(15);
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', shiftKey: true }));
+  expect(handlers.extendRange).toHaveBeenLastCalledWith(15);
   step = 30;
-  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
-  expect(handlers.nudge).toHaveBeenLastCalledWith(30);
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', shiftKey: true }));
+  expect(handlers.extendRange).toHaveBeenLastCalledWith(30);
   stop();
 });

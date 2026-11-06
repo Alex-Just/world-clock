@@ -1004,6 +1004,11 @@ test('shifts the visible window by six hours', async ({ page }) => {
 
   await expect(labels.first()).toHaveText('00');
 
+  await page.keyboard.press('ArrowRight');
+  await expect(labels.first()).toHaveText('06');
+  await page.keyboard.press('ArrowLeft');
+  await expect(labels.first()).toHaveText('00');
+
   await next.click();
   await expect(labels.first()).toHaveText('06');
   await expect(labels.last()).toHaveText('05');

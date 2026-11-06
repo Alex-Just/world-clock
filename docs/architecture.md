@@ -115,6 +115,8 @@ Import replaces the current document only after confirmation. Export includes
   that duplicates the zone label is omitted, and zero relative offsets are
   hidden. DST badges render only while DST is active.
 - Keyboard shortcuts are global except in text fields or open dialogs.
+  Left/Right shift the visible window; Alt+Left/Right nudge focus; the focus
+  slider handles Left/Right for step nudging when focused.
   Escape closes overlays, clears an active range, then returns the board to Now.
 - Tailwind `dark:` variants are bound to `data-theme='dark'` so the explicit
   theme works when the OS theme differs. Status, warning, danger, and accent

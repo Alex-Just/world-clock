@@ -5,9 +5,10 @@
 
   const shortcuts = [
     ['T', 'Jump to now'],
-    ['← / →', 'Move focus by the selection step'],
+    ['← / →', 'Shift the visible window by 6 hours'],
     ['Alt + ← / →', 'Move focus by one hour'],
     ['Shift + ← / →', 'Extend or shrink the range'],
+    ['Focus slider ← / →', 'Move focus by the selection step'],
     ['Page Up / Page Down', 'Previous or next day'],
     ['Home / End', 'Start or end of the visible day'],
     ['[ / ]', 'Previous or next day'],
