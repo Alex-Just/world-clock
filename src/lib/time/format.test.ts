@@ -6,6 +6,8 @@ import {
   formatHourLabel,
   formatOffset,
   formatRelative,
+  formatRelativeBreakdown,
+  formatSourceStamp,
   formatTime,
   formatUtcOffset,
 } from './format';
@@ -37,6 +39,13 @@ describe('time and date', () => {
         locale: 'en-US',
       }),
     ).toBe('Fri, Nov 6');
+    expect(
+      formatDate(Date.parse('2026-11-05T23:30:00Z'), 'Europe/Madrid', {
+        style: 'short',
+        locale: 'en-US',
+        year: true,
+      }),
+    ).toBe('Fri, Nov 6, 2026');
     expect(formatDayMarker(Date.parse('2026-11-05T05:00:00Z'), 'America/New_York', 'en-US')).toBe(
       'Thu 5',
     );
@@ -52,8 +61,8 @@ describe('offsets', () => {
   });
 
   it('formats exact UTC offsets', () => {
-    expect(formatUtcOffset(-420)).toBe('UTC−07:00');
-    expect(formatUtcOffset(345)).toBe('UTC+05:45');
+    expect(formatUtcOffset(-420)).toBe('UTC−7');
+    expect(formatUtcOffset(345)).toBe('UTC+5:45');
   });
 });
 
@@ -69,5 +78,36 @@ describe('durations', () => {
     expect(formatRelative(3 * 3_600_000 + 20 * 60_000)).toBe('in 3h 20m');
     expect(formatRelative(-(2 * 3_600_000 + 10 * 60_000))).toBe('2h 10m ago');
     expect(formatRelative(86_400_000)).toBe('in 1d');
+  });
+
+  it('breaks long distances into calendar units', () => {
+    const source = Date.parse('2026-11-05T12:00:00Z');
+    const target = Date.parse('2025-10-05T12:00:00Z');
+    expect(formatRelativeBreakdown(source, target, 'UTC')).toEqual({
+      text: '1y 1mo',
+      hasCalendarUnits: true,
+    });
+  });
+
+  it('keeps short distances in clock units', () => {
+    const source = Date.parse('2026-11-05T12:00:00Z');
+    expect(formatRelativeBreakdown(source, source - (3 * 3_600_000 + 20 * 60_000), 'UTC')).toEqual({
+      text: '3h 20m',
+      hasCalendarUnits: false,
+    });
+  });
+
+  it('formats the source time and omits redundant date parts', () => {
+    const now = Date.parse('2026-11-05T20:34:00Z');
+    expect(formatSourceStamp(now, now, 'UTC', '24h', 'en-US')).toBe('today, 20:34');
+    expect(formatSourceStamp(Date.parse('2026-11-03T20:34:00Z'), now, 'UTC', '24h', 'en-US')).toBe(
+      'the 3, 20:34',
+    );
+    expect(formatSourceStamp(Date.parse('2026-10-03T20:34:00Z'), now, 'UTC', '24h', 'en-US')).toBe(
+      'Oct 3, 20:34',
+    );
+    expect(formatSourceStamp(Date.parse('2025-10-03T20:34:00Z'), now, 'UTC', '24h', 'en-US')).toBe(
+      'Oct 3, 2025, 20:34',
+    );
   });
 });

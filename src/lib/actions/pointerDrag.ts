@@ -20,6 +20,23 @@ export function horizontalDrag(node: HTMLElement, initial: HorizontalDragHandler
     window.removeEventListener('pointercancel', onPointerUp);
   };
 
+  const releaseCapture = () => {
+    if (typeof node.releasePointerCapture === 'function' && pointerId !== undefined) {
+      try {
+        node.releasePointerCapture(pointerId);
+      } catch {
+        // Capture is optional.
+      }
+    }
+  };
+
+  const cancelActive = () => {
+    if (!active) return;
+    active = false;
+    stopWindowListeners();
+    releaseCapture();
+  };
+
   const onPointerDown = (event: PointerEvent) => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     active = true;
@@ -43,6 +60,10 @@ export function horizontalDrag(node: HTMLElement, initial: HorizontalDragHandler
 
   const onPointerMove = (event: PointerEvent) => {
     if (!active) return;
+    if (event.buttons === 0) {
+      cancelActive();
+      return;
+    }
     if (Math.abs(event.clientX - startX) > threshold) moved = true;
     handlers.onMove(event.clientX, event);
   };
@@ -51,25 +72,30 @@ export function horizontalDrag(node: HTMLElement, initial: HorizontalDragHandler
     if (!active) return;
     active = false;
     stopWindowListeners();
-
-    if (typeof node.releasePointerCapture === 'function') {
-      try {
-        node.releasePointerCapture(pointerId ?? event.pointerId);
-      } catch {
-        // See above.
-      }
-    }
+    releaseCapture();
 
     handlers.onEnd?.(event.clientX, event);
     if (!moved) handlers.onClick?.(event.clientX, event);
   };
 
+  const onLostPointerCapture = () => {
+    cancelActive();
+  };
+
+  const onWindowBlur = () => {
+    cancelActive();
+  };
+
   node.addEventListener('pointerdown', onPointerDown);
+  node.addEventListener('lostpointercapture', onLostPointerCapture);
+  window.addEventListener('blur', onWindowBlur);
 
   return {
     destroy() {
-      stopWindowListeners();
+      cancelActive();
       node.removeEventListener('pointerdown', onPointerDown);
+      node.removeEventListener('lostpointercapture', onLostPointerCapture);
+      window.removeEventListener('blur', onWindowBlur);
     },
     update(next: HorizontalDragHandlers) {
       handlers = next;

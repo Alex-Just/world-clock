@@ -80,31 +80,31 @@
       event.preventDefault();
       onClose();
     }}
-    class="border-border bg-surface-raised text-text m-auto w-[min(680px,calc(100vw-2rem))] rounded-2xl border p-0 shadow-2xl backdrop:bg-black/40"
+    class="border-border bg-surface-raised text-text m-auto w-[min(760px,calc(100vw-2rem))] rounded-2xl border p-0 shadow-2xl backdrop:bg-black/40"
   >
     <div class="flex max-h-[calc(100dvh-2rem)] flex-col">
       <header class="border-border flex items-center justify-between border-b px-4 py-3">
-        <h2 class="text-base font-semibold">Settings</h2>
+        <h2 class="text-xl font-semibold">Settings</h2>
         <button
           type="button"
           aria-label="Close settings"
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg text-xl"
         >
-          <span aria-hidden="true">×</span>
+          <span class="text-2xl" aria-hidden="true">×</span>
         </button>
       </header>
 
       <div class="space-y-5 overflow-y-auto px-4 py-4">
         <section>
-          <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">Appearance</h3>
+          <h3 class="text-muted text-sm font-semibold tracking-wide uppercase">Appearance</h3>
           <div class="mt-2 grid gap-3 sm:grid-cols-2">
             <fieldset>
               <legend class="text-muted text-xs">Theme</legend>
               <div class="mt-1 flex flex-wrap gap-2">
-                <label class="flex items-center gap-1.5 text-xs">
+                <label class="flex min-h-9 items-center gap-2 text-base">
                   <input
                     type="radio"
                     name="theme"
@@ -116,7 +116,7 @@
                   />
                   System
                 </label>
-                <label class="flex items-center gap-1.5 text-xs">
+                <label class="flex min-h-9 items-center gap-2 text-base">
                   <input
                     type="radio"
                     name="theme"
@@ -128,7 +128,7 @@
                   />
                   Light
                 </label>
-                <label class="flex items-center gap-1.5 text-xs">
+                <label class="flex min-h-9 items-center gap-2 text-base">
                   <input
                     type="radio"
                     name="theme"
@@ -154,7 +154,7 @@
                     onclick={() => {
                       onUpdate({ accent: accent.id });
                     }}
-                    class="flex items-center gap-1 rounded-full border px-2 py-1 text-[11px]"
+                    class="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm"
                     class:border-accent={settings.accent === accent.id}
                   >
                     <span class={`size-2.5 rounded-full ${accent.swatch}`} aria-hidden="true"
@@ -168,10 +168,9 @@
         </section>
 
         <section>
-          <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">Display</h3>
+          <h3 class="text-muted text-sm font-semibold tracking-wide uppercase">Display</h3>
           <div class="mt-2 grid gap-2 sm:grid-cols-2">
-            <label class="flex items-center justify-between gap-2 text-xs">
-              <span>24-hour time</span>
+            <label class="flex min-h-9 items-center gap-2 text-base">
               <input
                 type="checkbox"
                 checked={settings.timeFormat === '24h'}
@@ -179,9 +178,9 @@
                   onUpdate({ timeFormat: settings.timeFormat === '24h' ? '12h' : '24h' });
                 }}
               />
+              <span>24-hour time</span>
             </label>
-            <label class="flex items-center justify-between gap-2 text-xs">
-              <span>Show IANA name</span>
+            <label class="flex min-h-9 items-center gap-2 text-base">
               <input
                 type="checkbox"
                 checked={settings.showIana}
@@ -189,9 +188,9 @@
                   onUpdate({ showIana: !settings.showIana });
                 }}
               />
+              <span>Show IANA name</span>
             </label>
-            <label class="flex items-center justify-between gap-2 text-xs">
-              <span>Show abbreviation</span>
+            <label class="flex min-h-9 items-center gap-2 text-base">
               <input
                 type="checkbox"
                 checked={settings.showAbbreviation}
@@ -199,9 +198,9 @@
                   onUpdate({ showAbbreviation: !settings.showAbbreviation });
                 }}
               />
+              <span>Show abbreviation</span>
             </label>
-            <label class="flex items-center justify-between gap-2 text-xs">
-              <span>Show UTC offset</span>
+            <label class="flex min-h-9 items-center gap-2 text-base">
               <input
                 type="checkbox"
                 checked={settings.showUtcOffset}
@@ -209,9 +208,9 @@
                   onUpdate({ showUtcOffset: !settings.showUtcOffset });
                 }}
               />
+              <span>Show UTC offset</span>
             </label>
-            <label class="flex items-center justify-between gap-2 text-xs">
-              <span>Show DST badge</span>
+            <label class="flex min-h-9 items-center gap-2 text-base">
               <input
                 type="checkbox"
                 checked={settings.showDst}
@@ -219,9 +218,9 @@
                   onUpdate({ showDst: !settings.showDst });
                 }}
               />
+              <span>Show DST badge</span>
             </label>
-            <label class="flex items-center justify-between gap-2 text-xs">
-              <span>Show date labels</span>
+            <label class="flex min-h-9 items-center gap-2 text-base">
               <input
                 type="checkbox"
                 checked={settings.showDateLabels}
@@ -229,9 +228,9 @@
                   onUpdate({ showDateLabels: !settings.showDateLabels });
                 }}
               />
+              <span>Show date labels</span>
             </label>
-            <label class="flex items-center justify-between gap-2 text-xs">
-              <span>Show working hours</span>
+            <label class="flex min-h-9 items-center gap-2 text-base">
               <input
                 type="checkbox"
                 checked={settings.showWorkingHours}
@@ -239,8 +238,9 @@
                   onUpdate({ showWorkingHours: !settings.showWorkingHours });
                 }}
               />
+              <span>Show working hours</span>
             </label>
-            <label class="flex items-center justify-between gap-2 text-xs">
+            <label class="flex min-h-9 items-center justify-between gap-2 text-base">
               <span>Selection step</span>
               <select
                 aria-label="Selection step"
@@ -250,7 +250,7 @@
                     stepMinutes: Number(event.currentTarget.value) as Settings['stepMinutes'],
                   });
                 }}
-                class="border-border bg-surface rounded-lg border px-2 py-1 text-xs"
+                class="border-border bg-surface rounded-lg border px-2.5 py-1.5 text-base"
               >
                 <option value={5}>5 minutes</option>
                 <option value={15}>15 minutes</option>
@@ -262,11 +262,9 @@
         </section>
 
         <section>
-          <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">
-            Working hours
-          </h3>
+          <h3 class="text-muted text-sm font-semibold tracking-wide uppercase">Working hours</h3>
           <div class="mt-2 flex flex-wrap items-end gap-2">
-            <label class="text-muted text-xs">
+            <label class="text-muted text-sm">
               Start
               <input
                 type="time"
@@ -274,7 +272,7 @@
                 class="border-border bg-surface text-text mt-1 block rounded-lg border px-2 py-1.5 text-sm"
               />
             </label>
-            <label class="text-muted text-xs">
+            <label class="text-muted text-sm">
               End
               <input
                 type="time"
@@ -286,27 +284,27 @@
               type="button"
               disabled={invalidHours}
               onclick={saveWorkingHours}
-              class="bg-accent text-accent-contrast h-8 rounded-lg px-2.5 text-xs font-medium disabled:opacity-50"
+              class="bg-accent text-accent-contrast hover:bg-accent/90 h-10 rounded-lg px-3 text-sm font-medium transition-colors disabled:opacity-50"
             >
               Save working hours
             </button>
           </div>
           {#if invalidHours}
-            <p class="mt-1 text-xs text-rose-600 dark:text-rose-400">Start and end must differ.</p>
+            <p class="text-danger mt-1 text-sm">Start and end must differ.</p>
           {:else if workEnd < workStart}
-            <p class="text-muted mt-1 text-xs">Overnight window — ends on the next day.</p>
+            <p class="text-muted mt-1 text-sm">Overnight window — ends on the next day.</p>
           {/if}
         </section>
 
         <section>
           <div class="flex items-center justify-between gap-2">
-            <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">Zones</h3>
+            <h3 class="text-muted text-sm font-semibold tracking-wide uppercase">Zones</h3>
             <button
               type="button"
               onclick={() => {
                 onAddZone();
               }}
-              class="border-border text-text hover:bg-surface h-7 rounded-lg border px-2 text-[11px] font-medium"
+              class="border-border text-text hover:bg-surface h-9 rounded-lg border px-3 text-sm font-medium"
             >
               Add zone
             </button>
@@ -314,16 +312,16 @@
           <ul class="mt-2 space-y-1">
             {#each settings.zones as zone, index (zone.timeZone)}
               <li
-                class="border-border flex items-center justify-between gap-2 rounded-lg border px-2 py-1.5"
+                class="border-border flex items-center justify-between gap-2 rounded-lg border px-3 py-2"
               >
                 <div class="min-w-0">
-                  <p class="truncate text-xs font-medium">
+                  <p class="truncate text-base font-medium">
                     {zone.label}
                     {#if zone.timeZone === settings.homeZone}
-                      <span class="text-accent">· home</span>
+                      <span class="text-accent-text">· home</span>
                     {/if}
                   </p>
-                  <p class="text-muted truncate text-[10px]">{zone.timeZone}</p>
+                  <p class="text-muted truncate text-sm">{zone.timeZone}</p>
                 </div>
                 <div class="flex shrink-0 gap-0.5">
                   <button
@@ -333,7 +331,7 @@
                     onclick={() => {
                       onSetHome(zone.timeZone);
                     }}
-                    class="text-muted hover:bg-surface h-6 rounded px-1 text-[10px] disabled:opacity-30"
+                    class="text-muted hover:bg-surface h-8 rounded px-2 text-sm disabled:opacity-30"
                   >
                     Home
                   </button>
@@ -344,7 +342,7 @@
                     onclick={() => {
                       onReplace(moveZone(settings, zone.timeZone, -1));
                     }}
-                    class="text-muted hover:bg-surface h-6 rounded px-1 text-[10px] disabled:opacity-30"
+                    class="text-muted hover:bg-surface h-8 rounded px-2 text-sm disabled:opacity-30"
                   >
                     ↑
                   </button>
@@ -355,7 +353,7 @@
                     onclick={() => {
                       onReplace(moveZone(settings, zone.timeZone, 1));
                     }}
-                    class="text-muted hover:bg-surface h-6 rounded px-1 text-[10px] disabled:opacity-30"
+                    class="text-muted hover:bg-surface h-8 rounded px-2 text-sm disabled:opacity-30"
                   >
                     ↓
                   </button>
@@ -366,7 +364,7 @@
                     onclick={() => {
                       onReplace(removeZone(settings, zone.timeZone));
                     }}
-                    class="hover:bg-surface h-6 rounded px-1 text-[10px] text-rose-600 disabled:opacity-30 dark:text-rose-400"
+                    class="hover:bg-surface text-danger h-8 rounded px-2 text-sm disabled:opacity-30"
                   >
                     ×
                   </button>
@@ -377,17 +375,17 @@
         </section>
 
         <section>
-          <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">Data</h3>
+          <h3 class="text-muted text-sm font-semibold tracking-wide uppercase">Data</h3>
           <div class="mt-2 flex flex-wrap items-center gap-2">
             <button
               type="button"
               onclick={handleExport}
-              class="border-border text-text hover:bg-surface h-8 rounded-lg border px-2.5 text-xs font-medium"
+              class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
             >
               Export JSON
             </button>
             <label
-              class="border-border text-text hover:bg-surface inline-flex h-8 cursor-pointer items-center rounded-lg border px-2.5 text-xs font-medium"
+              class="border-border text-text hover:bg-surface inline-flex h-10 cursor-pointer items-center rounded-lg border px-3 text-sm font-medium"
             >
               Import JSON
               <input
@@ -403,15 +401,15 @@
             <button
               type="button"
               onclick={resetAll}
-              class="hover:bg-surface h-8 rounded-lg px-2.5 text-xs font-medium text-rose-600 dark:text-rose-400"
+              class="hover:bg-surface text-danger h-10 rounded-lg px-3 text-sm font-medium"
             >
               Reset all settings
             </button>
           </div>
           {#if importMessage}
-            <p class="text-muted mt-2 text-xs" role="status">{importMessage}</p>
+            <p class="text-muted mt-2 text-sm" role="status">{importMessage}</p>
           {/if}
-          <p class="text-muted mt-2 text-[10px]">
+          <p class="text-muted mt-2 text-sm">
             Everything stays in this browser. Clearing site data removes it; export is your backup.
           </p>
         </section>
@@ -423,7 +421,7 @@
           onclick={() => {
             onClose();
           }}
-          class="border-border text-text hover:bg-surface h-8 rounded-lg border px-2.5 text-xs font-medium"
+          class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
         >
           Done
         </button>

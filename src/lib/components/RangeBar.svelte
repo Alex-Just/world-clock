@@ -34,18 +34,23 @@
 
 <div
   data-testid="range-bar"
-  class="border-border bg-surface-raised mb-3 flex min-h-10 flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2 text-xs"
+  class="border-border bg-surface-raised flex h-full min-w-0 items-center justify-between gap-1 overflow-hidden rounded-xl border px-2 sm:gap-2 sm:px-3"
 >
-  <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-    <span class="text-text font-medium">Selected</span>
-    <span class="text-muted tabular-nums">
+  <div class="flex min-w-0 items-baseline gap-2 overflow-hidden whitespace-nowrap">
+    <span class="sr-only">Selected range:</span>
+    <span
+      data-testid="range-time"
+      class="text-text min-w-0 truncate text-sm font-medium tabular-nums sm:text-base"
+      title={`${local.start}–${local.end} (${formatDuration(range.durationMs)})`}
+    >
       {local.start}–{local.end}
-      {homeLabel}
+      <span class="sr-only sm:hidden">{formatDuration(range.durationMs)}</span>
     </span>
-    <span class="bg-surface text-accent rounded-full px-2 py-0.5 font-medium tabular-nums">
-      {formatDuration(range.durationMs)}
+    <span class="text-muted hidden shrink-0 text-sm tabular-nums sm:inline">
+      ({formatDuration(range.durationMs)})
     </span>
-    <span class="text-muted">
+    <span class="text-muted hidden text-sm sm:inline">{homeLabel}</span>
+    <span class="text-muted hidden truncate text-sm sm:inline">
       {summary.in} of {zones.length} zones in working hours
       {#if summary.partial > 0}
         · {summary.partial} partly
@@ -56,13 +61,13 @@
     </span>
   </div>
 
-  <div class="flex items-center gap-1">
+  <div class="flex shrink-0 items-center gap-1">
     <button
       type="button"
       onclick={() => {
         onDetails();
       }}
-      class="border-border text-text hover:bg-surface h-7 rounded-lg border px-2 text-[11px] font-medium"
+      class="border-border text-text hover:bg-surface h-9 rounded-lg border px-2 font-medium sm:px-2.5"
     >
       Details
     </button>
@@ -71,7 +76,7 @@
       onclick={() => {
         onClear();
       }}
-      class="text-muted hover:bg-surface hover:text-text h-7 rounded-lg px-2 text-[11px] font-medium"
+      class="text-muted hover:bg-surface hover:text-text h-9 rounded-lg px-1.5 font-medium sm:px-2"
     >
       Clear
     </button>

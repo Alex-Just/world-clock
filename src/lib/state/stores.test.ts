@@ -68,6 +68,68 @@ describe('board store', () => {
     expect(board.focusMs).toBe(at('2026-11-05T23:30:00Z'));
   });
 
+  it('shifts the visible window in six-hour steps and clamps', () => {
+    const { store: settings } = makeSettings();
+    const board = createBoardStore({
+      settings,
+      clock: { nowMs: at('2026-11-05T12:00:00Z') },
+    });
+    expect(board.windowOffsetHours).toBe(0);
+
+    board.shiftWindow(6);
+    expect(board.windowOffsetHours).toBe(6);
+    expect(board.axis.startMs).toBe(at('2026-11-05T05:00:00Z'));
+
+    board.shiftWindow(6);
+    board.shiftWindow(6);
+    board.shiftWindow(6);
+    expect(board.windowOffsetHours).toBe(18);
+    expect(board.axis.startMs).toBe(at('2026-11-05T17:00:00Z'));
+
+    board.shiftWindow(-6);
+    expect(board.windowOffsetHours).toBe(12);
+
+    board.shiftWindow(-36);
+    expect(board.windowOffsetHours).toBe(-18);
+  });
+
+  it('resets the shifted window on day navigation, now, and home changes', () => {
+    const { store: settings } = makeSettings();
+    const board = createBoardStore({
+      settings,
+      clock: { nowMs: at('2026-11-05T12:00:00Z') },
+    });
+
+    board.shiftWindow(6);
+    board.goToDay('2026-11-06');
+    expect(board.windowOffsetHours).toBe(0);
+
+    board.shiftWindow(6);
+    board.now();
+    expect(board.windowOffsetHours).toBe(0);
+
+    board.shiftWindow(6);
+    board.setHomeZone('America/New_York');
+    expect(board.windowOffsetHours).toBe(0);
+  });
+
+  it('keeps a shifted window while focus stays inside it', () => {
+    const { store: settings } = makeSettings();
+    const board = createBoardStore({
+      settings,
+      clock: { nowMs: at('2026-11-05T12:00:00Z') },
+    });
+
+    board.shiftWindow(6);
+    board.setFocus(at('2026-11-05T17:00:00Z'));
+    expect(board.windowOffsetHours).toBe(6);
+    expect(board.focusMs).toBe(at('2026-11-05T17:00:00Z'));
+
+    board.shiftWindow(12);
+    board.setFocus(at('2026-11-06T10:00:00Z'));
+    expect(board.windowOffsetHours).toBe(0);
+  });
+
   it('snaps range endpoints and keeps the drag anchor as focus', () => {
     const { store: settings } = makeSettings();
     const board = createBoardStore({

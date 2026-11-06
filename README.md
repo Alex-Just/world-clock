@@ -9,14 +9,18 @@ availability without leaving the board.
 ## Features
 
 - Any number of IANA time zones on one continuous day axis.
+- Seven-day strip plus a month calendar with a year/month/date jump for distant dates.
 - Focus by click, tap, drag, keyboard, exact wall time, or relative offset.
+- Relative badge shows a calendar breakdown, total duration, and comparison date/time.
 - Click-drag the board to select a period; duration appears above the board.
-- Day, twilight, and night shading with a distinct accent for the focus and range.
-- Hover highlight follows the cursor across all rows.
+- Shift the visible window backward or forward in 6-hour steps; Now resets it and returns to the current time.
+- Material-blue day/night shading with a teal focus and range accent.
+- Focus-hour highlight at rest; hover follows the cursor, emphasizes the hovered zone, and dims the rest.
 - Range duration, wall-clock duration across DST, and per-zone availability.
 - Correct DST gaps/overlaps, half-hour and 45-minute offsets, date rollover.
 - Add, rename, reorder, remove, and pin zones; choose the home zone.
 - Light/dark/system themes, six accents, 12/24-hour, display toggles.
+- One-click light/dark toggle in the header; system mode remains in Settings.
 - JSON export/import. Everything stays in the browser.
 
 ## Tech stack
@@ -35,8 +39,13 @@ short version:
 - `App.svelte` wires stores to prop-driven components.
 - Settings persist under the `world-clock` key; the schema validates and repairs
   stored data.
-- The focus stays inside the visible home-zone day; a new focus clears the
-  range; range endpoints snap to the selection step.
+- The visible window is the home-zone day shifted in 6-hour wall-clock steps,
+  limited to ±18 hours. A new focus clears the range; range endpoints snap to
+  the selection step.
+
+Read [`docs/typography.md`](docs/typography.md) for the type scale and
+accessibility rules: 12px minimum metadata, 16px body and mobile inputs, 24px
+minimum targets.
 
 ## Privacy
 
@@ -87,9 +96,11 @@ Override the base with `CODERABBIT_BASE_REF`. Bypass once with
 
 ## CI and deployment
 
+Live at **[alex-just.github.io/world-clock](https://alex-just.github.io/world-clock/)**.
+
 CI runs format check, lint, type check, tests, build, and Chromium end-to-end
 tests. The deploy workflow publishes the static `dist/` build to GitHub Pages
-from `main`. Set Pages to build from **GitHub Actions**.
+from `main`; Pages builds from **GitHub Actions**.
 
 ## Structure
 

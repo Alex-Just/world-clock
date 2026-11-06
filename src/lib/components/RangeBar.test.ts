@@ -19,7 +19,7 @@ it('shows duration and availability count', () => {
       onDetails: vi.fn(),
     },
   });
-  expect(screen.getByText('6h')).toBeInTheDocument();
+  expect(screen.getAllByText(/6h/).length).toBeGreaterThan(0);
   expect(screen.getByText(/zones in working hours/)).toBeInTheDocument();
 });
 

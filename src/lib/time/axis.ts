@@ -14,6 +14,13 @@ const MINUTE_MS = 60_000;
 const HOUR_MS = 3_600_000;
 const MINUTE_NS = 60_000_000_000;
 
+export const WINDOW_SHIFT_HOURS = 6;
+export const WINDOW_OFFSET_LIMIT_HOURS = 18;
+
+export function clampWindowOffsetHours(hours: number): number {
+  return Math.max(-WINDOW_OFFSET_LIMIT_HOURS, Math.min(WINDOW_OFFSET_LIMIT_HOURS, hours));
+}
+
 function pad(value: number): string {
   return String(value).padStart(2, '0');
 }
@@ -129,9 +136,20 @@ export function instantFromWallTime(zone: ZoneId, date: DateString, time: TimeSt
   }
 }
 
-export function buildAxis(homeZone: ZoneId, date: DateString, format: TimeFormat): TimeAxis {
-  const startMs = startOfDayInstant(homeZone, date);
-  const endMs = instantFromWallTime(homeZone, addDays(date, 1), '00:00');
+export function buildAxis(
+  homeZone: ZoneId,
+  date: DateString,
+  format: TimeFormat,
+  windowOffsetHours = 0,
+): TimeAxis {
+  const offsetHours = Math.trunc(windowOffsetHours);
+  const totalHours = 24 + offsetHours;
+  const dayOffset = Math.floor(totalHours / 24) - 1;
+  const startHour = totalHours % 24;
+  const windowDate = addDays(date, dayOffset);
+  const windowTime = `${pad(startHour)}:00`;
+  const startMs = instantFromWallTime(homeZone, windowDate, windowTime);
+  const endMs = instantFromWallTime(homeZone, addDays(windowDate, 1), windowTime);
   const durationMs = endMs - startMs;
   const ticks: AxisTick[] = [];
 

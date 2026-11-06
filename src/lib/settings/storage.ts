@@ -1,4 +1,4 @@
-import { createDefaultSettings } from './defaults';
+import { createDefaultSettings, retireLegacyDefaultZones } from './defaults';
 import { parsePersisted } from './schema';
 import type { Settings, StorageLoadSource } from './types';
 
@@ -32,6 +32,11 @@ export function loadSettings(fallbackZone = browserZone()): {
   }
 
   const result = parsePersisted(parsed, fallbackZone);
+  const settings = retireLegacyDefaultZones(result.settings);
+  if (settings !== result.settings) {
+    saveSettings(settings);
+    return { settings, source: 'recovered' };
+  }
   return {
     settings: result.settings,
     source: result.changed ? 'recovered' : 'stored',

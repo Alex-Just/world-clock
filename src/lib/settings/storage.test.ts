@@ -81,3 +81,48 @@ it('swallows blocked writes and reports storage unavailable', () => {
   expect(storageAvailable()).toBe(false);
   set.mockRestore();
 });
+
+it('retires London and Chicago from untouched legacy defaults', () => {
+  const settings = createDefaultSettings(browserZone);
+  settings.zones = [
+    { timeZone: 'America/Los_Angeles', label: 'San Francisco' },
+    { timeZone: 'America/Denver', label: 'Denver' },
+    { timeZone: 'America/New_York', label: 'New York' },
+    { timeZone: 'UTC', label: 'UTC' },
+    { timeZone: 'Europe/London', label: 'London' },
+    { timeZone: 'Europe/Madrid', label: 'Madrid' },
+    { timeZone: 'Europe/Moscow', label: 'Moscow' },
+    { timeZone: 'Asia/Kolkata', label: 'Delhi' },
+    { timeZone: 'America/Chicago', label: 'Chicago' },
+  ];
+  saveSettings(settings);
+  const result = loadSettings(browserZone);
+  expect(result.source).toBe('recovered');
+  expect(result.settings.zones.map((zone) => zone.timeZone)).toEqual([
+    'America/Los_Angeles',
+    'America/Denver',
+    'America/New_York',
+    'UTC',
+    'Europe/Madrid',
+    'Europe/Moscow',
+    'Asia/Kolkata',
+  ]);
+});
+
+it('keeps legacy defaults when they were customized', () => {
+  const settings = createDefaultSettings(browserZone);
+  settings.zones = [
+    { timeZone: 'America/Los_Angeles', label: 'San Francisco' },
+    { timeZone: 'America/Denver', label: 'Denver' },
+    { timeZone: 'America/New_York', label: 'New York' },
+    { timeZone: 'UTC', label: 'UTC' },
+    { timeZone: 'Europe/London', label: 'London' },
+    { timeZone: 'Europe/Madrid', label: 'Madrid' },
+    { timeZone: 'Europe/Moscow', label: 'Moscow' },
+    { timeZone: 'Asia/Kolkata', label: 'Delhi' },
+    { timeZone: 'America/Chicago', label: 'Chicago HQ' },
+  ];
+  saveSettings(settings);
+  const result = loadSettings(browserZone);
+  expect(result.settings.zones).toHaveLength(9);
+});

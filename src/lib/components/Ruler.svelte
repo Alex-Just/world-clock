@@ -19,6 +19,11 @@
     onRangeChange,
     onExtendRange,
     onClearRange,
+    crosshairActive = false,
+    crosshairLeft = '0%',
+    crosshairRight = '100%',
+    activeSlot = null,
+    showFocusLine = true,
     work = [],
   }: {
     axis: TimeAxis;
@@ -35,6 +40,11 @@
     onRangeChange: (startMs: number, endMs: number) => void;
     onExtendRange: (minutes: number) => void;
     onClearRange: () => void;
+    crosshairActive?: boolean;
+    crosshairLeft?: string;
+    crosshairRight?: string;
+    activeSlot?: number | null;
+    showFocusLine?: boolean;
     work?: WorkSegment[];
   } = $props();
 
@@ -44,14 +54,12 @@
     return `${(position * 100).toFixed(4)}%`;
   }
 
-  function labelStyle(position: number): string {
-    if (position <= 0.005) return 'left: 0; transform: none;';
-    if (position >= 0.995) return 'left: 100%; transform: translateX(-100%);';
-    return `left: ${pct(position)}; transform: translateX(-50%);`;
+  function cellLabelStyle(position: number, slots: number): string {
+    return `left: ${pct(position + 0.5 / Math.max(1, slots))}; transform: translateX(-50%);`;
   }
 
   const focusPosition = $derived(pct(positionForInstant(axis, focusMs)));
-  const nowInView = $derived(nowMs >= axis.startMs && nowMs <= axis.endMs);
+  const nowInView = $derived(nowMs >= axis.startMs && nowMs < axis.endMs);
   const nowPosition = $derived(pct(positionForInstant(axis, nowMs)));
   const rangeStart = $derived(range ? pct(positionForInstant(axis, range.startMs)) : null);
   const rangeWidth = $derived(
@@ -75,7 +83,7 @@
   }
 
   function handleFocusMove(clientX: number): void {
-    onSetFocus(instantForPosition(axis, positionFromClientX(clientX)));
+    onSetFocus(instantForPosition(focusDragAxis ?? axis, positionFromClientX(clientX)));
   }
 
   function handleKeyDown(event: KeyboardEvent): void {
@@ -121,28 +129,36 @@
   }
 
   let dragAnchor: number | null = null;
+  let dragAxis: TimeAxis | null = null;
+  let handleDragAxis: TimeAxis | null = null;
+  let focusDragAxis: TimeAxis | null = null;
   let dragStartX = 0;
   let dragMoved = false;
 
   const surfaceHandlers = {
     onStart: (event: PointerEvent) => {
       dragStartX = event.clientX;
-      dragAnchor = instantForPosition(axis, positionFromClientX(event.clientX));
+      dragAxis = axis;
+      dragAnchor = instantForPosition(dragAxis, positionFromClientX(event.clientX));
       dragMoved = false;
       onSetFocus(dragAnchor);
     },
     onMove: (clientX: number) => {
-      if (dragAnchor === null) return;
+      if (dragAnchor === null || dragAxis === null) return;
       if (Math.abs(clientX - dragStartX) > 3) dragMoved = true;
       if (!dragMoved) return;
-      onRangeChange(dragAnchor, instantForPosition(axis, positionFromClientX(clientX)));
+      onRangeChange(dragAnchor, instantForPosition(dragAxis, positionFromClientX(clientX)));
     },
     onEnd: (clientX: number) => {
-      if (dragAnchor === null) return;
-      const current = instantForPosition(axis, positionFromClientX(clientX));
-      if (dragMoved) onSetRange(dragAnchor, current);
-      else onSetFocus(current);
+      if (dragAnchor === null || dragAxis === null) return;
+      if (dragMoved) {
+        const current = instantForPosition(dragAxis, positionFromClientX(clientX));
+        onSetRange(dragAnchor, current);
+      } else {
+        onSetFocus(dragAnchor);
+      }
       dragAnchor = null;
+      dragAxis = null;
       dragMoved = false;
     },
     onClick: () => {},
@@ -152,10 +168,14 @@
     thresholdPx: 0,
     onStart: (event: PointerEvent) => {
       event.stopPropagation();
+      handleDragAxis = axis;
     },
     onMove: (clientX: number) => {
-      if (!range) return;
-      onRangeChange(instantForPosition(axis, positionFromClientX(clientX)), range.endMs);
+      if (!range || handleDragAxis === null) return;
+      onRangeChange(instantForPosition(handleDragAxis, positionFromClientX(clientX)), range.endMs);
+    },
+    onEnd: () => {
+      handleDragAxis = null;
     },
   };
 
@@ -163,10 +183,17 @@
     thresholdPx: 0,
     onStart: (event: PointerEvent) => {
       event.stopPropagation();
+      handleDragAxis = axis;
     },
     onMove: (clientX: number) => {
-      if (!range) return;
-      onRangeChange(range.startMs, instantForPosition(axis, positionFromClientX(clientX)));
+      if (!range || handleDragAxis === null) return;
+      onRangeChange(
+        range.startMs,
+        instantForPosition(handleDragAxis, positionFromClientX(clientX)),
+      );
+    },
+    onEnd: () => {
+      handleDragAxis = null;
     },
   };
 
@@ -174,8 +201,12 @@
     thresholdPx: 0,
     onStart: (event: PointerEvent) => {
       event.stopPropagation();
+      focusDragAxis = axis;
     },
     onMove: handleFocusMove,
+    onEnd: () => {
+      focusDragAxis = null;
+    },
   };
 </script>
 
@@ -190,26 +221,35 @@
   <div class="bg-border/50 absolute inset-x-0 top-0 h-1" aria-hidden="true">
     {#each work as segment (segment.start)}
       <div
-        class="bg-accent/45 absolute inset-y-0"
+        data-testid="work-segment"
+        class="bg-work-line/70 absolute inset-y-0"
         style={`left: ${pct(segment.start)}; width: ${pct(segment.end - segment.start)}`}
       ></div>
     {/each}
   </div>
 
-  {#each axis.ticks as tick (tick.instantMs)}
+  {#each axis.ticks as tick, index (tick.instantMs)}
     <div
       data-testid="hour-label"
-      class="text-muted absolute bottom-1 px-0.5 text-[10px] tabular-nums"
-      style={labelStyle(tick.position)}
+      class={`text-muted absolute bottom-1 px-0.5 text-base tabular-nums ${
+        index === activeSlot ? 'font-semibold' : 'font-normal'
+      }`}
+      style={cellLabelStyle(tick.position, axis.ticks.length)}
     >
       {tick.label}
     </div>
+    <div
+      data-testid="hour-tick"
+      class="bg-muted/40 pointer-events-none absolute bottom-0 h-1.5 w-px -translate-x-1/2"
+      style={`left: ${pct(tick.position)}`}
+      aria-hidden="true"
+    ></div>
   {/each}
 
   {#if rangeStart !== null && rangeWidth !== null}
     <div
       data-testid="range-fill"
-      class="bg-accent/5 absolute inset-y-2 z-10"
+      class="bg-focus-line-ui/15 absolute inset-y-2 z-10"
       style={`left: ${rangeStart}; width: ${rangeWidth}`}
     ></div>
   {/if}
@@ -218,14 +258,14 @@
     <div
       data-testid="range-start-handle"
       use:horizontalDrag={startHandleHandlers}
-      class="border-surface-raised bg-accent absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
+      class="border-surface-raised bg-focus-line-ui absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
       style={`left: ${rangeStart}`}
       title="Drag range start"
     ></div>
     <div
       data-testid="range-end-handle"
       use:horizontalDrag={endHandleHandlers}
-      class="border-surface-raised bg-accent absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
+      class="border-surface-raised bg-focus-line-ui absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
       style={`left: ${rangeEnd}`}
       title="Drag range end"
     ></div>
@@ -252,16 +292,43 @@
     class="absolute inset-y-0 z-30 w-0 cursor-ew-resize focus-visible:outline-none"
     style={`left: ${focusPosition}`}
   >
-    <div
-      data-testid="focus-line"
-      class="bg-accent pointer-events-none absolute inset-y-0 w-0.5"
-      style={`--position: ${focusPosition}`}
-    ></div>
-    <div
-      data-testid="focus-handle"
-      use:horizontalDrag={focusHandlers}
-      class="border-surface-raised bg-accent absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border-2 shadow"
-      title="Drag to move the focus time"
-    ></div>
+    {#if showFocusLine}
+      <div
+        data-testid="focus-line"
+        class="border-focus-line-ui pointer-events-none absolute inset-y-0 w-0 border-l-2 border-dashed drop-shadow-[0_0_1px_rgba(255,255,255,0.85)]"
+        style={`--position: ${focusPosition}`}
+      ></div>
+      <div
+        data-testid="focus-handle"
+        use:horizontalDrag={focusHandlers}
+        class="border-surface-raised bg-focus-line-ui absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border-2 shadow"
+        title="Drag to move the focus time"
+      ></div>
+    {/if}
   </div>
+
+  <div
+    data-testid="ruler-crosshair-dim-left"
+    class={`bg-crosshair-dim pointer-events-none absolute inset-y-0 left-0 z-[35] transition-opacity duration-150 ${
+      crosshairActive ? 'opacity-100' : 'opacity-0'
+    }`}
+    style={`width: ${crosshairLeft}`}
+    aria-hidden="true"
+  ></div>
+  <div
+    data-testid="ruler-crosshair-dim-right"
+    class={`bg-crosshair-dim pointer-events-none absolute inset-y-0 right-0 z-[35] transition-opacity duration-150 ${
+      crosshairActive ? 'opacity-100' : 'opacity-0'
+    }`}
+    style={`width: ${crosshairRight}`}
+    aria-hidden="true"
+  ></div>
+  <div
+    data-testid="ruler-crosshair-column"
+    class={`border-accent/50 pointer-events-none absolute inset-y-0 z-[36] border-x transition-opacity duration-150 ${
+      crosshairActive ? 'opacity-100' : 'opacity-0'
+    }`}
+    style={`left: ${crosshairLeft}; right: ${crosshairRight}`}
+    aria-hidden="true"
+  ></div>
 </div>

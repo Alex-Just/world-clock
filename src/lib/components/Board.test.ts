@@ -47,6 +47,65 @@ it('draws the focus line and only draws now when it is in view', () => {
   expect(container.querySelector('[data-testid="now-line"]')).not.toBeNull();
 });
 
+it('hides focus and now markers when another day is in view', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  const { container } = render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-06', '24h'),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-06T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: false,
+      range: null,
+      settings,
+    },
+  });
+  expect(container.querySelector('[data-testid="focus-line"]')).toBeNull();
+  expect(container.querySelector('[data-testid="focus-handle"]')).toBeNull();
+  expect(container.querySelector('[data-testid="now-line"]')).toBeNull();
+  expect(container.querySelectorAll('[data-testid="row-focus-line"]')).toHaveLength(0);
+});
+
+it('hides markers when the window shifts past the focus and now', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  const { container } = render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h', 18),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: true,
+      range: null,
+      settings,
+    },
+  });
+  expect(container.querySelector('[data-testid="focus-line"]')).toBeNull();
+  expect(container.querySelector('[data-testid="focus-handle"]')).toBeNull();
+  expect(container.querySelector('[data-testid="now-line"]')).toBeNull();
+  expect(container.querySelector('[data-testid="hover-slot"]')).toBeNull();
+});
+
+it('hides range visuals when the range is outside the shifted window', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  const { container } = render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h', 18),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: false,
+      range: normalizeRange(at('2026-11-05T04:00:00Z'), at('2026-11-05T06:00:00Z')),
+      settings,
+    },
+  });
+  expect(container.querySelector('[data-testid="range-fill"]')).toBeNull();
+  expect(container.querySelector('[data-testid="range-outline"]')).toBeNull();
+  expect(container.querySelectorAll('[data-testid="row-range-fill"]')).toHaveLength(0);
+});
+
 it('highlights the selected range across every row', () => {
   const settings = createDefaultSettings('Europe/Madrid');
   const { container } = render(Board, {
@@ -90,7 +149,7 @@ it('hides display fields when their settings are off', () => {
   });
   expect(screen.queryByText('EDT')).not.toBeInTheDocument();
   expect(screen.getByText('America/New_York')).toBeInTheDocument();
-  expect(screen.queryByText('UTC−04:00')).not.toBeInTheDocument();
+  expect(screen.queryByText('UTC−4')).not.toBeInTheDocument();
   expect(screen.queryByText('DST')).not.toBeInTheDocument();
 });
 
@@ -109,11 +168,12 @@ it('shows abbreviation, exact offset, and DST when enabled', () => {
     },
   });
   expect(screen.getByText('EDT')).toBeInTheDocument();
-  expect(screen.getByText('UTC−04:00')).toBeInTheDocument();
+  expect(screen.getByText('UTC−4')).toBeInTheDocument();
   expect(screen.getAllByText('DST').length).toBeGreaterThan(0);
+  expect(within(screen.getByTestId('row-Asia/Kolkata')).queryByText('DST')).toBeNull();
 });
 
-it('highlights the hovered hour across all rows', async () => {
+it('preselects the focus hour and follows hover', async () => {
   const settings = createDefaultSettings('Europe/Madrid');
   const { container } = render(Board, {
     props: {
@@ -145,12 +205,102 @@ it('highlights the hovered hour across all rows', async () => {
     toJSON: () => ({}),
   });
 
+  expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 54.1667%');
+
   await fireEvent.pointerMove(timeline, { clientX: 110, pointerType: 'mouse' });
   expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 45.8333%');
   expect(screen.getByTestId('hover-slot')).toHaveStyle('width: 4.1667%');
+  expect(
+    within(screen.getByTestId('row-America/New_York')).getByTestId('crosshair-dim-left'),
+  ).toHaveClass('opacity-100');
+  expect(
+    within(screen.getByTestId('row-Europe/Madrid')).getByTestId('crosshair-dim-left'),
+  ).toHaveClass('opacity-0');
+  expect(
+    within(screen.getByTestId('row-America/New_York')).getByTestId('row-crosshair-dim'),
+  ).toHaveClass('opacity-100');
+  expect(screen.getByTestId('ruler-crosshair-dim-left')).toHaveClass('opacity-100');
+  expect(
+    within(screen.getByTestId('row-Europe/Madrid')).getByTestId('hover-row-border'),
+  ).toHaveClass('opacity-100');
+  expect(
+    within(screen.getByTestId('row-America/New_York')).getByTestId('hover-row-border'),
+  ).toHaveClass('opacity-0');
 
   await fireEvent.pointerLeave(grid);
-  expect(screen.queryByTestId('hover-slot')).not.toBeInTheDocument();
+  expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 54.1667%');
+  expect(screen.getByTestId('ruler-crosshair-dim-left')).toHaveClass('opacity-0');
+  expect(
+    within(screen.getByTestId('row-America/New_York')).getByTestId('crosshair-dim-left'),
+  ).toHaveClass('opacity-0');
+  expect(
+    within(screen.getByTestId('row-Europe/Madrid')).getByTestId('hover-row-border'),
+  ).toHaveClass('opacity-0');
+});
+
+it('recovers hover when a drag ends without a pointerup', async () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  const { container } = render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h'),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: false,
+      range: null,
+      settings,
+      onSetFocus: vi.fn(),
+      onSetRange: vi.fn(),
+      onRangeChange: vi.fn(),
+    },
+  });
+  const timeline = container.querySelector<HTMLElement>(
+    '[data-testid="row-Europe/Madrid"] [data-row-timeline]',
+  );
+  if (!timeline) throw new Error('timeline missing');
+  timeline.getBoundingClientRect = () => ({
+    left: 0,
+    width: 240,
+    top: 0,
+    height: 56,
+    right: 240,
+    bottom: 56,
+    x: 0,
+    y: 0,
+    toJSON: () => ({}),
+  });
+
+  await fireEvent.pointerDown(timeline, {
+    clientX: 60,
+    pointerId: 1,
+    pointerType: 'mouse',
+    button: 0,
+    buttons: 1,
+  });
+  await fireEvent.pointerMove(timeline, {
+    clientX: 180,
+    pointerId: 1,
+    pointerType: 'mouse',
+    buttons: 0,
+  });
+  expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 75%');
+
+  await fireEvent.pointerDown(timeline, {
+    clientX: 60,
+    pointerId: 2,
+    pointerType: 'mouse',
+    button: 0,
+    buttons: 1,
+  });
+  await fireEvent.keyDown(window, { key: 'Escape' });
+  await fireEvent.pointerMove(timeline, {
+    clientX: 120,
+    pointerId: 2,
+    pointerType: 'mouse',
+    buttons: 1,
+  });
+  expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 50%');
 });
 
 it('creates a range by dragging on a zone row', async () => {
@@ -196,7 +346,7 @@ it('creates a range by dragging on a zone row', async () => {
     pointerType: 'mouse',
     button: 0,
   });
-  await fireEvent.pointerMove(window, { clientX: 180, pointerType: 'mouse' });
+  await fireEvent.pointerMove(window, { clientX: 180, pointerType: 'mouse', buttons: 1 });
   await fireEvent.pointerUp(window, {
     clientX: 180,
     pointerId: 1,
@@ -210,4 +360,26 @@ it('creates a range by dragging on a zone row', async () => {
     axis.startMs + 6 * 3_600_000,
     axis.startMs + 18 * 3_600_000,
   );
+});
+
+it('hides the zero relative offset for the home zone', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h'),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: false,
+      range: null,
+      settings,
+    },
+  });
+  expect(
+    within(screen.getByTestId('row-Europe/Madrid')).queryByTestId('relative-offset'),
+  ).toBeNull();
+  expect(
+    within(screen.getByTestId('row-Europe/Moscow')).getByTestId('relative-offset'),
+  ).toHaveTextContent('+2h');
 });

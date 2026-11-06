@@ -105,23 +105,23 @@
   >
     <div class="flex max-h-[calc(100dvh-2rem)] flex-col">
       <header class="border-border flex items-center justify-between border-b px-4 py-3">
-        <h2 id="duration-title" class="text-base font-semibold">Duration</h2>
+        <h2 id="duration-title" class="text-xl font-semibold">Duration</h2>
         <button
           type="button"
           aria-label="Close duration"
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
         >
-          <span aria-hidden="true">×</span>
+          <span class="text-2xl" aria-hidden="true">×</span>
         </button>
       </header>
 
       <div class="overflow-y-auto px-4 py-4">
         <div class="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
           <fieldset class="border-border rounded-xl border p-3">
-            <legend class="text-muted px-1 text-xs font-medium">Start</legend>
+            <legend class="text-muted px-1 text-sm font-medium">Start</legend>
             <div class="grid gap-2">
               <label class="text-muted text-xs">
                 Start date
@@ -156,13 +156,13 @@
           <button
             type="button"
             onclick={swap}
-            class="border-border text-muted hover:bg-surface hover:text-text h-9 rounded-lg border px-3 text-xs font-medium"
+            class="border-border text-muted hover:bg-surface hover:text-text h-10 rounded-lg border px-3 text-sm font-medium"
           >
             Swap
           </button>
 
           <fieldset class="border-border rounded-xl border p-3">
-            <legend class="text-muted px-1 text-xs font-medium">End</legend>
+            <legend class="text-muted px-1 text-sm font-medium">End</legend>
             <div class="grid gap-2">
               <label class="text-muted text-xs">
                 End date
@@ -200,22 +200,22 @@
             <span class="text-2xl font-light tabular-nums">
               {formatDuration(computed.durationMs)}
             </span>
-            <span class="text-muted text-xs">elapsed</span>
+            <span class="text-muted text-sm">elapsed</span>
             {#if wallDifference !== computed.durationMs}
-              <span class="text-muted text-xs">
+              <span class="text-muted text-sm">
                 · {formatDuration(wallDifference)} on the wall clock
               </span>
             {/if}
           </div>
 
           {#if computed.durationMs > 86_400_000}
-            <p class="mt-2 text-xs text-amber-700 dark:text-amber-300">
+            <p class="text-warning mt-2 text-sm">
               Multi-day span — availability is shown per local day.
             </p>
           {/if}
 
           <div class="border-border mt-4 overflow-x-auto rounded-xl border">
-            <table class="w-full text-left text-xs">
+            <table class="w-full text-left text-sm">
               <thead class="bg-surface text-muted">
                 <tr>
                   <th class="px-3 py-2 font-medium">Zone</th>
@@ -237,7 +237,7 @@
             </table>
           </div>
         {:else}
-          <p class="mt-4 text-xs text-rose-600 dark:text-rose-400">Enter a valid start and end.</p>
+          <p class="text-danger mt-4 text-sm">Enter a valid start and end.</p>
         {/if}
       </div>
 
@@ -247,7 +247,7 @@
           onclick={() => {
             onClose();
           }}
-          class="border-border text-text hover:bg-surface h-9 rounded-lg border px-3 text-xs font-medium"
+          class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
         >
           Cancel
         </button>
@@ -255,7 +255,7 @@
           type="button"
           disabled={!computed}
           onclick={apply}
-          class="bg-accent text-accent-contrast h-9 rounded-lg px-3 text-xs font-medium disabled:opacity-50"
+          class="bg-accent text-accent-contrast hover:bg-accent/90 h-10 rounded-lg px-3 text-sm font-medium transition-colors disabled:opacity-50"
         >
           Apply
         </button>

@@ -6,6 +6,21 @@ export const DEFAULT_ZONE_IDS = [
   'America/Denver',
   'America/New_York',
   'UTC',
+  'Europe/Madrid',
+  'Europe/Moscow',
+  'Asia/Kolkata',
+] as const;
+
+const DEFAULT_LABELS: Record<string, string> = {
+  'America/Los_Angeles': 'San Francisco',
+  'Asia/Kolkata': 'Delhi',
+};
+
+const LEGACY_DEFAULT_ZONE_IDS = [
+  'America/Los_Angeles',
+  'America/Denver',
+  'America/New_York',
+  'UTC',
   'Europe/London',
   'Europe/Madrid',
   'Europe/Moscow',
@@ -13,10 +28,30 @@ export const DEFAULT_ZONE_IDS = [
   'America/Chicago',
 ] as const;
 
-const DEFAULT_LABELS: Record<string, string> = {
-  'America/Los_Angeles': 'San Francisco',
-  'Asia/Kolkata': 'Delhi',
-};
+const RETIRED_DEFAULT_ZONE_IDS = new Set(['Europe/London', 'America/Chicago']);
+
+function defaultZoneLabel(timeZone: string): string {
+  return DEFAULT_LABELS[timeZone] ?? defaultLabel(timeZone);
+}
+
+export function retireLegacyDefaultZones(settings: Settings): Settings {
+  if (RETIRED_DEFAULT_ZONE_IDS.has(settings.homeZone)) return settings;
+
+  const legacy = new Set<string>(LEGACY_DEFAULT_ZONE_IDS);
+  const ids = new Set(settings.zones.map((zone) => zone.timeZone));
+  if (!LEGACY_DEFAULT_ZONE_IDS.every((id) => ids.has(id))) return settings;
+
+  const extra = settings.zones.filter((zone) => !legacy.has(zone.timeZone));
+  if (extra.length > 1 || (extra[0] && extra[0].timeZone !== settings.homeZone)) return settings;
+  if (!settings.zones.every((zone) => zone.label === defaultZoneLabel(zone.timeZone))) {
+    return settings;
+  }
+
+  return {
+    ...settings,
+    zones: settings.zones.filter((zone) => !RETIRED_DEFAULT_ZONE_IDS.has(zone.timeZone)),
+  };
+}
 
 export function seedZones(homeZone: string): ZoneSetting[] {
   const ids: string[] = [...DEFAULT_ZONE_IDS];

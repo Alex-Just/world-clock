@@ -2,12 +2,13 @@ export interface ShortcutHandlers {
   now: () => void;
   nudge: (minutes: number) => void;
   extendRange: (minutes: number) => void;
+  shiftWindow: (hours: number) => void;
   shiftDay: (days: number) => void;
   setDayEdge: (edge: 'start' | 'end') => void;
   openAddZone: () => void;
   openSettings: () => void;
   openHelp: () => void;
-  clearRange: () => void;
+  resetBoard: () => void;
 }
 
 export function installShortcuts(
@@ -23,7 +24,7 @@ export function installShortcuts(
 
     const element = event.target instanceof Element ? event.target : null;
     if (element?.closest('input, textarea, select, [contenteditable="true"]')) return;
-    if (document.querySelector('dialog[open], [role="dialog"]')) return;
+    if (document.querySelector('dialog[open], [role="dialog"], [popover]:popover-open')) return;
 
     const mod = event.metaKey || event.ctrlKey;
     if (mod && event.key.toLowerCase() === 'k') {
@@ -45,11 +46,13 @@ export function installShortcuts(
         break;
       case 'ArrowLeft':
         if (event.shiftKey) handlers.extendRange(-currentStep());
-        else handlers.nudge(event.altKey ? -60 : -currentStep());
+        else if (event.altKey) handlers.nudge(-60);
+        else handlers.shiftWindow(-6);
         break;
       case 'ArrowRight':
         if (event.shiftKey) handlers.extendRange(currentStep());
-        else handlers.nudge(event.altKey ? 60 : currentStep());
+        else if (event.altKey) handlers.nudge(60);
+        else handlers.shiftWindow(6);
         break;
       case 'PageUp':
         handlers.shiftDay(-1);
@@ -73,7 +76,7 @@ export function installShortcuts(
         handlers.openHelp();
         break;
       case 'Escape':
-        handlers.clearRange();
+        handlers.resetBoard();
         break;
       default:
         return;

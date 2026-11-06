@@ -5,6 +5,7 @@ import ZoneMenu from './ZoneMenu.svelte';
 it('disables remove for the home zone', () => {
   render(ZoneMenu, {
     props: {
+      anchor: document.body,
       zone: { timeZone: 'Europe/Madrid', label: 'Madrid' },
       isHome: true,
       canMoveUp: false,
