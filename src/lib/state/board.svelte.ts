@@ -24,7 +24,6 @@ export interface BoardStore {
   goToDay(date: DateString): void;
   shiftDay(days: number): void;
   shiftWindow(hours: number): void;
-  resetWindow(): void;
   now(): void;
   setRange(startMs: InstantMs, endMs: InstantMs, options?: { focus?: 'start' | 'keep' }): void;
   extendRange(minutes: number): void;
@@ -114,9 +113,6 @@ export function createBoardStore(deps: {
     },
     shiftWindow(hours) {
       windowOffsetHours = clampWindowOffsetHours(windowOffsetHours + hours);
-    },
-    resetWindow() {
-      windowOffsetHours = 0;
     },
     now() {
       followNow = true;

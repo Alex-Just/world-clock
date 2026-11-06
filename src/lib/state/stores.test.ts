@@ -86,8 +86,11 @@ describe('board store', () => {
     expect(board.windowOffsetHours).toBe(18);
     expect(board.axis.startMs).toBe(at('2026-11-05T17:00:00Z'));
 
-    board.resetWindow();
-    expect(board.windowOffsetHours).toBe(0);
+    board.shiftWindow(-6);
+    expect(board.windowOffsetHours).toBe(12);
+
+    board.shiftWindow(-36);
+    expect(board.windowOffsetHours).toBe(-18);
   });
 
   it('resets the shifted window on day navigation, now, and home changes', () => {

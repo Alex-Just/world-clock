@@ -15,7 +15,6 @@ const baseProps = {
   onOpenAddZone: vi.fn(),
   onOpenSettings: vi.fn(),
   onShiftWindow: vi.fn(),
-  onResetWindow: vi.fn(),
 };
 
 it('shows the focused time and relative badge', () => {
@@ -50,14 +49,12 @@ it('wires the header actions', async () => {
 
 it('shifts the visible window from the header', async () => {
   const onShiftWindow = vi.fn();
-  const onResetWindow = vi.fn();
   render(Header, {
     props: {
       ...baseProps,
       nowMs: baseProps.focusMs,
       windowOffsetHours: 6,
       onShiftWindow,
-      onResetWindow,
     },
   });
 
@@ -65,8 +62,6 @@ it('shifts the visible window from the header', async () => {
   expect(onShiftWindow).toHaveBeenCalledWith(-6);
   await fireEvent.click(screen.getByRole('button', { name: 'Show next 6 hours' }));
   expect(onShiftWindow).toHaveBeenCalledWith(6);
-  await fireEvent.click(screen.getByRole('button', { name: 'Reset visible window' }));
-  expect(onResetWindow).toHaveBeenCalled();
 });
 
 it('disables the window control at its limit', () => {
@@ -79,7 +74,7 @@ it('disables the window control at its limit', () => {
   });
   expect(screen.getByRole('button', { name: 'Show previous 6 hours' })).toBeDisabled();
   expect(screen.getByRole('button', { name: 'Show next 6 hours' })).toBeEnabled();
-  expect(screen.getByRole('button', { name: 'Reset visible window' })).toBeEnabled();
+  expect(screen.queryByRole('button', { name: 'Reset visible window' })).not.toBeInTheDocument();
 });
 
 it('reserves but hides the relative badge when it would only say now', () => {

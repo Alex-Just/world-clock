@@ -5,7 +5,6 @@
     ChevronRight,
     LocateFixed,
     Plus,
-    RotateCcw,
     Settings,
     Timer,
   } from '@lucide/svelte';
@@ -30,7 +29,6 @@
     onOpenAddZone,
     onOpenSettings,
     onShiftWindow,
-    onResetWindow,
     children,
   }: {
     focusMs: InstantMs;
@@ -46,7 +44,6 @@
     onOpenAddZone: () => void;
     onOpenSettings: () => void;
     onShiftWindow: (hours: number) => void;
-    onResetWindow: () => void;
     children?: Snippet;
   } = $props();
 
@@ -71,7 +68,6 @@
   );
   const canShiftBack = $derived(windowOffsetHours > -WINDOW_OFFSET_LIMIT_HOURS);
   const canShiftForward = $derived(windowOffsetHours < WINDOW_OFFSET_LIMIT_HOURS);
-  const canResetWindow = $derived(windowOffsetHours !== 0);
 </script>
 
 <header
@@ -131,19 +127,9 @@
         onclick={() => {
           onShiftWindow(-WINDOW_SHIFT_HOURS);
         }}
-        class="text-muted hover:bg-surface hover:text-text disabled:hover:text-muted inline-flex size-10 items-center justify-center rounded-l-lg disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
+        class="text-muted hover:bg-surface hover:text-text border-border disabled:hover:text-muted inline-flex size-10 items-center justify-center rounded-l-lg border-r disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
       >
         <ChevronLeft class="size-4" aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        aria-label="Reset visible window"
-        title="Reset visible window"
-        disabled={!canResetWindow}
-        onclick={onResetWindow}
-        class="border-border text-muted hover:bg-surface hover:text-text disabled:hover:text-muted inline-flex size-10 items-center justify-center border-x disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
-      >
-        <RotateCcw class="size-4" aria-hidden="true" />
       </button>
       <button
         type="button"

@@ -215,9 +215,6 @@
     onShiftWindow={(hours: number) => {
       boardStore.shiftWindow(hours);
     }}
-    onResetWindow={() => {
-      boardStore.resetWindow();
-    }}
   >
     <DayStrip
       viewDate={boardStore.viewDate}

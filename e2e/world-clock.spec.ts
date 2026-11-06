@@ -922,9 +922,6 @@ test('uses a hand cursor for actionable controls', async ({ page }) => {
     expect(await cursor(locator)).toBe('pointer');
   }
 
-  await expect(page.getByRole('button', { name: 'Reset visible window' })).toBeDisabled();
-  expect(await cursor(page.getByRole('button', { name: 'Reset visible window' }))).toBe('default');
-
   await page.getByRole('button', { name: 'Actions for New York' }).click();
   expect(await cursor(page.getByRole('menuitem', { name: 'Rename' }))).toBe('pointer');
   await page.keyboard.press('Escape');
@@ -1003,10 +1000,9 @@ test('jumps to a distant date from the calendar', async ({ page }) => {
 test('shifts the visible window by six hours', async ({ page }) => {
   const labels = page.getByTestId('ruler-surface').getByTestId('hour-label');
   const next = page.getByRole('button', { name: 'Show next 6 hours' });
-  const reset = page.getByRole('button', { name: 'Reset visible window' });
+  const now = page.getByRole('button', { name: /^now$/i });
 
   await expect(labels.first()).toHaveText('00');
-  await expect(reset).toBeDisabled();
 
   await next.click();
   await expect(labels.first()).toHaveText('06');
@@ -1024,14 +1020,12 @@ test('shifts the visible window by six hours', async ({ page }) => {
   await expect(page.getByTestId('focus-line')).toBeHidden();
   await expect(page.getByTestId('now-line')).toBeHidden();
 
-  await reset.click();
+  await now.click();
   await expect(labels.first()).toHaveText('00');
-  await expect(reset).toBeDisabled();
   await expect(page.getByTestId('focus-line')).toBeVisible();
   await expect(page.getByTestId('now-line')).toBeVisible();
 
   await next.click();
   await page.getByRole('button', { name: 'Sat 7 2026' }).click();
   await expect(labels.first()).toHaveText('00');
-  await expect(reset).toBeDisabled();
 });

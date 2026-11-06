@@ -13,7 +13,7 @@ availability without leaving the board.
 - Focus by click, tap, drag, keyboard, exact wall time, or relative offset.
 - Relative badge shows a calendar breakdown, total duration, and comparison date/time.
 - Click-drag the board to select a period; duration appears above the board.
-- Shift the visible window backward or forward in 6-hour steps; reset returns to the anchor day.
+- Shift the visible window backward or forward in 6-hour steps; Now resets it and returns to the current time.
 - Material-blue day/night shading with a teal focus and range accent.
 - Focus-hour highlight at rest; hover follows the cursor, emphasizes the hovered zone, and dims the rest.
 - Range duration, wall-clock duration across DST, and per-zone availability.
