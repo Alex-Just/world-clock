@@ -81,8 +81,10 @@ Import replaces the current document only after confirmation. Export includes
   restore, and Escape. Set Time traps focus manually.
 - Zone menus open in a manual popover, positioned from the trigger rectangle
   and flipped or clamped to stay inside the viewport.
-- Focus/now lines and range fills render in the ruler and every row. A hover
-  overlay follows the cursor without changing selection.
+- Rows use a full-width zone header and discrete 24px hour cells. Date labels
+  sit under local midnight; the current local hour is filled blue.
+- Focus/now lines and range fills render inside the hour band and in the bottom
+  range track. A hover overlay follows the cursor without changing selection.
 - On narrow screens the row header wraps the time block below the zone name;
   timeline labels stay legible instead of shrinking.
 - Display settings control abbreviation, exact offset, DST badge, IANA name,

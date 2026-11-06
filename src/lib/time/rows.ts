@@ -6,6 +6,7 @@ import type {
   DateString,
   DayMarker,
   DstMarker,
+  HourCell,
   HourLabel,
   InstantMs,
   RowBands,
@@ -132,6 +133,29 @@ export function buildRowBands(
   return { base, work };
 }
 
+export function buildHourCells(zone: ZoneId, axis: TimeAxis, format: TimeFormat): HourCell[] {
+  const cells: HourCell[] = [];
+
+  for (let index = 0; index < axis.ticks.length; index += 1) {
+    const tick = axis.ticks[index];
+    if (!tick) continue;
+    const end = axis.ticks[index + 1]?.position ?? 1;
+    if (end - tick.position <= EPSILON) continue;
+
+    const local = Temporal.Instant.fromEpochMilliseconds(tick.instantMs).toZonedDateTimeISO(zone);
+    cells.push({
+      start: tick.position,
+      end,
+      label: formatHourLabel(local.hour, format),
+      hour: local.hour,
+      kind: local.hour >= 8 && local.hour < 22 ? 'day' : 'night',
+      midnight: local.hour === 0,
+    });
+  }
+
+  return cells;
+}
+
 export function buildHourLabels(zone: ZoneId, axis: TimeAxis, format: TimeFormat): HourLabel[] {
   const transitions = zoneTransitions(zone, axis.startMs, axis.endMs);
   const boundaries = [
@@ -223,7 +247,7 @@ export function buildZoneRow(zone: RowZone, axis: TimeAxis, options: RowOptions)
     zone.timeZone,
   );
   const working = isWorkingTime(zone.timeZone, options.focusMs, options.workStart, options.workEnd);
-  const focusedStatus = working ? 'working' : local.hour >= 7 && local.hour < 22 ? 'day' : 'night';
+  const focusedStatus = working ? 'working' : local.hour >= 8 && local.hour < 22 ? 'day' : 'night';
 
   return {
     timeZone: zone.timeZone,
@@ -241,6 +265,7 @@ export function buildZoneRow(zone: RowZone, axis: TimeAxis, options: RowOptions)
     focusedDate: formatDayMarker(options.focusMs, zone.timeZone, options.locale),
     focusedStatus,
     bands: buildRowBands(zone.timeZone, axis, options.workStart, options.workEnd),
+    hourCells: buildHourCells(zone.timeZone, axis, options.format),
     hourLabels: buildHourLabels(zone.timeZone, axis, options.format),
     dayMarkers: options.showDateLabels ? buildDayMarkers(zone.timeZone, axis, options.locale) : [],
     dstMarkers: buildDstMarkers(zone.timeZone, axis),

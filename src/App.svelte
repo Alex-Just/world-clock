@@ -187,82 +187,78 @@
   >
     Skip to board
   </a>
-  <Header
-    focusMs={boardStore.focusMs}
-    nowMs={clockStore.nowMs}
-    homeZone={settingsStore.value.homeZone}
-    zoneLabel={homeLabel}
-    format={settingsStore.value.timeFormat}
-    followNow={boardStore.followNow}
-    onNow={() => {
-      boardStore.now();
-    }}
-    onOpenSetTime={() => {
-      setTimeOpen = true;
-    }}
-    onOpenDuration={openDuration}
-    onOpenAddZone={() => {
-      addZoneOpen = true;
-    }}
-    onOpenSettings={() => {
-      settingsOpen = true;
-    }}
-  />
+  <div class="bg-surface-raised mx-auto w-full max-w-[760px]">
+    <Header
+      focusMs={boardStore.focusMs}
+      nowMs={clockStore.nowMs}
+      homeZone={settingsStore.value.homeZone}
+      zoneLabel={homeLabel}
+      format={settingsStore.value.timeFormat}
+      followNow={boardStore.followNow}
+      onNow={() => {
+        boardStore.now();
+      }}
+      onOpenSetTime={() => {
+        setTimeOpen = true;
+      }}
+      onOpenDuration={openDuration}
+      onOpenAddZone={() => {
+        addZoneOpen = true;
+      }}
+      onOpenSettings={() => {
+        settingsOpen = true;
+      }}
+    />
 
-  {#if !persistenceAvailable}
-    <div role="status" class="border-warning/30 bg-warning/10 text-warning px-4 py-2 text-xs">
-      Settings can't be saved in this browser. Changes last until you reload.
-    </div>
-  {/if}
-
-  <DayStrip
-    viewDate={boardStore.viewDate}
-    homeZone={settingsStore.value.homeZone}
-    onSelectDate={selectDate}
-    onShiftDay={shiftDay}
-    onToday={goToday}
-  />
-
-  <main id="board" class="p-4 sm:p-6">
-    {#if boardStore.range}
-      <RangeBar
-        range={boardStore.range}
-        zones={settingsStore.value.zones}
-        settings={settingsStore.value}
-        onClear={clearBoardRange}
-        onDetails={() => {
-          durationOpen = true;
-        }}
-      />
-    {:else}
-      <div
-        class="border-border text-muted mb-3 flex min-h-10 items-center rounded-xl border border-dashed px-3 text-xs"
-      >
-        Click and drag the board to select a period.
+    {#if !persistenceAvailable}
+      <div role="status" class="border-warning/30 bg-warning/10 text-warning px-4 py-2 text-xs">
+        Settings can't be saved in this browser. Changes last until you reload.
       </div>
     {/if}
 
-    <Board
-      axis={boardStore.axis}
-      zones={settingsStore.value.zones}
+    <DayStrip
+      viewDate={boardStore.viewDate}
       homeZone={settingsStore.value.homeZone}
-      focusMs={boardStore.focusMs}
-      nowMs={clockStore.nowMs}
-      followNow={boardStore.followNow}
-      range={boardStore.range}
-      settings={settingsStore.value}
-      onSetFocus={setBoardFocus}
-      onNow={goToday}
-      onSetRange={setBoardRange}
-      onRangeChange={setBoardRange}
-      onExtendRange={extendBoardRange}
-      onClearRange={clearBoardRange}
-      onSetHome={handleSetHome}
-      onRename={handleRename}
-      onMove={handleMove}
-      onRemove={handleRemove}
+      onSelectDate={selectDate}
+      onShiftDay={shiftDay}
+      onToday={goToday}
     />
-  </main>
+
+    <main id="board" class="pb-6">
+      <Board
+        axis={boardStore.axis}
+        zones={settingsStore.value.zones}
+        homeZone={settingsStore.value.homeZone}
+        focusMs={boardStore.focusMs}
+        nowMs={clockStore.nowMs}
+        followNow={boardStore.followNow}
+        range={boardStore.range}
+        settings={settingsStore.value}
+        onSetFocus={setBoardFocus}
+        onNow={goToday}
+        onSetRange={setBoardRange}
+        onRangeChange={setBoardRange}
+        onExtendRange={extendBoardRange}
+        onClearRange={clearBoardRange}
+        onSetHome={handleSetHome}
+        onRename={handleRename}
+        onMove={handleMove}
+        onRemove={handleRemove}
+      />
+
+      {#if boardStore.range}
+        <RangeBar
+          range={boardStore.range}
+          zones={settingsStore.value.zones}
+          settings={settingsStore.value}
+          onClear={clearBoardRange}
+          onDetails={() => {
+            durationOpen = true;
+          }}
+        />
+      {/if}
+    </main>
+  </div>
 
   {#if addZoneOpen}
     <AddZoneDialog

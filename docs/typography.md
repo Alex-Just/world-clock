@@ -49,7 +49,7 @@ Rules:
 `e2e/world-clock.spec.ts` checks:
 
 - visible text is at least 12px;
-- ruler hours and day markers are at least 12px;
+- hour cells and day markers are at least 12px;
 - mobile form controls are at least 16px and 44px tall;
 - header, day, and zone-menu targets are at least 24×24;
 - axe scans in light, dark, explicit-dark, and OS/app mismatch states.

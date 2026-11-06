@@ -63,6 +63,15 @@ export interface HourLabel {
   hour: number;
 }
 
+export interface HourCell {
+  start: number;
+  end: number;
+  label: string;
+  hour: number;
+  kind: 'day' | 'night';
+  midnight: boolean;
+}
+
 export interface DayMarker {
   position: number;
   label: string;
@@ -99,6 +108,7 @@ export interface ZoneRowModel {
   focusedDate: string;
   focusedStatus: 'working' | 'day' | 'night';
   bands: RowBands;
+  hourCells: HourCell[];
   hourLabels: HourLabel[];
   dayMarkers: DayMarker[];
   dstMarkers: DstMarker[];

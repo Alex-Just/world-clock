@@ -7,10 +7,10 @@ function pad(value: number): string {
 }
 
 export function formatHourLabel(hour: number, format: TimeFormat): string {
-  if (format === '24h') return pad(hour);
-  const twelve = hour % 12;
-  if (twelve === 0) return hour < 12 ? '12a' : '12p';
-  return String(twelve);
+  if (format === '24h') return String(hour);
+  if (hour === 0) return 'am';
+  if (hour === 12) return 'pm';
+  return String(hour % 12);
 }
 
 export function formatTime(
@@ -21,12 +21,15 @@ export function formatTime(
 ): string {
   const formatter = new Intl.DateTimeFormat(options.locale, {
     timeZone: zone,
-    hour: '2-digit',
+    hour: format === '24h' ? '2-digit' : 'numeric',
     minute: '2-digit',
     ...(options.seconds ? { second: '2-digit' } : {}),
     ...(format === '24h' ? { hourCycle: 'h23' } : { hour12: true }),
   });
-  return formatter.format(new Date(instantMs));
+  const formatted = formatter.format(new Date(instantMs));
+  return format === '24h'
+    ? formatted
+    : formatted.replace(/\s?([AP])M$/i, (_match, period: string) => `${period.toLowerCase()}m`);
 }
 
 export function formatDate(
@@ -56,12 +59,12 @@ export function formatDateString(
 export function formatDayMarker(instantMs: InstantMs, zone: ZoneId, locale?: string): string {
   const parts = new Intl.DateTimeFormat(locale, {
     timeZone: zone,
-    weekday: 'short',
+    month: 'short',
     day: 'numeric',
   }).formatToParts(new Date(instantMs));
-  const weekday = parts.find((part) => part.type === 'weekday')?.value ?? '';
+  const month = parts.find((part) => part.type === 'month')?.value ?? '';
   const day = parts.find((part) => part.type === 'day')?.value ?? '';
-  return `${weekday} ${day}`.trim();
+  return `${month} ${day}`.trim();
 }
 
 export function formatOffset(minutes: number): string {
