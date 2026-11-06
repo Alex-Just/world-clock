@@ -225,23 +225,25 @@
   {/if}
 
   <main id="board" class="p-4 sm:p-6">
-    {#if boardStore.range}
-      <RangeBar
-        range={boardStore.range}
-        zones={settingsStore.value.zones}
-        settings={settingsStore.value}
-        onClear={clearBoardRange}
-        onDetails={() => {
-          durationOpen = true;
-        }}
-      />
-    {:else}
-      <div
-        class="border-border text-muted mb-3 flex min-h-10 items-center rounded-xl border border-dashed px-3 text-xs"
-      >
-        Click and drag the board to select a period.
-      </div>
-    {/if}
+    <div class="mb-3 h-12">
+      {#if boardStore.range}
+        <RangeBar
+          range={boardStore.range}
+          zones={settingsStore.value.zones}
+          settings={settingsStore.value}
+          onClear={clearBoardRange}
+          onDetails={() => {
+            durationOpen = true;
+          }}
+        />
+      {:else}
+        <div
+          class="border-border text-muted flex h-full items-center rounded-xl border border-dashed px-3 text-sm"
+        >
+          Click and drag the board to select a period.
+        </div>
+      {/if}
+    </div>
 
     <Board
       axis={boardStore.axis}

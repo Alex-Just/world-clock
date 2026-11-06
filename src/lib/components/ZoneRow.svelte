@@ -160,11 +160,13 @@
         class="text-right max-sm:flex max-sm:flex-wrap max-sm:items-baseline max-sm:gap-x-1 max-sm:text-left"
       >
         {#if rangeLabel !== null}
-          <div class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full">
+          <div
+            class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full max-sm:text-sm max-sm:whitespace-nowrap"
+          >
             {rangeLabel}
           </div>
           <div
-            class={`mt-0.5 text-xs max-sm:mt-0 sm:text-sm ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
+            class={`mt-0.5 text-xs max-sm:sr-only sm:text-sm ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
           >
             {rangeStatusLabel}
           </div>
@@ -172,7 +174,7 @@
           <div class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full">
             {model.focusedTime}
           </div>
-          <div class="mt-0.5 flex items-baseline gap-1 text-xs max-sm:mt-0 sm:text-sm">
+          <div class="mt-0.5 flex items-baseline gap-1 text-xs max-sm:sr-only sm:text-sm">
             <span class="text-muted">{model.focusedDate}</span>
             <span class="text-muted">·</span>
             <span class={statusClass}>{statusLabel}</span>

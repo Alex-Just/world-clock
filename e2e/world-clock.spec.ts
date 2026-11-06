@@ -536,3 +536,27 @@ test('uses the 16px base size for menus and settings controls', async ({ page })
     .first();
   expect(await zone.evaluate((element) => getComputedStyle(element).fontSize)).toBe('16px');
 });
+
+test('keeps the board in place when a range appears', async ({ page }) => {
+  const board = page.getByTestId('board-scroll');
+  const before = await board.boundingBox();
+  const ruler = page.getByTestId('ruler-surface');
+  const box = await ruler.boundingBox();
+  if (!before || !box) throw new Error('layout missing');
+  await page.mouse.move(box.x + box.width * 0.25, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.55, box.y + box.height / 2, { steps: 8 });
+  await page.mouse.up();
+  await expect(page.getByTestId('range-bar')).toBeVisible();
+  const after = await board.boundingBox();
+  if (!after) throw new Error('board missing');
+  expect(after.y).toBe(before.y);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const row = page.getByTestId('row-America/New_York');
+  const rowBefore = await row.boundingBox();
+  await page.getByRole('button', { name: /clear/i }).click();
+  const normalRow = await row.boundingBox();
+  if (!rowBefore || !normalRow) throw new Error('row missing');
+  expect(rowBefore.height).toBe(normalRow.height);
+});
