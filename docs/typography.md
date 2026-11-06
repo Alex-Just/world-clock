@@ -81,12 +81,12 @@ Status text uses the semantic warning and danger tokens.
 
 ### Dark chrome (D10 Black Chrome)
 
-| Token   | Value     | Use                              |
-| ------- | --------- | -------------------------------- |
-| Surface | `#232323` | Page and board chrome            |
-| Raised  | `#2d2d2d` | Header, sticky columns, controls |
-| Border  | `#414141` | Dividers and control edges       |
-| Text    | `#e4e4e4` | Primary labels                   |
+| Token   | Value     | Use                                           |
+| ------- | --------- | --------------------------------------------- |
+| Surface | `#232323` | Page and board chrome                         |
+| Raised  | `#2d2d2d` | Header, sticky columns, controls              |
+| Border  | `#414141` | Dividers and control edges                    |
+| Text    | `#e4e4e4` | Primary labels                                |
 | Muted   | `#c8c8c8` | Zone metadata and helpers (AA on home header) |
 
 ### Warm Dark board (A1.2)
