@@ -15,6 +15,7 @@
   --color-band-twilight: var(--band-twilight);
   --color-band-night: var(--band-night);
   --color-band-work: var(--band-work);
+  --color-work-line: var(--work-line);
   --color-band-text: var(--band-text);
   --color-band-marker: var(--band-marker);
   --color-band-marker-text: var(--band-marker-text);
@@ -43,10 +44,11 @@
   --band-day: #e3f2fd;
   --band-twilight: #e3f2fd;
   --band-night: #bbdefb;
-  --band-work: rgb(25 118 210 / 8%);
+  --band-work: rgb(180 83 9 / 8%);
   --band-text: #212121;
   --band-marker: #ffffff;
   --band-marker-text: #212121;
+  --work-line: #b45309;
   --now: #26a69a;
   --focus-line: #00695c;
   --focus-line-ui: #00695c;
@@ -67,10 +69,11 @@
   --band-day: #e3f2fd;
   --band-twilight: #e3f2fd;
   --band-night: #bbdefb;
-  --band-work: rgb(144 202 249 / 12%);
+  --band-work: rgb(251 191 36 / 12%);
   --band-text: #212121;
   --band-marker: #ffffff;
   --band-marker-text: #212121;
+  --work-line: #fbbf24;
   --now: #26a69a;
   --focus-line: #00695c;
   --focus-line-ui: #80cbc4;

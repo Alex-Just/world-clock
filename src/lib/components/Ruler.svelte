@@ -190,7 +190,8 @@
   <div class="bg-border/50 absolute inset-x-0 top-0 h-1" aria-hidden="true">
     {#each work as segment (segment.start)}
       <div
-        class="bg-accent/45 absolute inset-y-0"
+        data-testid="work-segment"
+        class="bg-work-line/70 absolute inset-y-0"
         style={`left: ${pct(segment.start)}; width: ${pct(segment.end - segment.start)}`}
       ></div>
     {/each}

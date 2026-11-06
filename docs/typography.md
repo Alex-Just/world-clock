@@ -61,16 +61,17 @@ Rules:
 
 The light theme follows Material Blue:
 
-| Token      | Value     | Use                           |
-| ---------- | --------- | ----------------------------- |
-| Page       | `#f5f5f5` | Outside the app surface       |
-| Surface    | `#ffffff` | Header, board, controls       |
-| Text       | `#212121` | Primary labels and numbers    |
-| Muted      | `#757575` | Zone metadata and helpers     |
-| Accent     | `#1976d2` | Primary actions and selection |
-| Focus      | `#26a69a` | Focus line and range handles  |
-| Day band   | `#e3f2fd` | Day and twilight hours        |
-| Night band | `#bbdefb` | Night hours                   |
+| Token        | Value     | Use                           |
+| ------------ | --------- | ----------------------------- |
+| Page         | `#f5f5f5` | Outside the app surface       |
+| Surface      | `#ffffff` | Header, board, controls       |
+| Text         | `#212121` | Primary labels and numbers    |
+| Muted        | `#757575` | Zone metadata and helpers     |
+| Accent       | `#1976d2` | Primary actions and selection |
+| Focus        | `#26a69a` | Focus line and range handles  |
+| Day band     | `#e3f2fd` | Day and twilight hours        |
+| Night band   | `#bbdefb` | Night hours                   |
+| Work marking | `#b45309` | Work-hours strip and tint     |
 
 Status text uses the semantic warning and danger tokens. Dark mode keeps the
 same hierarchy with a dark surface and lighter blue accents.

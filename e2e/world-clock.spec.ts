@@ -596,3 +596,15 @@ test('restores hover after closing the zone menu outside the board', async ({ pa
     'rgb(255, 255, 255)',
   );
 });
+
+test('keeps work-hour markings warm instead of night blue', async ({ page }) => {
+  const segment = page.getByTestId('ruler-surface').getByTestId('work-segment').first();
+  await expect(segment).toBeVisible();
+  const channels = await segment.evaluate((element) => {
+    const color = getComputedStyle(element).backgroundColor;
+    return (color.match(/[\d.]+/g) ?? []).slice(0, 3).map(Number);
+  });
+  expect(channels).toHaveLength(3);
+  const [red = 0, , blue = 0] = channels;
+  expect(red).toBeGreaterThan(blue);
+});
