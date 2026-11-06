@@ -10,7 +10,7 @@ availability without leaving the board.
 
 - Any number of IANA time zones on one continuous day axis.
 - Focus by click, tap, drag, keyboard, exact wall time, or relative offset.
-- Click-drag the board to select a period; duration appears above the board.
+- Click-drag the board to select a period; duration appears below the board.
 - Material-style day/night hour cells with the current hour highlighted.
 - Hover highlight follows the cursor across all rows.
 - Range duration, wall-clock duration across DST, and per-zone availability.
