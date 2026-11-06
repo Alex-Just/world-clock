@@ -199,7 +199,7 @@
   {#each axis.ticks as tick (tick.instantMs)}
     <div
       data-testid="hour-label"
-      class="text-muted absolute bottom-1 px-0.5 text-xs tabular-nums"
+      class="text-muted absolute bottom-1 px-0.5 text-base tabular-nums"
       style={labelStyle(tick.position)}
     >
       {tick.label}
@@ -209,7 +209,7 @@
   {#if rangeStart !== null && rangeWidth !== null}
     <div
       data-testid="range-fill"
-      class="bg-accent/5 absolute inset-y-2 z-10"
+      class="bg-focus-line-ui/15 absolute inset-y-2 z-10"
       style={`left: ${rangeStart}; width: ${rangeWidth}`}
     ></div>
   {/if}
@@ -218,14 +218,14 @@
     <div
       data-testid="range-start-handle"
       use:horizontalDrag={startHandleHandlers}
-      class="border-surface-raised bg-accent absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
+      class="border-surface-raised bg-focus-line-ui absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
       style={`left: ${rangeStart}`}
       title="Drag range start"
     ></div>
     <div
       data-testid="range-end-handle"
       use:horizontalDrag={endHandleHandlers}
-      class="border-surface-raised bg-accent absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
+      class="border-surface-raised bg-focus-line-ui absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
       style={`left: ${rangeEnd}`}
       title="Drag range end"
     ></div>
@@ -254,13 +254,13 @@
   >
     <div
       data-testid="focus-line"
-      class="bg-accent pointer-events-none absolute inset-y-0 w-0.5"
+      class="border-focus-line-ui pointer-events-none absolute inset-y-0 w-0 border-l border-dashed"
       style={`--position: ${focusPosition}`}
     ></div>
     <div
       data-testid="focus-handle"
       use:horizontalDrag={focusHandlers}
-      class="border-surface-raised bg-accent absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border-2 shadow"
+      class="border-surface-raised bg-focus-line-ui absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border-2 shadow"
       title="Drag to move the focus time"
     ></div>
   </div>

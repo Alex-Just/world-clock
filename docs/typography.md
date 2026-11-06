@@ -19,14 +19,14 @@
 
 ## Scale
 
-| Role           | Tailwind    | Effective size | Line height | Use                                   |
-| -------------- | ----------- | -------------- | ----------- | ------------------------------------- |
-| Display clock  | `text-3xl`  | 30px           | 1           | Header clock                          |
-| Display number | `text-2xl`  | 24px           | 1.1         | Duration                              |
-| Section value  | `text-lg`   | 18px           | 1.1         | Desktop row time                      |
-| Body large     | `text-base` | 16px           | 1.5         | Row time, form controls on mobile     |
-| Body           | `text-sm`   | 14px           | 1.5         | Dialog copy, dense values             |
-| Label / meta   | `text-xs`   | 12px           | 1.33        | Hour labels, dates, metadata, helpers |
+| Role           | Tailwind          | Effective size | Line height | Use                                |
+| -------------- | ----------------- | -------------- | ----------- | ---------------------------------- |
+| Display clock  | `text-[2.125rem]` | 34px           | 1           | Header clock                       |
+| Display number | `text-2xl`        | 24px           | 1.1         | Duration                           |
+| Section value  | `text-lg`         | 18px           | 1.1         | Desktop row time                   |
+| Body large     | `text-base`       | 16px           | 1.5         | Row time, form controls on mobile  |
+| Body           | `text-sm`         | 14px           | 1.5         | Dialog copy, dense values          |
+| Label / meta   | `text-xs`         | 12px           | 1.33        | Dates, helpers; 14–16px on desktop |
 
 Rules:
 
@@ -49,7 +49,25 @@ Rules:
 `e2e/world-clock.spec.ts` checks:
 
 - visible text is at least 12px;
-- ruler hours and day markers are at least 12px;
+- ruler hours, row hours, and day markers are at least 12px;
 - mobile form controls are at least 16px and 44px tall;
 - header, day, and zone-menu targets are at least 24×24;
 - axe scans in light, dark, explicit-dark, and OS/app mismatch states.
+
+## Palette
+
+The light theme follows Material Blue:
+
+| Token      | Value     | Use                           |
+| ---------- | --------- | ----------------------------- |
+| Page       | `#f5f5f5` | Outside the app surface       |
+| Surface    | `#ffffff` | Header, board, controls       |
+| Text       | `#212121` | Primary labels and numbers    |
+| Muted      | `#757575` | Zone metadata and helpers     |
+| Accent     | `#1976d2` | Primary actions and selection |
+| Focus      | `#26a69a` | Focus line and range handles  |
+| Day band   | `#e3f2fd` | Day and twilight hours        |
+| Night band | `#bbdefb` | Night hours                   |
+
+Status text uses the semantic warning and danger tokens. Dark mode keeps the
+same hierarchy with a dark surface and lighter blue accents.

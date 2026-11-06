@@ -195,15 +195,15 @@
   class="border-border bg-surface-raised overflow-hidden rounded-xl border"
 >
   <div data-testid="board-scroll" class="overflow-x-auto">
-    <div class="min-w-[980px]">
+    <div class="min-w-[1000px]">
       <div role="row" class="border-border bg-surface-raised sticky top-0 z-30 flex border-b">
         <div
           role="columnheader"
-          class="border-border text-muted flex w-[120px] shrink-0 items-center border-r px-2 text-xs font-medium tracking-wide uppercase sm:w-[260px] sm:px-3"
+          class="border-border text-muted flex w-[120px] shrink-0 items-center border-r px-2 text-sm font-medium tracking-wide uppercase sm:w-[320px] sm:px-3"
         >
           Zone
         </div>
-        <div role="columnheader" class="min-w-[720px] flex-1">
+        <div role="columnheader" class="min-w-[680px] flex-1">
           <Ruler
             {axis}
             {focusMs}
@@ -227,12 +227,12 @@
       <div class="relative">
         {#if rangeStartPosition !== null && rangeEndPosition !== null}
           <div
-            class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-20 sm:left-[260px]"
+            class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-20 sm:left-[320px]"
             aria-hidden="true"
           >
             <div
               data-testid="range-outline"
-              class="border-accent/80 absolute inset-y-0 border"
+              class="border-focus-line absolute inset-y-0 border"
               style={`left: ${pct(rangeStartPosition)}; width: ${pct(rangeEndPosition - rangeStartPosition)}`}
             ></div>
           </div>
@@ -240,7 +240,7 @@
 
         {#if hoverLeft !== null && hoverWidth !== null}
           <div
-            class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-30 sm:left-[260px]"
+            class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-30 sm:left-[320px]"
             aria-hidden="true"
           >
             <div
