@@ -127,6 +127,10 @@ docs/architecture.md  current design
   redundant UTC offset and IANA lines.
 - Mobile inputs and selects are 16px and at least 44px tall to avoid iOS zoom.
 - Keep primary pointer targets at least 24×24; aim for 32px or more.
+- Give every clickable control a visible hover state. Secondary controls use
+  `hover:bg-surface`; `surface-raised` is invisible on the white header.
+  Primary accent buttons use `hover:bg-accent/90`. Keep color transitions
+  consistent.
 - Respect `prefers-reduced-motion`.
 
 ## Testing

@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 
 test.use({ timezoneId: 'Europe/Madrid', viewport: { width: 1440, height: 900 } });
 
@@ -823,4 +823,29 @@ test('dims everything outside the hovered row and hour', async ({ page }) => {
     'opacity',
     '0',
   );
+});
+
+test('matches the settings hover across secondary controls', async ({ page }) => {
+  const background = (locator: Locator) =>
+    locator.evaluate((element) => getComputedStyle(element).backgroundColor);
+
+  const settings = page.getByRole('button', { name: 'Settings' });
+  await settings.hover();
+  await expect.poll(async () => (await background(settings)).startsWith('rgb(')).toBe(true);
+  const hoverBackground = await background(settings);
+
+  for (const locator of [
+    page.getByRole('button', { name: /^today$/i }),
+    page.getByRole('button', { name: 'Sat 7 2026' }),
+    page.getByRole('button', { name: /next day/i }),
+    page.getByRole('button', { name: 'Actions for New York' }),
+  ]) {
+    await locator.hover();
+    await expect.poll(() => background(locator)).toBe(hoverBackground);
+  }
+
+  await page.getByRole('button', { name: 'Actions for New York' }).click();
+  const rename = page.getByRole('menuitem', { name: 'Rename' });
+  await rename.hover();
+  await expect.poll(() => background(rename)).toBe(hoverBackground);
 });

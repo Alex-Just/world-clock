@@ -45,7 +45,7 @@
     onclick={() => {
       onShiftDay(-1);
     }}
-    class="text-muted hover:bg-surface-raised hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg"
+    class="text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
   >
     <span aria-hidden="true">‹</span>
   </button>
@@ -58,7 +58,7 @@
       onclick={() => {
         onSelectDate(date);
       }}
-      class="hover:bg-surface-raised flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
+      class="hover:bg-surface flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
       class:text-accent-text={date === viewDate}
       class:bg-surface={date === viewDate}
       class:font-semibold={date === viewDate}
@@ -74,7 +74,7 @@
     onclick={() => {
       onShiftDay(1);
     }}
-    class="text-muted hover:bg-surface-raised hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg"
+    class="text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
   >
     <span aria-hidden="true">›</span>
   </button>
@@ -82,7 +82,7 @@
   <button
     type="button"
     onclick={onToday}
-    class="border-border text-text hover:bg-surface-raised ml-1 h-10 shrink-0 rounded-lg border px-2.5 text-xs font-medium"
+    class="border-border text-text hover:bg-surface ml-1 h-10 shrink-0 rounded-lg border px-2.5 text-xs font-medium transition-colors"
   >
     Today
   </button>

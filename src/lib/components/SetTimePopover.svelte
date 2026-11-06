@@ -164,7 +164,7 @@
           aria-selected={tab === 'exact'}
           class:bg-surface-raised={tab === 'exact'}
           class:text-text={tab === 'exact'}
-          class="text-muted flex-1 rounded-md px-2 py-2 text-sm font-medium"
+          class="text-muted hover:bg-surface-raised hover:text-text flex-1 rounded-md px-2 py-2 text-sm font-medium transition-colors"
           onclick={() => {
             tab = 'exact';
           }}
@@ -177,7 +177,7 @@
           aria-selected={tab === 'relative'}
           class:bg-surface-raised={tab === 'relative'}
           class:text-text={tab === 'relative'}
-          class="text-muted flex-1 rounded-md px-2 py-2 text-sm font-medium"
+          class="text-muted hover:bg-surface-raised hover:text-text flex-1 rounded-md px-2 py-2 text-sm font-medium transition-colors"
           onclick={() => {
             tab = 'relative';
           }}
@@ -319,7 +319,7 @@
             type="button"
             disabled={tab === 'exact' && exactInstant === null}
             onclick={apply}
-            class="bg-accent text-accent-contrast h-10 rounded-lg px-3 text-sm font-medium disabled:opacity-50"
+            class="bg-accent text-accent-contrast hover:bg-accent/90 h-10 rounded-lg px-3 text-sm font-medium transition-colors disabled:opacity-50"
           >
             Apply
           </button>

@@ -203,7 +203,7 @@
           onclick={() => {
             menuOpen = !menuOpen;
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-md"
+          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-md transition-colors"
         >
           <span aria-hidden="true">⋯</span>
         </button>

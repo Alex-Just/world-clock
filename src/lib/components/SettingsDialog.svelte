@@ -284,7 +284,7 @@
               type="button"
               disabled={invalidHours}
               onclick={saveWorkingHours}
-              class="bg-accent text-accent-contrast h-10 rounded-lg px-3 text-sm font-medium disabled:opacity-50"
+              class="bg-accent text-accent-contrast hover:bg-accent/90 h-10 rounded-lg px-3 text-sm font-medium transition-colors disabled:opacity-50"
             >
               Save working hours
             </button>

@@ -111,7 +111,7 @@
       onSetHome();
       onClose();
     }}
-    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base disabled:opacity-40"
+    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base transition-colors disabled:opacity-40 disabled:hover:bg-transparent"
   >
     Set as home
   </button>
@@ -122,7 +122,7 @@
       onRename();
       onClose();
     }}
-    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base"
+    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base transition-colors"
   >
     Rename
   </button>
@@ -134,7 +134,7 @@
       onMoveUp();
       onClose();
     }}
-    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base disabled:opacity-40"
+    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base transition-colors disabled:opacity-40 disabled:hover:bg-transparent"
   >
     Move up
   </button>
@@ -146,7 +146,7 @@
       onMoveDown();
       onClose();
     }}
-    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base disabled:opacity-40"
+    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base transition-colors disabled:opacity-40 disabled:hover:bg-transparent"
   >
     Move down
   </button>
@@ -158,7 +158,7 @@
       onRemove();
       onClose();
     }}
-    class="hover:bg-surface text-danger block w-full rounded-lg px-2.5 py-2.5 text-left text-base disabled:opacity-40"
+    class="hover:bg-surface text-danger block w-full rounded-lg px-2.5 py-2.5 text-left text-base transition-colors disabled:opacity-40 disabled:hover:bg-transparent"
   >
     Remove
   </button>
