@@ -83,7 +83,7 @@
       <h1 class="sr-only sm:not-sr-only">World Clock</h1>
     </div>
 
-    <FocusReadout {focusMs} {homeZone} {zoneLabel} {format} onOpen={onOpenSetTime} />
+    <FocusReadout {focusMs} {nowMs} {homeZone} {zoneLabel} {format} onOpen={onOpenSetTime} />
 
     <span
       data-testid="relative-badge"

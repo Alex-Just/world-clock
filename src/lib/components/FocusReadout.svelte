@@ -4,12 +4,14 @@
 
   let {
     focusMs,
+    nowMs,
     homeZone,
     zoneLabel,
     format,
     onOpen,
   }: {
     focusMs: InstantMs;
+    nowMs: InstantMs;
     homeZone: ZoneId;
     zoneLabel: string;
     format: TimeFormat;
@@ -17,7 +19,14 @@
   } = $props();
 
   const time = $derived(formatTime(focusMs, homeZone, format, { seconds: true, locale: 'en-US' }));
+  const focusYear = $derived(
+    Temporal.Instant.fromEpochMilliseconds(focusMs).toZonedDateTimeISO(homeZone).year,
+  );
+  const nowYear = $derived(
+    Temporal.Instant.fromEpochMilliseconds(nowMs).toZonedDateTimeISO(homeZone).year,
+  );
   const date = $derived(formatDate(focusMs, homeZone, { style: 'short', locale: 'en-US' }));
+  const showYear = $derived(focusYear !== nowYear);
 </script>
 
 <button
@@ -34,5 +43,8 @@
   <span class="text-muted mt-1 block text-sm">
     {date} · {zoneLabel}
   </span>
+  {#if showYear}
+    <span class="text-muted mt-0.5 block text-xs font-medium tabular-nums">{focusYear}</span>
+  {/if}
   <span class="sr-only">Set time</span>
 </button>

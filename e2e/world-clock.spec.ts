@@ -957,6 +957,9 @@ test('selects a custom date from the calendar', async ({ page }) => {
     'date',
   );
   await expect(page.getByTestId('focus-line')).toBeHidden();
+  const readout = page.getByRole('button', { name: /set time/i });
+  await expect(readout).toContainText('Fri, Nov 20');
+  await expect(readout).not.toContainText('2026');
 
   await trigger.click();
   await expect(dialog.getByRole('button', { name: 'Friday, November 20, 2026' })).toHaveAttribute(
@@ -984,6 +987,10 @@ test('jumps to a distant date from the calendar', async ({ page }) => {
     'date',
   );
   await expect(page.getByTestId('focus-line')).toBeHidden();
+  await expect(page.getByRole('button', { name: /set time/i })).toContainText(
+    'Thu, Mar 14 · Madrid',
+  );
+  await expect(page.getByRole('button', { name: /set time/i })).toContainText('1985');
 
   const badge = page.getByTestId('relative-badge');
   await expect(badge).toBeVisible();

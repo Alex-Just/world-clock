@@ -110,6 +110,9 @@ docs/architecture.md  current design
   live region. For long ranges show the calendar breakdown (`y`/`mo`/`d`/
   `h`/`m`), the total duration, and the source “now” date and time in the home
   zone. Omit year/month when they match the current year/month.
+- The focus readout date omits the year unless the target year differs from the
+  current home-zone year. Show that year on its own compact line below the
+  date so the header does not widen.
 - The home row keeps a subtle tint and left accent. Hovering a board cell
   keeps its whole zone row and hour column fully lit, adds restrained 1px
   accent outlines, and dims the rest with `crosshair-dim`; never dim touch
