@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { instantForPosition, positionForInstant } from '$lib/time/axis';
   import { buildRowBands, buildZoneRow } from '$lib/time/rows';
   import { availabilityForZone, localRangeForZone } from '$lib/time/range';
@@ -174,6 +174,21 @@
 
   onDestroy(cleanupRowDrag);
 
+  let boardEl = $state<HTMLElement>();
+
+  onMount(() => {
+    const resetOutside = (event: PointerEvent) => {
+      if (!(event.target instanceof Node) || !boardEl?.contains(event.target)) {
+        hoverSlot = null;
+        hoveredZone = null;
+      }
+    };
+    document.addEventListener('pointerdown', resetOutside, true);
+    return () => {
+      document.removeEventListener('pointerdown', resetOutside, true);
+    };
+  });
+
   const homeLabel = $derived(
     settings.zones.find((zone) => zone.timeZone === homeZone)?.label ?? homeZone,
   );
@@ -191,6 +206,7 @@
 </script>
 
 <div
+  bind:this={boardEl}
   role="grid"
   tabindex="-1"
   aria-label="World clock"
@@ -203,6 +219,10 @@
     hoverSlot = null;
     hoveredZone = null;
   }}
+  onpointercancel={() => {
+    hoverSlot = null;
+    hoveredZone = null;
+  }}
   onfocusout={(event) => {
     const next = event.relatedTarget;
     if (!(next instanceof Node) || !event.currentTarget.contains(next)) {
@@ -210,7 +230,7 @@
       hoveredZone = null;
     }
   }}
-  class="border-border bg-surface-raised overflow-hidden rounded-xl border"
+  class="border-border bg-surface-raised overflow-hidden rounded-xl border select-none"
 >
   <div data-testid="board-scroll" class="overflow-x-auto">
     <div class="min-w-[1000px]">

@@ -560,3 +560,39 @@ test('keeps the board in place when a range appears', async ({ page }) => {
   if (!rowBefore || !normalRow) throw new Error('row missing');
   expect(rowBefore.height).toBe(normalRow.height);
 });
+
+test('restores hover after closing the zone menu outside the board', async ({ page }) => {
+  await expect(page.getByTestId('relative-badge')).toHaveCount(0);
+  const trigger = page
+    .getByTestId('row-America/New_York')
+    .getByRole('button', { name: /actions for new york/i });
+  await trigger.click();
+  const menu = page.getByRole('menu', { name: /actions for new york/i });
+  await expect(menu).toBeVisible();
+  await page.mouse.click(10, 500);
+  await expect(menu).toBeHidden();
+
+  const madridTimeline = page.getByTestId('row-Europe/Madrid').locator('[data-timeline]');
+  const box = await madridTimeline.boundingBox();
+  if (!box) throw new Error('timeline missing');
+  const slot = page.getByTestId('hover-slot');
+  const before = await slot.boundingBox();
+  await page.mouse.move(box.x + box.width * 0.75, box.y + box.height / 2);
+  await page.waitForTimeout(100);
+  const after = await slot.boundingBox();
+  expect(after?.x).not.toBe(before?.x);
+  const cell = page.getByTestId('row-Europe/Madrid').locator('[role="gridcell"]').first();
+  expect(await cell.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
+    'rgb(255, 255, 255)',
+  );
+
+  await trigger.click();
+  await expect(menu).toBeVisible();
+  await trigger.click();
+  await expect(menu).toBeHidden();
+  await page.mouse.move(box.x + box.width * 0.35, box.y + box.height / 2);
+  await page.waitForTimeout(100);
+  expect(await cell.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
+    'rgb(255, 255, 255)',
+  );
+});

@@ -26,3 +26,10 @@ it('wires the header actions', async () => {
   await fireEvent.click(screen.getByRole('button', { name: /now/i }));
   expect(baseProps.onNow).toHaveBeenCalled();
 });
+
+it('hides the relative badge when it would only say now', () => {
+  render(Header, {
+    props: { ...baseProps, nowMs: baseProps.focusMs, followNow: true },
+  });
+  expect(screen.queryByTestId('relative-badge')).not.toBeInTheDocument();
+});

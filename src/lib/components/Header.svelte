@@ -35,6 +35,7 @@
   } = $props();
 
   const relative = $derived(followNow ? 'Now' : formatRelative(focusMs - nowMs));
+  const showRelative = $derived(relative.toLowerCase() !== 'now');
 </script>
 
 <header
@@ -48,12 +49,14 @@
 
     <FocusReadout {focusMs} {homeZone} {zoneLabel} {format} onOpen={onOpenSetTime} />
 
-    <span
-      class="border-border text-muted rounded-full border px-2.5 py-1 text-xs font-medium"
-      aria-live="polite"
-    >
-      {relative}
-    </span>
+    {#if showRelative}
+      <span
+        data-testid="relative-badge"
+        class="border-border text-muted rounded-full border px-2.5 py-1 text-xs font-medium"
+      >
+        {relative}
+      </span>
+    {/if}
   </div>
 
   {#if children}
