@@ -104,8 +104,10 @@ docs/architecture.md  current design
 - Hide the relative-time badge when it would only read "Now", and hide the
   relative-offset chip when it is zero. The DST badge appears only while the
   zone is observing daylight saving time.
-- The relative badge is hidden below `sm`; at `sm` and above reserve its footprint
-  and announce meaningful relative values through a separate polite live region.
+- The relative badge is hidden below `sm`; at `sm` and above reserve its
+  footprint and announce meaningful relative values through a separate polite
+  live region. For long ranges show the calendar breakdown (`y`/`mo`/`d`/
+  `h`/`m`), the total duration, and the source “now” date in the home zone.
 - The home row keeps a subtle tint and left accent. Hovering a board cell
   keeps its whole zone row and hour column fully lit and dims the rest with
   `crosshair-dim`; never dim touch interactions.
@@ -130,6 +132,8 @@ docs/architecture.md  current design
   trigger sits outside the scrollable seven-day row and selects through the
   same day-navigation path as the date buttons. Its jump field accepts
   `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` (separators optional for compact digits).
+  Below 1440px the day strip gets its own centered row; at 1440px and above it
+  is inline-centered with the header actions.
 - Weekend dates in the seven-day strip use the warm `weekend` tint. Keep it
   subtle and let the selected-day state override it.
 - Hide `GMT…`/`UTC…` abbreviations when the UTC offset is already visible.

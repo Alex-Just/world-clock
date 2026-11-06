@@ -6,6 +6,8 @@ import {
   formatHourLabel,
   formatOffset,
   formatRelative,
+  formatRelativeBreakdown,
+  formatSourceDate,
   formatTime,
   formatUtcOffset,
 } from './format';
@@ -69,5 +71,28 @@ describe('durations', () => {
     expect(formatRelative(3 * 3_600_000 + 20 * 60_000)).toBe('in 3h 20m');
     expect(formatRelative(-(2 * 3_600_000 + 10 * 60_000))).toBe('2h 10m ago');
     expect(formatRelative(86_400_000)).toBe('in 1d');
+  });
+
+  it('breaks long distances into calendar units', () => {
+    const source = Date.parse('2026-11-05T12:00:00Z');
+    const target = Date.parse('2025-10-05T12:00:00Z');
+    expect(formatRelativeBreakdown(source, target, 'UTC')).toEqual({
+      text: '1y 1mo',
+      hasCalendarUnits: true,
+    });
+  });
+
+  it('keeps short distances in clock units', () => {
+    const source = Date.parse('2026-11-05T12:00:00Z');
+    expect(formatRelativeBreakdown(source, source - (3 * 3_600_000 + 20 * 60_000), 'UTC')).toEqual({
+      text: '3h 20m',
+      hasCalendarUnits: false,
+    });
+  });
+
+  it('formats the source date', () => {
+    expect(formatSourceDate(Date.parse('2026-11-05T12:00:00Z'), 'Europe/Madrid', 'en-US')).toBe(
+      'Nov 5, 2026',
+    );
   });
 });

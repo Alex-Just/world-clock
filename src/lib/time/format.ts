@@ -105,3 +105,46 @@ export function formatRelative(deltaMs: number): string {
   const duration = formatDuration(absolute);
   return deltaMs < 0 ? `${duration} ago` : `in ${duration}`;
 }
+
+export interface RelativeBreakdown {
+  text: string;
+  hasCalendarUnits: boolean;
+}
+
+export function formatRelativeBreakdown(
+  sourceMs: InstantMs,
+  targetMs: InstantMs,
+  zone: ZoneId,
+): RelativeBreakdown {
+  const absolute = Math.abs(targetMs - sourceMs);
+  if (absolute < MINUTE_MS) return { text: '<1m', hasCalendarUnits: false };
+
+  const earlier = Temporal.Instant.fromEpochMilliseconds(
+    Math.min(sourceMs, targetMs),
+  ).toZonedDateTimeISO(zone);
+  const later = Temporal.Instant.fromEpochMilliseconds(
+    Math.max(sourceMs, targetMs),
+  ).toZonedDateTimeISO(zone);
+  const duration = earlier.until(later, { largestUnit: 'year', smallestUnit: 'minute' });
+  const parts: string[] = [];
+
+  if (duration.years > 0) parts.push(`${String(duration.years)}y`);
+  if (duration.months > 0) parts.push(`${String(duration.months)}mo`);
+  if (duration.days > 0) parts.push(`${String(duration.days)}d`);
+  if (duration.hours > 0) parts.push(`${String(duration.hours)}h`);
+  if (duration.minutes > 0) parts.push(`${String(duration.minutes)}m`);
+
+  return {
+    text: parts.length > 0 ? parts.join(' ') : '<1m',
+    hasCalendarUnits: duration.years > 0 || duration.months > 0,
+  };
+}
+
+export function formatSourceDate(instantMs: InstantMs, zone: ZoneId, locale?: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    timeZone: zone,
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(new Date(instantMs));
+}

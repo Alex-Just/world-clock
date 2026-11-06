@@ -10,7 +10,7 @@
     Timer,
   } from '@lucide/svelte';
   import { WINDOW_OFFSET_LIMIT_HOURS, WINDOW_SHIFT_HOURS } from '$lib/time/axis';
-  import { formatRelative } from '$lib/time/format';
+  import { formatDuration, formatRelativeBreakdown, formatSourceDate } from '$lib/time/format';
   import type { InstantMs, TimeFormat, ZoneId } from '$lib/time/types';
   import type { Snippet } from 'svelte';
   import FocusReadout from './FocusReadout.svelte';
@@ -50,8 +50,25 @@
     children?: Snippet;
   } = $props();
 
-  const relative = $derived(followNow ? 'Now' : formatRelative(focusMs - nowMs));
-  const showRelative = $derived(!followNow && Math.abs(focusMs - nowMs) >= 60_000);
+  const relativeDelta = $derived(focusMs - nowMs);
+  const relativeBreakdown = $derived(formatRelativeBreakdown(nowMs, focusMs, homeZone));
+  const relativeSource = $derived(formatSourceDate(nowMs, homeZone, 'en-US'));
+  const relativeText = $derived(
+    followNow
+      ? 'Now'
+      : relativeDelta < 0
+        ? `${relativeBreakdown.text} ago`
+        : `in ${relativeBreakdown.text}`,
+  );
+  const relativeTotal = $derived(formatDuration(Math.abs(relativeDelta)));
+  const showRelative = $derived(!followNow && Math.abs(relativeDelta) >= 60_000);
+  const relativeLive = $derived(
+    showRelative
+      ? `${relativeText}. ${
+          relativeBreakdown.hasCalendarUnits ? `${relativeTotal} total. ` : ''
+        }From ${relativeSource}.`
+      : '',
+  );
   const canShiftBack = $derived(windowOffsetHours > -WINDOW_OFFSET_LIMIT_HOURS);
   const canShiftForward = $derived(windowOffsetHours < WINDOW_OFFSET_LIMIT_HOURS);
   const canResetWindow = $derived(windowOffsetHours !== 0);
@@ -60,7 +77,7 @@
 <header
   class="border-border bg-surface-raised relative flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-2 sm:px-6"
 >
-  <div class="flex min-w-0 shrink-0 items-center gap-4 sm:gap-6">
+  <div class="flex min-w-0 shrink-0 items-center gap-4 sm:gap-6 xl:gap-4">
     <div class="text-text flex items-center gap-2 text-sm font-semibold tracking-tight">
       <Clock class="text-accent-text size-5" aria-hidden="true" />
       <h1 class="sr-only sm:not-sr-only">World Clock</h1>
@@ -70,21 +87,31 @@
 
     <span
       data-testid="relative-badge"
-      class={`border-border text-muted hidden w-[5.75rem] rounded-full border px-2.5 py-1 text-center text-xs font-medium sm:inline-block ${
+      class={`border-border text-muted hidden w-32 rounded-xl border px-2 py-1.5 text-center text-xs leading-tight font-medium sm:inline-flex sm:flex-col sm:items-center sm:gap-0.5 ${
         showRelative ? '' : 'invisible'
       }`}
       aria-hidden="true"
     >
-      {relative}
+      <span data-testid="relative-breakdown" class="text-text block font-semibold">
+        {relativeText}
+      </span>
+      {#if relativeBreakdown.hasCalendarUnits}
+        <span data-testid="relative-total" class="text-muted block">
+          {relativeTotal} total
+        </span>
+      {/if}
+      <span data-testid="relative-source" class="text-muted block">
+        from {relativeSource}
+      </span>
     </span>
     <span data-testid="relative-live" class="sr-only" aria-live="polite">
-      {showRelative ? relative : ''}
+      {relativeLive}
     </span>
   </div>
 
   {#if children}
     <div
-      class="order-last w-full sm:order-none sm:mx-auto sm:w-auto xl:absolute xl:top-1/2 xl:left-1/2 xl:mx-0 xl:-translate-x-1/2 xl:-translate-y-1/2"
+      class="order-last flex w-full justify-center min-[1440px]:absolute min-[1440px]:top-1/2 min-[1440px]:left-1/2 min-[1440px]:w-auto min-[1440px]:-translate-x-1/2 min-[1440px]:-translate-y-1/2"
     >
       {@render children()}
     </div>

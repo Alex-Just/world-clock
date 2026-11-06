@@ -11,6 +11,7 @@ availability without leaving the board.
 - Any number of IANA time zones on one continuous day axis.
 - Seven-day strip plus a month calendar with a year/month/date jump for distant dates.
 - Focus by click, tap, drag, keyboard, exact wall time, or relative offset.
+- Relative badge shows a calendar breakdown, total duration, and comparison date.
 - Click-drag the board to select a period; duration appears above the board.
 - Shift the visible window backward or forward in 6-hour steps; reset returns to the anchor day.
 - Material-blue day/night shading with a teal focus and range accent.

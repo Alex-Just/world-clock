@@ -947,6 +947,13 @@ test('jumps to a distant date from the calendar', async ({ page }) => {
     'date',
   );
   await expect(page.getByTestId('focus-line')).toBeHidden();
+
+  const badge = page.getByTestId('relative-badge');
+  await expect(badge).toBeVisible();
+  await expect(badge).toContainText(/\d+y/);
+  await expect(badge).toContainText(/\d+mo/);
+  await expect(badge).toContainText('total');
+  await expect(badge).toContainText('from Nov 5, 2026');
 });
 
 test('shifts the visible window by six hours', async ({ page }) => {

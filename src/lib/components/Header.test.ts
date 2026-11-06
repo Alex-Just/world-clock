@@ -22,6 +22,24 @@ it('shows the focused time and relative badge', () => {
   render(Header, { props: { ...baseProps, nowMs: Date.parse('2026-11-05T11:32:08Z') } });
   expect(screen.getByText('14:32:08')).toBeInTheDocument();
   expect(screen.getByTestId('relative-badge')).toHaveTextContent('in 2h');
+  expect(screen.getByTestId('relative-badge')).toHaveTextContent('from Nov 5, 2026');
+});
+
+it('shows a calendar breakdown and source for distant dates', () => {
+  render(Header, {
+    props: {
+      ...baseProps,
+      focusMs: Date.parse('1985-03-14T12:00:00Z'),
+      nowMs: Date.parse('2026-11-05T12:00:00Z'),
+    },
+  });
+  const badge = screen.getByTestId('relative-badge');
+  expect(badge).toHaveTextContent(/\d+y/);
+  expect(badge).toHaveTextContent(/\d+mo/);
+  expect(badge).toHaveTextContent('total');
+  expect(badge).toHaveTextContent('from Nov 5, 2026');
+  expect(screen.getByTestId('relative-live')).toHaveTextContent('total');
+  expect(screen.getByTestId('relative-live')).toHaveTextContent('From Nov 5, 2026');
 });
 
 it('wires the header actions', async () => {
