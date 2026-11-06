@@ -130,6 +130,8 @@ docs/architecture.md  current design
   trigger sits outside the scrollable seven-day row and selects through the
   same day-navigation path as the date buttons. Its jump field accepts
   `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` (separators optional for compact digits).
+- Weekend dates in the seven-day strip use the warm `weekend` tint. Keep it
+  subtle and let the selected-day state override it.
 - Hide `GMT…`/`UTC…` abbreviations when the UTC offset is already visible.
   Format zero-minute offsets as `UTC+3`/`UTC−8`; zero is `UTC`.
 - Do not repeat metadata that equals the zone label. The UTC zone omits its

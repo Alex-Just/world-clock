@@ -33,6 +33,18 @@
   function dayNumber(date: DateString): string {
     return String(Number(date.slice(8, 10)));
   }
+
+  function isWeekend(date: DateString): boolean {
+    const weekday = new Date(`${date}T12:00:00Z`).getUTCDay();
+    return weekday === 0 || weekday === 6;
+  }
+
+  function dayClass(date: DateString): string {
+    if (date === viewDate) {
+      return 'bg-surface text-accent-text font-semibold hover:bg-surface';
+    }
+    return isWeekend(date) ? 'bg-weekend hover:bg-weekend-hover' : 'hover:bg-surface';
+  }
 </script>
 
 <div
@@ -64,10 +76,7 @@
         onclick={() => {
           onSelectDate(date);
         }}
-        class="hover:bg-surface flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
-        class:text-accent-text={date === viewDate}
-        class:bg-surface={date === viewDate}
-        class:font-semibold={date === viewDate}
+        class={`flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors ${dayClass(date)}`}
       >
         <span class="text-muted text-sm tracking-wide uppercase">{weekdayShort(date)}</span>
         <span class="text-text text-base tabular-nums">{dayNumber(date)}</span>

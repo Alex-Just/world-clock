@@ -74,6 +74,7 @@ The light theme follows Material Blue:
 | Work strip | `#b45309` / `#fbbf24` | Work-hours indicator          |
 | Work cells | `#ffffff`             | Working-hours cells           |
 | Home row   | `#fff8e8` / `#f5e9c8` | Home-zone highlight           |
+| Weekend    | `#fbf7ef` / `#49443b` | Subtle day-strip weekend tint |
 
 Status text uses the semantic warning and danger tokens. Dark mode keeps the
 same hierarchy with a dark surface, lighter blue accents, and yellow work-hour

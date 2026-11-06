@@ -15,6 +15,9 @@ it('renders seven days and marks the selected date', () => {
   });
   expect(screen.getAllByRole('button', { name: /2026/ })).toHaveLength(7);
   expect(screen.getByRole('button', { name: /Thu 5/ })).toHaveAttribute('aria-current', 'date');
+  expect(screen.getByRole('button', { name: 'Sat 7 2026' })).toHaveClass('bg-weekend');
+  expect(screen.getByRole('button', { name: 'Sun 8 2026' })).toHaveClass('bg-weekend');
+  expect(screen.getByRole('button', { name: 'Mon 2 2026' })).not.toHaveClass('bg-weekend');
 });
 
 it('moves to the previous and next day', async () => {

@@ -19,6 +19,8 @@
   --color-home-row: var(--home-row);
   --color-home-row-header: var(--home-row-header);
   --color-home-accent: var(--home-accent);
+  --color-weekend: var(--weekend);
+  --color-weekend-hover: var(--weekend-hover);
   --color-band-text: var(--band-text);
   --color-band-marker: var(--band-marker);
   --color-band-marker-text: var(--band-marker-text);
@@ -56,6 +58,8 @@
   --home-row: #fff8e8;
   --home-row-header: #fff8e8;
   --home-accent: #b7791f;
+  --weekend: #fbf7ef;
+  --weekend-hover: #f4ede0;
   --now: #26a69a;
   --focus-line: #00695c;
   --focus-line-ui: #00695c;
@@ -85,6 +89,8 @@
   --home-row: #f5e9c8;
   --home-row-header: #4e3d24;
   --home-accent: #fbbf24;
+  --weekend: #49443b;
+  --weekend-hover: #514b40;
   --now: #26a69a;
   --focus-line: #00695c;
   --focus-line-ui: #80cbc4;
