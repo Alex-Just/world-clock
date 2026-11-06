@@ -89,7 +89,8 @@ Import replaces the current document only after confirmation. Export includes
   timeline labels stay legible instead of shrinking.
 - Display settings control abbreviation, exact offset, DST badge, IANA name,
   date labels, and work bands. Offset-style abbreviations are suppressed when
-  the exact UTC offset is shown; zero-minute offsets render as `UTC+3`.
+  the exact UTC offset is shown; zero-minute offsets render as `UTC+3`. Metadata
+  that duplicates the zone label is omitted.
 - Keyboard shortcuts are global except in text fields or open dialogs.
 - Tailwind `dark:` variants are bound to `data-theme='dark'` so the explicit
   theme works when the OS theme differs. Status, warning, danger, and accent

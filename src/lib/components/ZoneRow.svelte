@@ -97,6 +97,12 @@
   const showAbbreviationLabel = $derived(
     showAbbreviation && (!offsetAbbreviation || !showUtcOffset),
   );
+  const utcOffsetLabel = $derived(formatUtcOffset(model.offsetMinutes));
+  const showUtcOffsetLabel = $derived(showUtcOffset && utcOffsetLabel !== model.label);
+  const showIanaLabel = $derived(showIana && model.timeZone !== model.label);
+  const hasMetadata = $derived(
+    showAbbreviationLabel || showUtcOffsetLabel || (showDst && model.dst.active) || showIanaLabel,
+  );
 </script>
 
 <div
@@ -126,25 +132,27 @@
         <span class="text-text truncate text-sm font-medium sm:text-base">{model.label}</span>
         <span
           class="bg-surface text-muted shrink-0 rounded px-1 text-xs tabular-nums sm:text-sm"
-          title={`UTC offset ${formatUtcOffset(model.offsetMinutes)}`}
+          title={`UTC offset ${utcOffsetLabel}`}
         >
           {formatOffset(model.relativeOffsetMinutes)}
         </span>
       </div>
-      <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-xs sm:text-base">
-        {#if showAbbreviationLabel}
-          <span>{model.abbreviation}</span>
-        {/if}
-        {#if showUtcOffset}
-          <span>{formatUtcOffset(model.offsetMinutes)}</span>
-        {/if}
-        {#if showDst && model.dst.active}
-          <span class="bg-status-day/15 text-status-day rounded px-1">DST</span>
-        {/if}
-        {#if showIana}
-          <span class="max-w-24 truncate sm:max-w-40">{model.timeZone}</span>
-        {/if}
-      </div>
+      {#if hasMetadata}
+        <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-xs sm:text-base">
+          {#if showAbbreviationLabel}
+            <span>{model.abbreviation}</span>
+          {/if}
+          {#if showUtcOffsetLabel}
+            <span>{utcOffsetLabel}</span>
+          {/if}
+          {#if showDst && model.dst.active}
+            <span class="bg-status-day/15 text-status-day rounded px-1">DST</span>
+          {/if}
+          {#if showIanaLabel}
+            <span class="max-w-24 truncate sm:max-w-40">{model.timeZone}</span>
+          {/if}
+        </div>
+      {/if}
     </div>
 
     <div class="flex w-full shrink-0 items-start justify-between gap-1 sm:w-auto sm:justify-start">

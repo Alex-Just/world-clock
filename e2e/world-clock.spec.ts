@@ -498,7 +498,7 @@ test('hides redundant offset abbreviations and simplifies UTC offsets', async ({
   await expect(
     page.getByTestId('row-Europe/Moscow').getByText('UTC+3', { exact: true }),
   ).toBeVisible();
-  await expect(page.getByTestId('row-UTC').getByText('UTC', { exact: true })).toHaveCount(2);
+  await expect(page.getByTestId('row-UTC').getByText('UTC', { exact: true })).toHaveCount(1);
   await expect(
     page.getByTestId('row-America/Los_Angeles').getByText('PST', { exact: true }),
   ).toBeVisible();

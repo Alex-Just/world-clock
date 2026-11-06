@@ -103,6 +103,8 @@ docs/architecture.md  current design
   positioning; do not restore a separate full-width strip.
 - Hide `GMT…`/`UTC…` abbreviations when the UTC offset is already visible.
   Format zero-minute offsets as `UTC+3`/`UTC−8`; zero is `UTC`.
+- Do not repeat metadata that equals the zone label. The UTC zone omits its
+  redundant UTC offset and IANA lines.
 - Mobile inputs and selects are 16px and at least 44px tall to avoid iOS zoom.
 - Keep primary pointer targets at least 24×24; aim for 32px or more.
 - Respect `prefers-reduced-motion`.
