@@ -797,3 +797,30 @@ test('hides the now marker when viewing another day', async ({ page }) => {
   await expect(page.getByTestId('focus-line')).toBeVisible();
   await expect(page.getByTestId('now-line')).toBeVisible();
 });
+
+test('dims everything outside the hovered row and hour', async ({ page }) => {
+  const timeline = page.getByTestId('row-America/New_York').locator('[data-row-timeline]');
+  const box = await timeline.boundingBox();
+  if (!box) throw new Error('timeline missing');
+
+  await page.mouse.move(box.x + box.width * 0.65, box.y + box.height / 2);
+  await expect(
+    page.getByTestId('row-America/New_York').getByTestId('crosshair-dim-left'),
+  ).toHaveCSS('opacity', '0');
+  await expect(page.getByTestId('row-Europe/Madrid').getByTestId('crosshair-dim-left')).toHaveCSS(
+    'opacity',
+    '1',
+  );
+  await expect(page.getByTestId('row-Europe/Madrid').getByTestId('row-crosshair-dim')).toHaveCSS(
+    'opacity',
+    '1',
+  );
+  await expect(page.getByTestId('ruler-crosshair-dim-left')).toHaveCSS('opacity', '1');
+
+  await page.mouse.move(10, 10);
+  await expect(page.getByTestId('ruler-crosshair-dim-left')).toHaveCSS('opacity', '0');
+  await expect(page.getByTestId('row-Europe/Madrid').getByTestId('crosshair-dim-left')).toHaveCSS(
+    'opacity',
+    '0',
+  );
+});

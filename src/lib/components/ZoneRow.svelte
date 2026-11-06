@@ -14,6 +14,9 @@
     nowPosition,
     rangeStartPosition,
     rangeEndPosition,
+    crosshairActive = false,
+    crosshairLeft = '0%',
+    crosshairRight = '100%',
     showIana,
     showAbbreviation,
     showUtcOffset,
@@ -38,6 +41,9 @@
     nowPosition: number | null;
     rangeStartPosition: number | null;
     rangeEndPosition: number | null;
+    crosshairActive?: boolean;
+    crosshairLeft?: string;
+    crosshairRight?: string;
     showIana: boolean;
     showAbbreviation: boolean;
     showUtcOffset: boolean;
@@ -220,6 +226,13 @@
         {/if}
       </div>
     </div>
+    <div
+      data-testid="row-crosshair-dim"
+      class={`bg-crosshair-dim pointer-events-none absolute inset-0 z-30 transition-opacity duration-150 ${
+        crosshairActive && !isHovered ? 'opacity-100' : 'opacity-0'
+      }`}
+      aria-hidden="true"
+    ></div>
   </div>
 
   <div
@@ -320,5 +333,22 @@
         style={`left: ${pct(focusPosition)}`}
       ></div>
     {/if}
+
+    <div
+      data-testid="crosshair-dim-left"
+      class={`bg-crosshair-dim pointer-events-none absolute inset-y-0 left-0 z-30 transition-opacity duration-150 ${
+        crosshairActive && !isHovered ? 'opacity-100' : 'opacity-0'
+      }`}
+      style={`width: ${crosshairLeft}`}
+      aria-hidden="true"
+    ></div>
+    <div
+      data-testid="crosshair-dim-right"
+      class={`bg-crosshair-dim pointer-events-none absolute inset-y-0 right-0 z-30 transition-opacity duration-150 ${
+        crosshairActive && !isHovered ? 'opacity-100' : 'opacity-0'
+      }`}
+      style={`width: ${crosshairRight}`}
+      aria-hidden="true"
+    ></div>
   </div>
 </div>

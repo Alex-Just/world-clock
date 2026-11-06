@@ -103,8 +103,9 @@ docs/architecture.md  current design
   zone is observing daylight saving time.
 - The relative badge is hidden below `sm`; at `sm` and above reserve its footprint
   and announce meaningful relative values through a separate polite live region.
-- The home row keeps a subtle tint and left accent. Hovering a row dims the other
-  rows; do not dim touch interactions.
+- The home row keeps a subtle tint and left accent. Hovering a board cell
+  keeps its whole zone row and hour column fully lit and dims the rest with
+  `crosshair-dim`; never dim touch interactions.
 - The range hint and selected-range bar share a fixed 48px slot above the board.
   Selecting a range must not move the board or change desktop/mobile row height.
 - Hour labels in the active column are semibold.

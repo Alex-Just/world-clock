@@ -25,6 +25,7 @@
   --color-now: var(--now);
   --color-focus-line: var(--focus-line);
   --color-focus-line-ui: var(--focus-line-ui);
+  --color-crosshair-dim: var(--crosshair-dim);
   --color-status-day: var(--status-day);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
@@ -58,6 +59,7 @@
   --now: #26a69a;
   --focus-line: #00695c;
   --focus-line-ui: #00695c;
+  --crosshair-dim: rgb(255 255 255 / 35%);
   --status-day: #455a64;
   --warning: #92400e;
   --danger: #be123c;
@@ -86,6 +88,7 @@
   --now: #26a69a;
   --focus-line: #00695c;
   --focus-line-ui: #80cbc4;
+  --crosshair-dim: rgb(0 0 0 / 18%);
   --status-day: #b0bec5;
   --warning: #fcd34d;
   --danger: #fda4af;

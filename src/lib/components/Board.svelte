@@ -79,6 +79,8 @@
   const activeSlot = $derived(hoverSlot ?? focusSlot);
   const hoverLeft = $derived(`${((activeSlot / slotCount) * 100).toFixed(4)}%`);
   const hoverWidth = $derived(`${((1 / slotCount) * 100).toFixed(4)}%`);
+  const crosshairActive = $derived(hoverSlot !== null && hoveredZone !== null);
+  const crosshairRight = $derived(`${(100 - ((activeSlot + 1) / slotCount) * 100).toFixed(4)}%`);
   const highlightStart = $derived(activeSlot / slotCount);
   const highlightEnd = $derived((activeSlot + 1) / slotCount);
 
@@ -248,9 +250,16 @@
       <div role="row" class="border-border bg-surface-raised sticky top-0 z-30 flex border-b">
         <div
           role="columnheader"
-          class="border-border text-muted flex w-[120px] shrink-0 items-center border-r px-2 text-sm font-medium tracking-wide uppercase sm:w-[320px] sm:px-3"
+          class="border-border text-muted relative flex w-[120px] shrink-0 items-center border-r px-2 text-sm font-medium tracking-wide uppercase sm:w-[320px] sm:px-3"
         >
           Zone
+          <div
+            data-testid="zone-header-dim"
+            class={`bg-crosshair-dim pointer-events-none absolute inset-0 transition-opacity duration-150 ${
+              crosshairActive ? 'opacity-100' : 'opacity-0'
+            }`}
+            aria-hidden="true"
+          ></div>
         </div>
         <div role="columnheader" class="min-w-[680px] flex-1">
           <Ruler
@@ -268,6 +277,9 @@
             {onRangeChange}
             {onExtendRange}
             {onClearRange}
+            {crosshairActive}
+            crosshairLeft={hoverLeft}
+            {crosshairRight}
             work={settings.showWorkingHours ? homeWork : []}
           />
         </div>
@@ -309,6 +321,9 @@
             {nowPosition}
             {rangeStartPosition}
             {rangeEndPosition}
+            {crosshairActive}
+            crosshairLeft={hoverLeft}
+            {crosshairRight}
             showIana={settings.showIana}
             showAbbreviation={settings.showAbbreviation}
             showUtcOffset={settings.showUtcOffset}
