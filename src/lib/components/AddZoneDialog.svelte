@@ -142,9 +142,9 @@
             >
               <span class="flex min-w-0 items-baseline gap-2">
                 <span class="text-text truncate font-medium">{result.label}</span>
-                <span class="text-muted truncate text-[10px]">{result.timeZone}</span>
+                <span class="text-muted truncate text-xs">{result.timeZone}</span>
               </span>
-              <span class="text-muted shrink-0 text-right text-[10px]">
+              <span class="text-muted shrink-0 text-right text-xs">
                 {result.abbreviation} · {formatOffset(result.offsetMinutes)}
                 {#if added.has(result.timeZone)}
                   · Added

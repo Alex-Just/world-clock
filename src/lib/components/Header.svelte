@@ -57,7 +57,7 @@
     <button
       type="button"
       onclick={onNow}
-      class="border-border text-text hover:bg-surface inline-flex h-9 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium transition-colors"
+      class="border-border text-text hover:bg-surface inline-flex h-10 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium transition-colors"
     >
       <LocateFixed class="text-accent-text size-4" aria-hidden="true" />
       Now

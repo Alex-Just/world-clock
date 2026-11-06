@@ -100,7 +100,7 @@
 >
   <div class="px-2 py-1.5">
     <p class="text-text truncate text-xs font-medium">{zone.label}</p>
-    <p class="text-muted truncate text-[10px]">{zone.timeZone}</p>
+    <p class="text-muted truncate text-xs">{zone.timeZone}</p>
   </div>
 
   <button

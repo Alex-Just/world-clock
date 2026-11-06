@@ -40,7 +40,7 @@
       <div class="flex items-start justify-between gap-3">
         <div>
           <h2 id="rename-zone-title" class="text-sm font-semibold">Edit zone</h2>
-          <p class="text-muted mt-0.5 text-[10px]">{zone.timeZone}</p>
+          <p class="text-muted mt-0.5 text-xs">{zone.timeZone}</p>
         </div>
         <button
           type="button"

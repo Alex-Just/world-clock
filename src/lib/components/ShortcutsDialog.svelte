@@ -47,7 +47,7 @@
       <dl class="mt-3 grid gap-1.5 text-xs">
         {#each shortcuts as [keys, description] (keys)}
           <div class="flex items-baseline justify-between gap-4">
-            <dt class="text-text font-mono text-[11px]">{keys}</dt>
+            <dt class="text-text font-mono text-xs">{keys}</dt>
             <dd class="text-muted text-right">{description}</dd>
           </div>
         {/each}

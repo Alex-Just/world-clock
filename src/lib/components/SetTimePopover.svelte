@@ -257,7 +257,7 @@
               onclick={() => {
                 applyQuick('1', 'days', 'before');
               }}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-[11px]"
+              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
             >
               −1d
             </button>
@@ -266,14 +266,14 @@
               onclick={() => {
                 applyQuick('1', 'hours', 'before');
               }}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-[11px]"
+              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
             >
               −1h
             </button>
             <button
               type="button"
               onclick={goNow}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-[11px]"
+              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
             >
               Now
             </button>
@@ -282,7 +282,7 @@
               onclick={() => {
                 applyQuick('1', 'hours', 'after');
               }}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-[11px]"
+              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
             >
               +1h
             </button>
@@ -291,7 +291,7 @@
               onclick={() => {
                 applyQuick('1', 'days', 'after');
               }}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-[11px]"
+              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
             >
               +1d
             </button>

@@ -91,6 +91,8 @@ Import replaces the current document only after confirmation. Export includes
 - Tailwind `dark:` variants are bound to `data-theme='dark'` so the explicit
   theme works when the OS theme differs. Status, warning, danger, and accent
   text use semantic tokens defined in `src/app.css`.
+- Typography, input sizing, and target sizes follow
+  [`docs/typography.md`](typography.md).
 - Colors meet WCAG AA contrast; status is never color-only; reduced motion is
   respected.
 

@@ -41,7 +41,7 @@
     onclick={() => {
       onShiftDay(-1);
     }}
-    class="text-muted hover:bg-surface-raised hover:text-text inline-flex size-8 shrink-0 items-center justify-center rounded-lg"
+    class="text-muted hover:bg-surface-raised hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg"
   >
     <span aria-hidden="true">‹</span>
   </button>
@@ -54,12 +54,12 @@
       onclick={() => {
         onSelectDate(date);
       }}
-      class="hover:bg-surface-raised flex min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
+      class="hover:bg-surface-raised flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
       class:text-accent-text={date === viewDate}
       class:bg-surface-raised={date === viewDate}
       class:font-semibold={date === viewDate}
     >
-      <span class="text-muted text-[11px] tracking-wide uppercase">{weekdayShort(date)}</span>
+      <span class="text-muted text-xs tracking-wide uppercase">{weekdayShort(date)}</span>
       <span class="text-text text-sm tabular-nums">{dayNumber(date)}</span>
     </button>
   {/each}
@@ -70,7 +70,7 @@
     onclick={() => {
       onShiftDay(1);
     }}
-    class="text-muted hover:bg-surface-raised hover:text-text inline-flex size-8 shrink-0 items-center justify-center rounded-lg"
+    class="text-muted hover:bg-surface-raised hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg"
   >
     <span aria-hidden="true">›</span>
   </button>
@@ -78,7 +78,7 @@
   <button
     type="button"
     onclick={onToday}
-    class="border-border text-text hover:bg-surface-raised ml-1 h-8 shrink-0 rounded-lg border px-2.5 text-xs font-medium"
+    class="border-border text-text hover:bg-surface-raised ml-1 h-10 shrink-0 rounded-lg border px-2.5 text-xs font-medium"
   >
     Today
   </button>

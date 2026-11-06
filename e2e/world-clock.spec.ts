@@ -387,3 +387,65 @@ test('keeps timeline hour and date labels readable', async ({ page }) => {
   expect(sizes.rowHour).toBeGreaterThanOrEqual(12);
   expect(sizes.dayMarker).toBeGreaterThanOrEqual(12);
 });
+
+test('uses no text smaller than 12px', async ({ page }) => {
+  await expect(page.getByText('New York')).toBeVisible();
+  const offenders = await page.evaluate(() =>
+    [...document.querySelectorAll('body *')]
+      .filter((element) => {
+        const hasText = [...element.childNodes].some(
+          (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+        );
+        if (!hasText) return false;
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        if (style.display === 'none' || style.visibility === 'hidden') return false;
+        if (rect.width < 2 || rect.height < 2) return false;
+        return Number.parseFloat(style.fontSize) < 12;
+      })
+      .map((element) => ({
+        text: element.textContent.trim().slice(0, 40),
+        size: getComputedStyle(element).fontSize,
+        className: element.getAttribute('class'),
+      })),
+  );
+  expect(offenders).toEqual([]);
+});
+
+test('uses 16px form fields and 24px targets on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByTestId('row-America/New_York').getByText('New York')).toBeVisible();
+  await page.getByRole('button', { name: /settings/i }).click();
+
+  const field = await page.getByLabel('Start').evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return { fontSize: Number.parseFloat(getComputedStyle(element).fontSize), height: rect.height };
+  });
+  expect(field.fontSize).toBeGreaterThanOrEqual(16);
+  expect(field.height).toBeGreaterThanOrEqual(44);
+
+  await page.getByRole('button', { name: /close settings/i }).click();
+  const targets = await page
+    .locator(
+      'header button, nav[aria-label="Days"] button, [data-testid^="row-"] button[aria-haspopup="menu"]',
+    )
+    .evaluateAll((elements) =>
+      elements
+        .filter((element) => {
+          const rect = element.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0;
+        })
+        .map((element) => {
+          const rect = element.getBoundingClientRect();
+          return {
+            label: element.getAttribute('aria-label') ?? element.textContent.trim(),
+            width: rect.width,
+            height: rect.height,
+          };
+        }),
+    );
+  for (const target of targets) {
+    expect(target.width, `${target.label} width`).toBeGreaterThanOrEqual(24);
+    expect(target.height, `${target.label} height`).toBeGreaterThanOrEqual(24);
+  }
+});

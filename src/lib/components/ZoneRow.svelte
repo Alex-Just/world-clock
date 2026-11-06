@@ -106,13 +106,13 @@
         {/if}
         <span class="text-text truncate text-xs font-medium sm:text-sm">{model.label}</span>
         <span
-          class="bg-surface text-muted shrink-0 rounded px-1 text-[11px] tabular-nums"
+          class="bg-surface text-muted shrink-0 rounded px-1 text-xs tabular-nums"
           title={`UTC offset ${formatUtcOffset(model.offsetMinutes)}`}
         >
           {formatOffset(model.relativeOffsetMinutes)}
         </span>
       </div>
-      <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-[11px]">
+      <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-xs">
         {#if showAbbreviation}
           <span>{model.abbreviation}</span>
         {/if}
@@ -139,7 +139,7 @@
             {rangeLabel}
           </div>
           <div
-            class={`mt-0.5 text-[11px] max-sm:mt-0 ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
+            class={`mt-0.5 text-xs max-sm:mt-0 ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
           >
             {rangeStatusLabel}
           </div>
@@ -149,8 +149,8 @@
           >
             {model.focusedTime}
           </div>
-          <div class="text-muted mt-0.5 text-[11px] max-sm:mt-0">{model.focusedDate}</div>
-          <div class={`mt-0.5 text-[11px] max-sm:mt-0 ${statusClass}`}>{statusLabel}</div>
+          <div class="text-muted mt-0.5 text-xs max-sm:mt-0">{model.focusedDate}</div>
+          <div class={`mt-0.5 text-xs max-sm:mt-0 ${statusClass}`}>{statusLabel}</div>
         {/if}
       </div>
 
@@ -164,7 +164,7 @@
           onclick={() => {
             menuOpen = !menuOpen;
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-6 items-center justify-center rounded-md"
+          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-md"
         >
           <span aria-hidden="true">⋯</span>
         </button>

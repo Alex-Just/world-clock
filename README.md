@@ -38,6 +38,10 @@ short version:
 - The focus stays inside the visible home-zone day; a new focus clears the
   range; range endpoints snap to the selection step.
 
+Read [`docs/typography.md`](docs/typography.md) for the type scale and
+accessibility rules: 12px minimum metadata, 16px body and mobile inputs, 24px
+minimum targets.
+
 ## Privacy
 
 There is no backend, account, analytics, or third-party request after the page

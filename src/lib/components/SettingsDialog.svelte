@@ -99,7 +99,7 @@
 
       <div class="space-y-5 overflow-y-auto px-4 py-4">
         <section>
-          <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">Appearance</h3>
+          <h3 class="text-muted text-xs font-semibold tracking-wide uppercase">Appearance</h3>
           <div class="mt-2 grid gap-3 sm:grid-cols-2">
             <fieldset>
               <legend class="text-muted text-xs">Theme</legend>
@@ -154,7 +154,7 @@
                     onclick={() => {
                       onUpdate({ accent: accent.id });
                     }}
-                    class="flex items-center gap-1 rounded-full border px-2 py-1 text-[11px]"
+                    class="flex items-center gap-1 rounded-full border px-2 py-1 text-xs"
                     class:border-accent={settings.accent === accent.id}
                   >
                     <span class={`size-2.5 rounded-full ${accent.swatch}`} aria-hidden="true"
@@ -168,7 +168,7 @@
         </section>
 
         <section>
-          <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">Display</h3>
+          <h3 class="text-muted text-xs font-semibold tracking-wide uppercase">Display</h3>
           <div class="mt-2 grid gap-2 sm:grid-cols-2">
             <label class="flex items-center justify-between gap-2 text-xs">
               <span>24-hour time</span>
@@ -262,9 +262,7 @@
         </section>
 
         <section>
-          <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">
-            Working hours
-          </h3>
+          <h3 class="text-muted text-xs font-semibold tracking-wide uppercase">Working hours</h3>
           <div class="mt-2 flex flex-wrap items-end gap-2">
             <label class="text-muted text-xs">
               Start
@@ -300,13 +298,13 @@
 
         <section>
           <div class="flex items-center justify-between gap-2">
-            <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">Zones</h3>
+            <h3 class="text-muted text-xs font-semibold tracking-wide uppercase">Zones</h3>
             <button
               type="button"
               onclick={() => {
                 onAddZone();
               }}
-              class="border-border text-text hover:bg-surface h-7 rounded-lg border px-2 text-[11px] font-medium"
+              class="border-border text-text hover:bg-surface h-7 rounded-lg border px-2 text-xs font-medium"
             >
               Add zone
             </button>
@@ -323,7 +321,7 @@
                       <span class="text-accent-text">· home</span>
                     {/if}
                   </p>
-                  <p class="text-muted truncate text-[10px]">{zone.timeZone}</p>
+                  <p class="text-muted truncate text-xs">{zone.timeZone}</p>
                 </div>
                 <div class="flex shrink-0 gap-0.5">
                   <button
@@ -333,7 +331,7 @@
                     onclick={() => {
                       onSetHome(zone.timeZone);
                     }}
-                    class="text-muted hover:bg-surface h-6 rounded px-1 text-[10px] disabled:opacity-30"
+                    class="text-muted hover:bg-surface h-7 rounded px-1 text-xs disabled:opacity-30"
                   >
                     Home
                   </button>
@@ -344,7 +342,7 @@
                     onclick={() => {
                       onReplace(moveZone(settings, zone.timeZone, -1));
                     }}
-                    class="text-muted hover:bg-surface h-6 rounded px-1 text-[10px] disabled:opacity-30"
+                    class="text-muted hover:bg-surface h-7 rounded px-1 text-xs disabled:opacity-30"
                   >
                     ↑
                   </button>
@@ -355,7 +353,7 @@
                     onclick={() => {
                       onReplace(moveZone(settings, zone.timeZone, 1));
                     }}
-                    class="text-muted hover:bg-surface h-6 rounded px-1 text-[10px] disabled:opacity-30"
+                    class="text-muted hover:bg-surface h-7 rounded px-1 text-xs disabled:opacity-30"
                   >
                     ↓
                   </button>
@@ -366,7 +364,7 @@
                     onclick={() => {
                       onReplace(removeZone(settings, zone.timeZone));
                     }}
-                    class="hover:bg-surface text-danger h-6 rounded px-1 text-[10px] disabled:opacity-30"
+                    class="hover:bg-surface text-danger h-7 rounded px-1 text-xs disabled:opacity-30"
                   >
                     ×
                   </button>
@@ -377,7 +375,7 @@
         </section>
 
         <section>
-          <h3 class="text-muted text-[11px] font-semibold tracking-wide uppercase">Data</h3>
+          <h3 class="text-muted text-xs font-semibold tracking-wide uppercase">Data</h3>
           <div class="mt-2 flex flex-wrap items-center gap-2">
             <button
               type="button"
@@ -411,7 +409,7 @@
           {#if importMessage}
             <p class="text-muted mt-2 text-xs" role="status">{importMessage}</p>
           {/if}
-          <p class="text-muted mt-2 text-[10px]">
+          <p class="text-muted mt-2 text-xs">
             Everything stays in this browser. Clearing site data removes it; export is your backup.
           </p>
         </section>

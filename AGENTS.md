@@ -87,8 +87,10 @@ docs/architecture.md  current design
 - Display toggles must change the rendered row, not only stored state.
 - Keep keyboard shortcuts working outside inputs and open dialogs.
 - Test with axe; do not introduce color-only status.
-- Keep timeline hour labels and day markers at 12px or larger; row metadata
-  is at least 11px.
+- Keep every user-facing font size at 12px or larger; use the scale in
+  [`docs/typography.md`](docs/typography.md). Do not add arbitrary px sizes.
+- Mobile inputs and selects are 16px and at least 44px tall to avoid iOS zoom.
+- Keep primary pointer targets at least 24×24; aim for 32px or more.
 - Respect `prefers-reduced-motion`.
 
 ## Testing
