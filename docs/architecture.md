@@ -8,12 +8,12 @@ persist in `localStorage`. There is no server, account, or sync.
 
 ```text
 App.svelte
-├─ Header (focus readout, Now, Duration, Add zone, Settings)
 ├─ Header (brand, focus clock, inline day picker, actions)
+│  └─ DayStrip (seven-day window)
 ├─ Board
 │  ├─ Ruler (hour scale, work strip, focus/now lines, range handles)
 │  └─ ZoneRow[] (local times, bands, labels, day/DST markers)
-├─ Board (zone rows, ruler, range)
+├─ RangeBar (when a range is selected)
 ├─ dialogs (add zone, set time, duration, settings, rename, shortcuts)
 └─ Toast
 ```
