@@ -621,6 +621,13 @@ test('keeps work-hour markings warm instead of night blue', async ({ page }) => 
   expect(channels).toHaveLength(3);
   const [red = 0, , blue = 0] = channels;
   expect(red).toBeGreaterThan(blue);
+  expect(
+    await page
+      .getByTestId('work-cell')
+      .first()
+      .evaluate((element) => getComputedStyle(element).backgroundColor),
+  ).toBe('rgb(255, 255, 255)');
+  await expect(page.getByTestId('home-row-fill')).toBeVisible();
 });
 
 test('keeps the header height when the relative badge appears', async ({ page }) => {

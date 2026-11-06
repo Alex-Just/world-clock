@@ -112,14 +112,14 @@
     isHovered
       ? 'border-l-accent bg-accent/5'
       : isHome
-        ? 'border-l-accent/40 bg-accent/[0.02]'
+        ? 'border-l-home-accent bg-home-row'
         : 'border-l-transparent'
   }`}
 >
   <div
     role="gridcell"
     class={`border-border sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 overflow-hidden border-r px-2 py-1 sm:w-[320px] sm:flex-nowrap sm:px-3 ${
-      isHovered ? 'bg-accent/10' : isHome ? 'bg-accent/5' : 'bg-surface-raised'
+      isHovered ? 'bg-accent/10' : isHome ? 'bg-home-row-header' : 'bg-surface-raised'
     }`}
     title={`${model.timeZone} · ${formatUtcOffset(model.offsetMinutes)}`}
   >
@@ -241,10 +241,19 @@
       ></div>
     {/each}
 
+    {#if isHome}
+      <div
+        data-testid="home-row-fill"
+        class="bg-home-row pointer-events-none absolute inset-0 z-[1]"
+        aria-hidden="true"
+      ></div>
+    {/if}
+
     {#if showWorkingHours}
       {#each model.bands.work as segment (segment.start)}
         <div
-          class="bg-band-work absolute inset-y-0"
+          data-testid="work-cell"
+          class="bg-band-work absolute inset-y-0 z-[2]"
           style={`left: ${pct(segment.start)}; width: ${pct(segment.end - segment.start)}`}
         ></div>
       {/each}

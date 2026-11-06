@@ -82,8 +82,10 @@ docs/architecture.md  current design
 - Use semantic color tokens for status text: `text-status-day`, `text-warning`,
   `text-danger`, and `text-accent-text`. Do not use raw palette utilities for
   text that sits on themed surfaces.
-- Work-hours strip and tint use the amber `work-line`/`band-work` tokens;
-  do not reuse the blue night palette for work markings.
+- Work-hours strip uses the amber `work-line` token; work cells use the
+  white `band-work` token. Do not reuse the blue night palette for work markings.
+- The home row uses the warm `home-row`/`home-row-header` tokens and
+  `home-accent` edge, including its hour cells; never use blue for home emphasis.
 - Keep focus/now lines, hour boundary ticks, and range fills aligned across
   the ruler and rows.
 - Base bands are day 08:00–18:00, twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00.
