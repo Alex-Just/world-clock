@@ -122,7 +122,7 @@
 <div
   role="row"
   data-testid={`row-${model.timeZone}`}
-  class={`border-border flex min-w-[1000px] border-b border-l-2 transition-opacity duration-150 last:border-b-0 ${
+  class={`border-border relative flex min-w-[1000px] border-b border-l-2 transition-opacity duration-150 last:border-b-0 ${
     isHovered
       ? 'border-l-accent bg-accent/5'
       : isHome
@@ -359,4 +359,11 @@
       aria-hidden="true"
     ></div>
   </div>
+  <div
+    data-testid="hover-row-border"
+    class={`border-accent/50 pointer-events-none absolute inset-0 z-30 border-y transition-opacity duration-150 ${
+      isHovered ? 'opacity-100' : 'opacity-0'
+    }`}
+    aria-hidden="true"
+  ></div>
 </div>

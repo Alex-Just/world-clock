@@ -296,4 +296,12 @@
     style={`width: ${crosshairRight}`}
     aria-hidden="true"
   ></div>
+  <div
+    data-testid="ruler-crosshair-column"
+    class={`border-accent/50 pointer-events-none absolute inset-y-0 z-[36] border-x transition-opacity duration-150 ${
+      crosshairActive ? 'opacity-100' : 'opacity-0'
+    }`}
+    style={`left: ${crosshairLeft}; right: ${crosshairRight}`}
+    aria-hidden="true"
+  ></div>
 </div>

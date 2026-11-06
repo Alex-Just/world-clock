@@ -340,7 +340,9 @@
           {#if activeSlot !== null}
             <div
               data-testid="hover-slot"
-              class="border-accent/40 bg-accent/15 absolute inset-y-0 border"
+              class={`bg-accent/10 absolute inset-y-0 ${
+                crosshairActive ? 'border-accent/60 border-x' : 'border-accent/40 border-x'
+              }`}
               style={`left: ${hoverLeft}; width: ${hoverWidth}`}
             ></div>
           {/if}

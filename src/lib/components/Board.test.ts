@@ -220,12 +220,21 @@ it('preselects the focus hour and follows hover', async () => {
     within(screen.getByTestId('row-America/New_York')).getByTestId('row-crosshair-dim'),
   ).toHaveClass('opacity-100');
   expect(screen.getByTestId('ruler-crosshair-dim-left')).toHaveClass('opacity-100');
+  expect(
+    within(screen.getByTestId('row-Europe/Madrid')).getByTestId('hover-row-border'),
+  ).toHaveClass('opacity-100');
+  expect(
+    within(screen.getByTestId('row-America/New_York')).getByTestId('hover-row-border'),
+  ).toHaveClass('opacity-0');
 
   await fireEvent.pointerLeave(grid);
   expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 54.1667%');
   expect(screen.getByTestId('ruler-crosshair-dim-left')).toHaveClass('opacity-0');
   expect(
     within(screen.getByTestId('row-America/New_York')).getByTestId('crosshair-dim-left'),
+  ).toHaveClass('opacity-0');
+  expect(
+    within(screen.getByTestId('row-Europe/Madrid')).getByTestId('hover-row-border'),
   ).toHaveClass('opacity-0');
 });
 

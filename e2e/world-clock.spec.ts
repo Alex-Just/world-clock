@@ -857,9 +857,24 @@ test('dims everything outside the hovered row and hour', async ({ page }) => {
     '1',
   );
   await expect(page.getByTestId('ruler-crosshair-dim-left')).toHaveCSS('opacity', '1');
+  await expect(page.getByTestId('ruler-crosshair-column')).toHaveCSS('opacity', '1');
+  await expect(page.getByTestId('row-America/New_York').getByTestId('hover-row-border')).toHaveCSS(
+    'opacity',
+    '1',
+  );
+  await expect(page.getByTestId('row-Europe/Madrid').getByTestId('hover-row-border')).toHaveCSS(
+    'opacity',
+    '0',
+  );
+  await expect(page.getByTestId('hover-slot')).toHaveCSS('border-left-width', '1px');
 
   await page.mouse.move(10, 10);
   await expect(page.getByTestId('ruler-crosshair-dim-left')).toHaveCSS('opacity', '0');
+  await expect(page.getByTestId('ruler-crosshair-column')).toHaveCSS('opacity', '0');
+  await expect(page.getByTestId('row-America/New_York').getByTestId('hover-row-border')).toHaveCSS(
+    'opacity',
+    '0',
+  );
   await expect(page.getByTestId('row-Europe/Madrid').getByTestId('crosshair-dim-left')).toHaveCSS(
     'opacity',
     '0',

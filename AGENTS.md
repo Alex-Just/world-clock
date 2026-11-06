@@ -110,8 +110,9 @@ docs/architecture.md  current design
   live region. For long ranges show the calendar breakdown (`y`/`mo`/`d`/
   `h`/`m`), the total duration, and the source “now” date in the home zone.
 - The home row keeps a subtle tint and left accent. Hovering a board cell
-  keeps its whole zone row and hour column fully lit and dims the rest with
-  `crosshair-dim`; never dim touch interactions.
+  keeps its whole zone row and hour column fully lit, adds restrained 1px
+  accent outlines, and dims the rest with `crosshair-dim`; never dim touch
+  interactions.
 - Recover from a lost pointerup: cancel board and handle drags on window blur,
   hidden visibility, Escape, lost pointer capture, or a move with no pressed
   buttons, then resume hover tracking.
