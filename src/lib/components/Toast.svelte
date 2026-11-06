@@ -31,7 +31,7 @@
     onclick={() => {
       onAction();
     }}
-    class="text-accent font-semibold hover:underline"
+    class="text-accent-text font-semibold hover:underline"
   >
     {actionLabel}
   </button>

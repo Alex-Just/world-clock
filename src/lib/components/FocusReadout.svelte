@@ -22,7 +22,6 @@
 
 <button
   type="button"
-  aria-label="Set time"
   title="Set an exact or relative time"
   onclick={onOpen}
   class="group hover:bg-surface rounded-lg px-1 py-0.5 text-left transition-colors"
@@ -33,4 +32,5 @@
   <span class="text-muted mt-1 block text-xs">
     {date} · {zoneLabel}
   </span>
+  <span class="sr-only">Set time</span>
 </button>

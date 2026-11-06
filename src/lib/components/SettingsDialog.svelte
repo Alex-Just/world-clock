@@ -320,7 +320,7 @@
                   <p class="truncate text-xs font-medium">
                     {zone.label}
                     {#if zone.timeZone === settings.homeZone}
-                      <span class="text-accent">· home</span>
+                      <span class="text-accent-text">· home</span>
                     {/if}
                   </p>
                   <p class="text-muted truncate text-[10px]">{zone.timeZone}</p>

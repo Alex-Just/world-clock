@@ -79,12 +79,16 @@ Import replaces the current document only after confirmation. Export includes
   move endpoints. Board rows also drag to create a range. Touch rows pan.
 - Native `<dialog>` elements use the `modal` action for `showModal`, focus
   restore, and Escape. Set Time traps focus manually.
+- Zone menus open in a manual popover, positioned from the trigger rectangle
+  and flipped or clamped to stay inside the viewport.
 - Focus/now lines and range fills render in the ruler and every row. A hover
   overlay follows the cursor without changing selection.
 - Display settings control abbreviation, exact offset, DST badge, IANA name,
   date labels, and work bands.
 - Keyboard shortcuts are global except in text fields or open dialogs.
-- Colors meet contrast goals; status is never color-only; reduced motion is
+- Tailwind `dark:` variants are bound to `data-theme='dark'` so the explicit
+  theme works when the OS theme differs.
+- Colors meet WCAG AA contrast; status is never color-only; reduced motion is
   respected.
 
 ## Testing

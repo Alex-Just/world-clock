@@ -55,7 +55,7 @@
         onSelectDate(date);
       }}
       class="hover:bg-surface-raised flex min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
-      class:text-accent={date === viewDate}
+      class:text-accent-text={date === viewDate}
       class:bg-surface-raised={date === viewDate}
       class:font-semibold={date === viewDate}
     >

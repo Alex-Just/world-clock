@@ -39,7 +39,7 @@
 >
   <div class="flex min-w-0 items-center gap-4 sm:gap-6">
     <div class="text-text flex items-center gap-2 text-sm font-semibold tracking-tight">
-      <Clock class="text-accent size-5" aria-hidden="true" />
+      <Clock class="text-accent-text size-5" aria-hidden="true" />
       <h1 class="sr-only sm:not-sr-only">World Clock</h1>
     </div>
 
@@ -59,7 +59,7 @@
       onclick={onNow}
       class="border-border text-text hover:bg-surface inline-flex h-9 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium transition-colors"
     >
-      <LocateFixed class="text-accent size-4" aria-hidden="true" />
+      <LocateFixed class="text-accent-text size-4" aria-hidden="true" />
       Now
     </button>
 

@@ -49,6 +49,7 @@
   } = $props();
 
   let menuOpen = $state(false);
+  let menuButton = $state<HTMLButtonElement>();
 
   function pct(position: number): string {
     return `${(position * 100).toFixed(4)}%`;
@@ -70,9 +71,9 @@
 
   const statusClass = $derived(
     model.focusedStatus === 'working'
-      ? 'text-accent'
+      ? 'text-accent-text'
       : model.focusedStatus === 'day'
-        ? 'text-amber-600 dark:text-amber-400'
+        ? 'text-amber-800 dark:text-amber-300'
         : 'text-muted',
   );
 
@@ -100,7 +101,7 @@
     <div class="min-w-0">
       <div class="flex items-center gap-1.5">
         {#if isHome}
-          <House class="text-accent size-3 shrink-0" aria-hidden="true" />
+          <House class="text-accent-text size-3 shrink-0" aria-hidden="true" />
           <span class="sr-only">Home zone</span>
         {/if}
         <span class="text-text truncate text-xs font-medium sm:text-sm">{model.label}</span>
@@ -133,7 +134,9 @@
           <div class="text-text text-sm leading-none font-medium tabular-nums sm:text-base">
             {rangeLabel}
           </div>
-          <div class={`mt-0.5 text-[10px] ${rangeStatus === 'in' ? 'text-accent' : 'text-muted'}`}>
+          <div
+            class={`mt-0.5 text-[10px] ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
+          >
             {rangeStatusLabel}
           </div>
         {:else}
@@ -147,6 +150,7 @@
 
       <div class="relative">
         <button
+          bind:this={menuButton}
           type="button"
           aria-label={`Actions for ${model.label}`}
           aria-haspopup="menu"
@@ -158,8 +162,9 @@
         >
           <span aria-hidden="true">⋯</span>
         </button>
-        {#if menuOpen}
+        {#if menuOpen && menuButton}
           <ZoneMenu
+            anchor={menuButton}
             zone={{ timeZone: model.timeZone, label: model.label }}
             {isHome}
             {canMoveUp}

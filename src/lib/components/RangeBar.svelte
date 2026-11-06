@@ -42,7 +42,7 @@
       {local.start}–{local.end}
       {homeLabel}
     </span>
-    <span class="bg-surface text-accent rounded-full px-2 py-0.5 font-medium tabular-nums">
+    <span class="bg-surface text-accent-text rounded-full px-2 py-0.5 font-medium tabular-nums">
       {formatDuration(range.durationMs)}
     </span>
     <span class="text-muted">

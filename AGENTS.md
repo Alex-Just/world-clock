@@ -74,6 +74,9 @@ docs/architecture.md  current design
 - Ruler: tap sets focus; drag sets a range; handles move endpoints. Board rows
   pan horizontally on touch.
 - Native dialogs use `use:modal`; keep Escape, focus restore, and labels intact.
+- Zone menus use a manual popover with fixed positioning. Keep them out of row
+  stacking contexts so the board scroller cannot clip or cover them.
+- Tailwind `dark:` variants follow `data-theme='dark'`, not the OS media query.
 - Keep focus/now lines and range fills aligned across the ruler and rows.
 - Base bands are day 08:00–18:00, twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00.
 - Click-drag a zone row to set a range; the duration bar above the board and row headers show the result.
