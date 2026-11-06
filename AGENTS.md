@@ -93,6 +93,8 @@ docs/architecture.md  current design
 - Hide the relative-time badge when it would only read "Now", and hide the
   relative-offset chip when it is zero. The DST badge appears only while the
   zone is observing daylight saving time.
+- The relative badge is hidden below `sm`; at `sm` and above reserve its footprint
+  and announce meaningful relative values through a separate polite live region.
 - The home row keeps a subtle tint and left accent. Hovering a row dims the other
   rows; do not dim touch interactions.
 - The range hint and selected-range bar share a fixed 48px slot above the board.

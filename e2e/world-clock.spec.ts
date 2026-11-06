@@ -624,7 +624,7 @@ test('keeps work-hour markings warm instead of night blue', async ({ page }) => 
 });
 
 test('keeps the header height when the relative badge appears', async ({ page }) => {
-  for (const width of [480, 560]) {
+  for (const width of [700, 800]) {
     await page.setViewportSize({ width, height: 900 });
     await page.reload();
     await page.getByTestId('board-scroll').waitFor();
@@ -708,5 +708,23 @@ test('keeps mobile range labels inside the zone cell', async ({ page }) => {
       return target !== null && label.contains(target);
     });
     expect(bleeds).toBe(false);
+  }
+});
+
+test('keeps narrow 12-hour headers from overflowing', async ({ page }) => {
+  for (const width of [320, 560]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.reload();
+    await page.getByTestId('board-scroll').waitFor();
+    await page.getByRole('button', { name: /settings/i }).click();
+    await page.getByLabel(/24-hour time/i).setChecked(false);
+    await page.getByRole('button', { name: /close settings/i }).click();
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    await expect(page.getByTestId('relative-badge')).toBeHidden();
   }
 });

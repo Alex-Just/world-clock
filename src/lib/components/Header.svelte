@@ -51,12 +51,15 @@
 
     <span
       data-testid="relative-badge"
-      class={`border-border text-muted w-[5.75rem] rounded-full border px-2.5 py-1 text-center text-xs font-medium ${
+      class={`border-border text-muted hidden w-[5.75rem] rounded-full border px-2.5 py-1 text-center text-xs font-medium sm:inline-block ${
         showRelative ? '' : 'invisible'
       }`}
-      aria-hidden={!showRelative}
+      aria-hidden="true"
     >
       {relative}
+    </span>
+    <span data-testid="relative-live" class="sr-only" aria-live="polite">
+      {showRelative ? relative : ''}
     </span>
   </div>
 

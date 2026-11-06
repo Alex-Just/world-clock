@@ -41,9 +41,10 @@
     <span
       data-testid="range-time"
       class="text-text min-w-0 truncate text-sm font-medium tabular-nums sm:text-base"
-      title={`${local.start}–${local.end}`}
+      title={`${local.start}–${local.end} (${formatDuration(range.durationMs)})`}
     >
       {local.start}–{local.end}
+      <span class="sr-only sm:hidden">{formatDuration(range.durationMs)}</span>
     </span>
     <span class="text-muted hidden shrink-0 text-sm tabular-nums sm:inline">
       ({formatDuration(range.durationMs)})

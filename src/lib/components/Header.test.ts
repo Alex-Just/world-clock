@@ -18,7 +18,7 @@ const baseProps = {
 it('shows the focused time and relative badge', () => {
   render(Header, { props: { ...baseProps, nowMs: Date.parse('2026-11-05T11:32:08Z') } });
   expect(screen.getByText('14:32:08')).toBeInTheDocument();
-  expect(screen.getByText('in 2h')).toBeInTheDocument();
+  expect(screen.getByTestId('relative-badge')).toHaveTextContent('in 2h');
 });
 
 it('wires the header actions', async () => {
@@ -34,6 +34,7 @@ it('reserves but hides the relative badge when it would only say now', () => {
   const badge = screen.getByTestId('relative-badge');
   expect(badge).toHaveClass('invisible');
   expect(badge).toHaveAttribute('aria-hidden', 'true');
+  expect(screen.getByTestId('relative-live')).toHaveTextContent('');
 });
 
 it('hides the relative badge for a near-now focus', () => {

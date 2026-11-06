@@ -160,7 +160,7 @@
 
     <div class="flex w-full shrink-0 items-start justify-between gap-1 sm:w-auto sm:justify-start">
       <div
-        class="text-right max-sm:flex max-sm:flex-wrap max-sm:items-baseline max-sm:gap-x-1 max-sm:text-left"
+        class="min-w-0 flex-1 text-right max-sm:flex max-sm:flex-wrap max-sm:items-baseline max-sm:gap-x-1 max-sm:text-left"
       >
         {#if rangeLabel !== null}
           <div
@@ -187,7 +187,7 @@
         {/if}
       </div>
 
-      <div class="relative">
+      <div class="relative shrink-0">
         <button
           bind:this={menuButton}
           type="button"
