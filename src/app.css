@@ -69,11 +69,12 @@
 
 [data-theme='dark'] {
   color-scheme: dark;
-  --surface: #3b3b3b;
-  --surface-raised: #444444;
-  --text: #e8e8e8;
-  --muted: #bdbdbd;
-  --border: #555555;
+  /* Black Chrome (D10) — board bands stay Warm Dark A1.2 */
+  --surface: #232323;
+  --surface-raised: #2d2d2d;
+  --text: #e4e4e4;
+  --muted: #b0b0b0;
+  --border: #414141;
   --band-day: #695750;
   --band-twilight: #5a4a44;
   --band-night: #3c322e;

@@ -79,6 +79,16 @@ The light theme follows Material Blue:
 
 Status text uses the semantic warning and danger tokens.
 
+### Dark chrome (D10 Black Chrome)
+
+| Token   | Value     | Use                              |
+| ------- | --------- | -------------------------------- |
+| Surface | `#232323` | Page and board chrome            |
+| Raised  | `#2d2d2d` | Header, sticky columns, controls |
+| Border  | `#414141` | Dividers and control edges       |
+| Text    | `#e4e4e4` | Primary labels                   |
+| Muted   | `#b0b0b0` | Zone metadata and helpers        |
+
 ### Warm Dark board (A1.2)
 
 | Token       | Value     | Use                    |
@@ -92,5 +102,6 @@ Status text uses the semantic warning and danger tokens.
 | Marker      | `#3a312d` | Date markers           |
 | Focus       | `#26a69a` | Focus line and handles |
 
-Dark mode keeps the teal focus line and yellow work strip, with light text on
-the warm dark bands instead of the light-theme blue/white cells.
+Dark mode uses near-black D10 chrome around the Warm Dark A1.2 board. Keep the
+teal focus line and yellow work strip, with light text on the warm dark bands
+instead of the light-theme blue/white cells.
