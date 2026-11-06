@@ -122,7 +122,7 @@ docs/architecture.md  current design
   buttons, then resume hover tracking.
 - The range hint and selected-range bar share a fixed 48px slot above the board.
   Selecting a range must not move the board or change desktop/mobile row height.
-- Hour labels in the active column are semibold.
+- Hour labels in the active column are semibold in both the ruler and rows.
 - Display toggles must change the rendered row, not only stored state.
 - Keep keyboard shortcuts working outside inputs and open dialogs.
   Left/Right shift the visible window by 6 hours; Alt+Left/Right nudge focus

@@ -313,6 +313,7 @@
             {crosshairActive}
             crosshairLeft={hoverLeft}
             {crosshairRight}
+            {activeSlot}
             {showFocusLine}
             work={settings.showWorkingHours ? homeWork : []}
           />

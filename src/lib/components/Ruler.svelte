@@ -22,6 +22,7 @@
     crosshairActive = false,
     crosshairLeft = '0%',
     crosshairRight = '100%',
+    activeSlot = null,
     showFocusLine = true,
     work = [],
   }: {
@@ -42,6 +43,7 @@
     crosshairActive?: boolean;
     crosshairLeft?: string;
     crosshairRight?: string;
+    activeSlot?: number | null;
     showFocusLine?: boolean;
     work?: WorkSegment[];
   } = $props();
@@ -203,10 +205,12 @@
     {/each}
   </div>
 
-  {#each axis.ticks as tick (tick.instantMs)}
+  {#each axis.ticks as tick, index (tick.instantMs)}
     <div
       data-testid="hour-label"
-      class="text-muted absolute bottom-1 px-0.5 text-base tabular-nums"
+      class={`text-muted absolute bottom-1 px-0.5 text-base tabular-nums ${
+        index === activeSlot ? 'font-semibold' : 'font-normal'
+      }`}
       style={cellLabelStyle(tick.position, axis.ticks.length)}
     >
       {tick.label}

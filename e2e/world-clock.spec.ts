@@ -145,13 +145,21 @@ test('preselects the focus hour and follows hover across every row', async ({ pa
       .getByTestId('row-Europe/Madrid')
       .locator('[data-testid="hour-label"]', { hasText: new RegExp(`^${hour}$`) })
       .evaluate((element) => getComputedStyle(element).fontWeight);
+  const rulerHourWeight = async (hour: string) =>
+    page
+      .getByTestId('ruler-surface')
+      .locator('[data-testid="hour-label"]', { hasText: new RegExp(`^${hour}$`) })
+      .evaluate((element) => getComputedStyle(element).fontWeight);
   expect(await hourWeight('18')).toBe('600');
+  expect(await rulerHourWeight('18')).toBe('600');
+  expect(await rulerHourWeight('17')).toBe('400');
 
   await page.mouse.move(10, 10);
   await expect(slot).toBeVisible();
   const returned = await slot.boundingBox();
   expect(returned?.x).toBeCloseTo(resting?.x ?? -1, 0);
   expect(await hourWeight('13')).toBe('600');
+  expect(await rulerHourWeight('13')).toBe('600');
 });
 
 test('emphasizes the home row and the hovered row', async ({ page }) => {
