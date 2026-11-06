@@ -87,7 +87,7 @@ Status text uses the semantic warning and danger tokens.
 | Raised  | `#2d2d2d` | Header, sticky columns, controls |
 | Border  | `#414141` | Dividers and control edges       |
 | Text    | `#e4e4e4` | Primary labels                   |
-| Muted   | `#b0b0b0` | Zone metadata and helpers        |
+| Muted   | `#c8c8c8` | Zone metadata and helpers (AA on home header) |
 
 ### Warm Dark board (A1.2)
 

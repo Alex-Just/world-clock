@@ -69,11 +69,13 @@
 
 [data-theme='dark'] {
   color-scheme: dark;
-  /* Black Chrome (D10) — board bands stay Warm Dark A1.2 */
+  /* Black Chrome (D10) — board bands stay Warm Dark A1.2.
+     Muted is lightened past D10 #b0b0b0 so text on home-row-header (#65443a)
+     keeps WCAG AA ≥ 4.5:1. */
   --surface: #232323;
   --surface-raised: #2d2d2d;
   --text: #e4e4e4;
-  --muted: #b0b0b0;
+  --muted: #c8c8c8;
   --border: #414141;
   --band-day: #695750;
   --band-twilight: #5a4a44;
