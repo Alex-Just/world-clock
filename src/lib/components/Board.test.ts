@@ -213,3 +213,25 @@ it('creates a range by dragging on a zone row', async () => {
     axis.startMs + 18 * 3_600_000,
   );
 });
+
+it('hides the zero relative offset for the home zone', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h'),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: false,
+      range: null,
+      settings,
+    },
+  });
+  expect(
+    within(screen.getByTestId('row-Europe/Madrid')).queryByTestId('relative-offset'),
+  ).toBeNull();
+  expect(
+    within(screen.getByTestId('row-Europe/Moscow')).getByTestId('relative-offset'),
+  ).toHaveTextContent('+2h');
+});

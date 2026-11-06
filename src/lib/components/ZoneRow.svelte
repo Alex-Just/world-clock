@@ -130,12 +130,15 @@
           <span class="sr-only">Home zone</span>
         {/if}
         <span class="text-text truncate text-sm font-medium sm:text-base">{model.label}</span>
-        <span
-          class="bg-surface text-muted shrink-0 rounded px-1 text-xs tabular-nums sm:text-sm"
-          title={`UTC offset ${utcOffsetLabel}`}
-        >
-          {formatOffset(model.relativeOffsetMinutes)}
-        </span>
+        {#if model.relativeOffsetMinutes !== 0}
+          <span
+            data-testid="relative-offset"
+            class="bg-surface text-muted shrink-0 rounded px-1 text-xs tabular-nums sm:text-sm"
+            title={`UTC offset ${utcOffsetLabel}`}
+          >
+            {formatOffset(model.relativeOffsetMinutes)}
+          </span>
+        {/if}
       </div>
       {#if hasMetadata}
         <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-xs sm:text-base">

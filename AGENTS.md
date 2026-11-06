@@ -90,7 +90,9 @@ docs/architecture.md  current design
 - The focus hour is the resting hour highlight; hover moves it and pointer leave,
   focus loss, or an outside pointer-down restores it. This is visual only and
   must not set focus, change the range, or persist.
-- Hide the relative-time badge when it would only read "Now".
+- Hide the relative-time badge when it would only read "Now", and hide the
+  relative-offset chip when it is zero. The DST badge appears only while the
+  zone is observing daylight saving time.
 - The home row keeps a subtle tint and left accent. Hovering a row dims the other
   rows; do not dim touch interactions.
 - The range hint and selected-range bar share a fixed 48px slot above the board.
