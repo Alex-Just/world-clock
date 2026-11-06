@@ -93,6 +93,12 @@ test('is usable on a narrow viewport without gesture conflicts', async ({ page }
   await page.mouse.up();
   await expect(page.getByTestId('range-bar')).toBeVisible();
   await expect(page.getByTestId('focus-line')).toBeVisible();
+  const focusStroke = await page.getByTestId('focus-line').evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { width: style.borderLeftWidth, filter: style.filter };
+  });
+  expect(focusStroke.width).toBe('2px');
+  expect(focusStroke.filter).not.toBe('none');
 });
 
 test('passes an axe scan on the board and settings', async ({ page }) => {

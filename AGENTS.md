@@ -88,6 +88,8 @@ docs/architecture.md  current design
   `home-accent` edge, including its hour cells; never use blue for home emphasis.
 - Keep focus/now lines, hour boundary ticks, and range fills aligned across
   the ruler and rows.
+- Keep the focus line a 2px dashed teal stroke with a soft light halo so it
+  stays visible over white work cells, blue bands, and the warm home row.
 - Base bands are day 08:00–18:00, twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00.
 - Click-drag a zone row to set a range; the duration bar above the board and row headers show the result.
 - The focus hour is the resting hour highlight; hover moves it and pointer leave,

@@ -86,8 +86,10 @@ Import replaces the current document only after confirmation. Export includes
 - The hint and selected-range bar share a fixed 48px slot above the board, so
   selecting a range does not reflow the board. Mobile row metrics stay stable.
 - Hour labels carry a tiny tick at each boundary in the ruler and every row.
-- Focus/now lines and range fills render in the ruler and every row. A hover
-  overlay follows the cursor without changing selection.
+- Focus/now lines and range fills render in the ruler and every row. The focus
+  line is a 2px dashed teal stroke with a soft light halo so it reads over
+  white work cells, blue bands, and the warm home row. A hover overlay follows
+  the cursor without changing selection.
 - On narrow screens the row header wraps the time block below the zone name;
   timeline labels stay legible instead of shrinking.
 - Display settings control abbreviation, exact offset, DST badge, IANA name,

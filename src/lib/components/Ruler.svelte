@@ -261,7 +261,7 @@
   >
     <div
       data-testid="focus-line"
-      class="border-focus-line-ui pointer-events-none absolute inset-y-0 w-0 border-l border-dashed"
+      class="border-focus-line-ui pointer-events-none absolute inset-y-0 w-0 border-l-2 border-dashed drop-shadow-[0_0_1px_rgba(255,255,255,0.85)]"
       style={`--position: ${focusPosition}`}
     ></div>
     <div
