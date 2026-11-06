@@ -2,6 +2,7 @@
   import { Clock, LocateFixed, Plus, Settings, Timer } from '@lucide/svelte';
   import { formatRelative } from '$lib/time/format';
   import type { InstantMs, TimeFormat, ZoneId } from '$lib/time/types';
+  import type { Snippet } from 'svelte';
   import FocusReadout from './FocusReadout.svelte';
   import IconButton from './primitives/IconButton.svelte';
 
@@ -17,6 +18,7 @@
     onOpenDuration,
     onOpenAddZone,
     onOpenSettings,
+    children,
   }: {
     focusMs: InstantMs;
     nowMs: InstantMs;
@@ -29,15 +31,16 @@
     onOpenDuration: () => void;
     onOpenAddZone: () => void;
     onOpenSettings: () => void;
+    children?: Snippet;
   } = $props();
 
   const relative = $derived(followNow ? 'Now' : formatRelative(focusMs - nowMs));
 </script>
 
 <header
-  class="border-border bg-surface-raised flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b px-4 py-3 sm:px-6"
+  class="border-border bg-surface-raised relative flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-2 sm:px-6"
 >
-  <div class="flex min-w-0 items-center gap-4 sm:gap-6">
+  <div class="flex min-w-0 shrink-0 items-center gap-4 sm:gap-6">
     <div class="text-text flex items-center gap-2 text-sm font-semibold tracking-tight">
       <Clock class="text-accent-text size-5" aria-hidden="true" />
       <h1 class="sr-only sm:not-sr-only">World Clock</h1>
@@ -53,7 +56,15 @@
     </span>
   </div>
 
-  <div class="flex items-center gap-1">
+  {#if children}
+    <div
+      class="order-last w-full sm:order-none sm:mx-auto sm:w-auto xl:absolute xl:top-1/2 xl:left-1/2 xl:mx-0 xl:-translate-x-1/2 xl:-translate-y-1/2"
+    >
+      {@render children()}
+    </div>
+  {/if}
+
+  <div class="ml-auto flex shrink-0 items-center gap-1">
     <button
       type="button"
       onclick={onNow}

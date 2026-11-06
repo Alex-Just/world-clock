@@ -9,10 +9,11 @@ persist in `localStorage`. There is no server, account, or sync.
 ```text
 App.svelte
 ├─ Header (focus readout, Now, Duration, Add zone, Settings)
-├─ DayStrip (seven-day window)
+├─ Header (brand, focus clock, inline day picker, actions)
 ├─ Board
 │  ├─ Ruler (hour scale, work strip, focus/now lines, range handles)
 │  └─ ZoneRow[] (local times, bands, labels, day/DST markers)
+├─ Board (zone rows, ruler, range)
 ├─ dialogs (add zone, set time, duration, settings, rename, shortcuts)
 └─ Toast
 ```
@@ -59,8 +60,9 @@ Three runes modules:
 Only the clock store reads `Date.now()`. `searchZones` also reads it for
 display-only offsets; callers can inject an instant.
 
-First run seeds San Francisco, Denver, New York, UTC, London, Madrid, Moscow,
-Delhi, and Chicago. The browser zone is home; if it is not in that list, it is
+First run seeds San Francisco, Denver, New York, UTC, Madrid, Moscow, and
+Delhi. Untouched legacy default lists drop London and Chicago on load;
+customized lists are preserved. The browser zone is home; if it is not in that list, it is
 prepended.
 
 ## Persistence

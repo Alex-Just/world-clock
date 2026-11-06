@@ -8,12 +8,14 @@
     onSelectDate,
     onShiftDay,
     onToday,
+    inline = false,
   }: {
     viewDate: DateString;
     homeZone: ZoneId;
     onSelectDate: (date: DateString) => void;
     onShiftDay: (days: number) => void;
     onToday: () => void;
+    inline?: boolean;
   } = $props();
 
   const days = $derived(Array.from({ length: 7 }, (_, index) => addDays(viewDate, index - 3)));
@@ -33,7 +35,9 @@
 <nav
   aria-label="Days"
   title={`Dates in ${homeZone}`}
-  class="border-border bg-surface flex items-center gap-1 overflow-x-auto border-b px-2 py-2 sm:px-4"
+  class={inline
+    ? 'flex items-center gap-1 overflow-x-auto'
+    : 'border-border bg-surface flex items-center gap-1 overflow-x-auto border-b px-2 py-2 sm:px-4'}
 >
   <button
     type="button"
@@ -56,7 +60,7 @@
       }}
       class="hover:bg-surface-raised flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
       class:text-accent-text={date === viewDate}
-      class:bg-surface-raised={date === viewDate}
+      class:bg-surface={date === viewDate}
       class:font-semibold={date === viewDate}
     >
       <span class="text-muted text-xs tracking-wide uppercase">{weekdayShort(date)}</span>

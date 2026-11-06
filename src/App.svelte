@@ -207,21 +207,22 @@
     onOpenSettings={() => {
       settingsOpen = true;
     }}
-  />
+  >
+    <DayStrip
+      viewDate={boardStore.viewDate}
+      homeZone={settingsStore.value.homeZone}
+      onSelectDate={selectDate}
+      onShiftDay={shiftDay}
+      onToday={goToday}
+      inline
+    />
+  </Header>
 
   {#if !persistenceAvailable}
     <div role="status" class="border-warning/30 bg-warning/10 text-warning px-4 py-2 text-xs">
       Settings can't be saved in this browser. Changes last until you reload.
     </div>
   {/if}
-
-  <DayStrip
-    viewDate={boardStore.viewDate}
-    homeZone={settingsStore.value.homeZone}
-    onSelectDate={selectDate}
-    onShiftDay={shiftDay}
-    onToday={goToday}
-  />
 
   <main id="board" class="p-4 sm:p-6">
     {#if boardStore.range}

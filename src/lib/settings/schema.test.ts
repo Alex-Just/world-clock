@@ -13,11 +13,9 @@ describe('defaults', () => {
       { timeZone: 'America/Denver', label: 'Denver' },
       { timeZone: 'America/New_York', label: 'New York' },
       { timeZone: 'UTC', label: 'UTC' },
-      { timeZone: 'Europe/London', label: 'London' },
       { timeZone: 'Europe/Madrid', label: 'Madrid' },
       { timeZone: 'Europe/Moscow', label: 'Moscow' },
       { timeZone: 'Asia/Kolkata', label: 'Delhi' },
-      { timeZone: 'America/Chicago', label: 'Chicago' },
     ]);
   });
 
@@ -28,17 +26,15 @@ describe('defaults', () => {
       'America/Denver',
       'America/New_York',
       'UTC',
-      'Europe/London',
       'Europe/Madrid',
       'Europe/Moscow',
       'Asia/Kolkata',
-      'America/Chicago',
     ]);
   });
 
   it('prepends an unfamiliar browser home zone', () => {
     const zones = seedZones('Europe/Berlin');
-    expect(zones).toHaveLength(10);
+    expect(zones).toHaveLength(8);
     expect(zones[0]).toEqual({ timeZone: 'Europe/Berlin', label: 'Berlin' });
   });
 });

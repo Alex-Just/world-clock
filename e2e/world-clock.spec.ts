@@ -175,10 +175,10 @@ test('zone menu renders above every row and inside the viewport', async ({ page 
 
 test('zone menu stays inside the viewport on the last row', async ({ page }) => {
   await page
-    .getByTestId('row-America/Chicago')
-    .getByRole('button', { name: /actions for chicago/i })
+    .getByTestId('row-Asia/Kolkata')
+    .getByRole('button', { name: /actions for delhi/i })
     .click();
-  const menu = page.getByRole('menu', { name: /actions for chicago/i });
+  const menu = page.getByRole('menu', { name: /actions for delhi/i });
   await expect(menu).toBeVisible();
   const rect = await menu.evaluate((node) => {
     const box = node.getBoundingClientRect();
@@ -218,7 +218,7 @@ test('zone menu works on a narrow viewport and dismisses cleanly', async ({ page
 
   await trigger.click();
   await expect(menu).toBeVisible();
-  await page.mouse.click(360, 80);
+  await page.mouse.click(10, 300);
   await expect(menu).toBeHidden();
 
   await trigger.click();

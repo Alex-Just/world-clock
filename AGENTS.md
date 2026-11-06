@@ -68,6 +68,8 @@ docs/architecture.md  current design
 - Import overwrites only after confirmation. Export includes `version` and
   `exportedAt`.
 - Do not add a backend or sync without an explicit product decision.
+- Changing seeded zones requires a migration limited to untouched legacy
+  defaults; never remove zones from a customized list.
 
 ## UI and accessibility
 
@@ -89,6 +91,9 @@ docs/architecture.md  current design
 - Test with axe; do not introduce color-only status.
 - Keep every user-facing font size at 12px or larger; use the scale in
   [`docs/typography.md`](docs/typography.md). Do not add arbitrary px sizes.
+- The day picker lives in the header on wide screens and wraps below the
+  controls on narrow screens. Keep it centered with `mx-auto`/absolute
+  positioning; do not restore a separate full-width strip.
 - Mobile inputs and selects are 16px and at least 44px tall to avoid iOS zoom.
 - Keep primary pointer targets at least 24×24; aim for 32px or more.
 - Respect `prefers-reduced-motion`.
