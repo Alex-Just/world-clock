@@ -355,6 +355,7 @@
             showWorkingHours={settings.showWorkingHours}
             {focusPosition}
             {nowPosition}
+            {slotCount}
             {rangeStartPosition}
             {rangeEndPosition}
             {crosshairActive}

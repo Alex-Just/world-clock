@@ -12,6 +12,7 @@
     showWorkingHours,
     focusPosition,
     nowPosition,
+    slotCount,
     rangeStartPosition,
     rangeEndPosition,
     crosshairActive = false,
@@ -40,6 +41,7 @@
     showWorkingHours: boolean;
     focusPosition: number;
     nowPosition: number | null;
+    slotCount: number;
     rangeStartPosition: number | null;
     rangeEndPosition: number | null;
     crosshairActive?: boolean;
@@ -73,6 +75,10 @@
     if (position <= 0.005) return 'left: 0; transform: none;';
     if (position >= 0.995) return 'left: 100%; transform: translateX(-100%);';
     return `left: ${pct(position)}; transform: translateX(-50%);`;
+  }
+
+  function cellLabelStyle(position: number, slots: number): string {
+    return `left: ${pct(position + 0.5 / Math.max(1, slots))}; transform: translateX(-50%);`;
   }
 
   const statusLabel = $derived(
@@ -299,7 +305,7 @@
         class={`text-band-text absolute bottom-1 z-10 px-0.5 text-base tabular-nums ${
           activeLabel ? 'font-semibold' : 'font-normal'
         }`}
-        style={labelStyle(label.position)}
+        style={cellLabelStyle(label.position, slotCount)}
       >
         {label.label}
       </div>

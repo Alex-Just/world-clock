@@ -742,23 +742,48 @@ test('keeps narrow 12-hour headers from overflowing', async ({ page }) => {
   }
 });
 
-test('marks hour boundaries under the ruler labels', async ({ page }) => {
+test('centers hour labels between boundary ticks', async ({ page }) => {
   await expect(page.getByText('New York')).toBeVisible();
   const ruler = page.getByTestId('ruler-surface');
   const labels = ruler.getByTestId('hour-label');
   const ticks = ruler.getByTestId('hour-tick');
-  expect(await labels.count()).toBeGreaterThanOrEqual(24);
-  expect(await ticks.count()).toBe(await labels.count());
+  const labelCount = await labels.count();
+  expect(labelCount).toBeGreaterThanOrEqual(24);
+  expect(await ticks.count()).toBe(labelCount);
 
-  const index = Math.min(5, (await labels.count()) - 1);
+  const rulerBox = await ruler.boundingBox();
+  if (!rulerBox) throw new Error('ruler missing');
+  const index = Math.min(5, labelCount - 1);
   const [labelBox, tickBox] = await Promise.all([
     labels.nth(index).boundingBox(),
     ticks.nth(index).boundingBox(),
   ]);
   if (!labelBox || !tickBox) throw new Error('hour marker missing');
-  expect(Math.abs(labelBox.x + labelBox.width / 2 - (tickBox.x + tickBox.width / 2))).toBeLessThan(
-    2,
-  );
+  const expectedOffset = rulerBox.width / labelCount / 2;
+  expect(
+    Math.abs(labelBox.x + labelBox.width / 2 - (tickBox.x + tickBox.width / 2) - expectedOffset),
+  ).toBeLessThan(2);
+
+  const row = page.getByTestId('row-Europe/Madrid');
+  const rowLabels = row.getByTestId('hour-label');
+  const rowTicks = row.getByTestId('hour-tick');
+  const rowCount = await rowLabels.count();
+  const timelineBox = await row.locator('[data-row-timeline]').boundingBox();
+  if (!timelineBox) throw new Error('row timeline missing');
+  const [rowLabelBox, rowTickBox] = await Promise.all([
+    rowLabels.nth(index).boundingBox(),
+    rowTicks.nth(index).boundingBox(),
+  ]);
+  if (!rowLabelBox || !rowTickBox) throw new Error('row hour marker missing');
+  const rowExpectedOffset = timelineBox.width / rowCount / 2;
+  expect(
+    Math.abs(
+      rowLabelBox.x +
+        rowLabelBox.width / 2 -
+        (rowTickBox.x + rowTickBox.width / 2) -
+        rowExpectedOffset,
+    ),
+  ).toBeLessThan(2);
 });
 
 test('keeps row hour ticks above white work cells', async ({ page }) => {

@@ -52,10 +52,8 @@
     return `${(position * 100).toFixed(4)}%`;
   }
 
-  function labelStyle(position: number): string {
-    if (position <= 0.005) return 'left: 0; transform: none;';
-    if (position >= 0.995) return 'left: 100%; transform: translateX(-100%);';
-    return `left: ${pct(position)}; transform: translateX(-50%);`;
+  function cellLabelStyle(position: number, slots: number): string {
+    return `left: ${pct(position + 0.5 / Math.max(1, slots))}; transform: translateX(-50%);`;
   }
 
   const focusPosition = $derived(pct(positionForInstant(axis, focusMs)));
@@ -209,7 +207,7 @@
     <div
       data-testid="hour-label"
       class="text-muted absolute bottom-1 px-0.5 text-base tabular-nums"
-      style={labelStyle(tick.position)}
+      style={cellLabelStyle(tick.position, axis.ticks.length)}
     >
       {tick.label}
     </div>
