@@ -761,6 +761,22 @@ test('marks hour boundaries under the ruler labels', async ({ page }) => {
   );
 });
 
+test('keeps row hour ticks above white work cells', async ({ page }) => {
+  const row = page.getByTestId('row-Europe/Madrid');
+  const tick = row.getByTestId('hour-tick').nth(10);
+  const workCell = row.getByTestId('work-cell').first();
+  const [tickBox, workBox] = await Promise.all([tick.boundingBox(), workCell.boundingBox()]);
+  if (!tickBox || !workBox) throw new Error('hour marker or work cell missing');
+  expect(tickBox.x).toBeGreaterThan(workBox.x);
+  expect(tickBox.x).toBeLessThan(workBox.x + workBox.width);
+
+  const [tickZ, workZ] = await Promise.all([
+    tick.evaluate((element) => getComputedStyle(element).zIndex),
+    workCell.evaluate((element) => getComputedStyle(element).zIndex),
+  ]);
+  expect(Number(tickZ)).toBeGreaterThan(Number(workZ));
+});
+
 test('escape clears the range and then returns to now', async ({ page }) => {
   const grid = page.getByRole('grid', { name: /world clock/i });
   const ruler = page.getByTestId('ruler-surface');

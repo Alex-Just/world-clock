@@ -87,7 +87,8 @@ docs/architecture.md  current design
 - The home row uses the warm `home-row`/`home-row-header` tokens and
   `home-accent` edge, including its hour cells; never use blue for home emphasis.
 - Keep focus/now lines, hour boundary ticks, and range fills aligned across
-  the ruler and rows.
+  the ruler and rows. Hour ticks must paint above the white work-cell overlay
+  so they stay visible in daytime working hours.
 - Keep the focus line a 2px dashed teal stroke with a soft light halo so it
   stays visible over white work cells, blue bands, and the warm home row.
 - The visible window is the home-zone day shifted in 6-hour wall-clock steps,

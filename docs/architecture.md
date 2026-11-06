@@ -94,6 +94,8 @@ Import replaces the current document only after confirmation. Export includes
 - The hint and selected-range bar share a fixed 48px slot above the board, so
   selecting a range does not reflow the board. Mobile row metrics stay stable.
 - Hour labels carry a tiny tick at each boundary in the ruler and every row.
+  Row ticks paint above the white work-cell overlay so they remain visible
+  during working hours.
 - Focus/now lines and range fills render in the ruler and every row. The focus
   line is a 2px dashed teal stroke with a soft light halo so it reads over
   white work cells, blue bands, and the warm home row. It is hidden when the
