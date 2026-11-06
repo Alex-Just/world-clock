@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import {
     Clock,
     ChevronLeft,
@@ -78,12 +79,50 @@
     Temporal.Instant.fromEpochMilliseconds(nowMs).toZonedDateTimeISO(homeZone).year,
   );
   const showFocusYear = $derived(focusYear !== nowYear);
+
+  let headerEl = $state<HTMLElement>();
+  let leftGroupEl = $state<HTMLDivElement>();
+  let rightGroupEl = $state<HTMLDivElement>();
+  let dayStripEl = $state<HTMLDivElement>();
+  let dayShift = $state(0);
+
+  onMount(() => {
+    const header = headerEl;
+    const leftGroup = leftGroupEl;
+    const rightGroup = rightGroupEl;
+    const dayStrip = dayStripEl;
+    if (!header || !leftGroup || !rightGroup || !dayStrip) return;
+    if (typeof ResizeObserver !== 'function') return;
+
+    const updateShift = () => {
+      const headerRect = header.getBoundingClientRect();
+      const stripRect = dayStrip.getBoundingClientRect();
+      const centeredLeft = (headerRect.width - stripRect.width) / 2;
+      const gap = 16;
+      const minLeft = leftGroup.getBoundingClientRect().right - headerRect.left + gap;
+      const maxLeft =
+        rightGroup.getBoundingClientRect().left - headerRect.left - gap - stripRect.width;
+      const left = Math.min(Math.max(centeredLeft, minLeft), Math.max(minLeft, maxLeft));
+      dayShift = Math.round(left - centeredLeft);
+    };
+
+    const observer = new ResizeObserver(updateShift);
+    observer.observe(header);
+    observer.observe(leftGroup);
+    observer.observe(rightGroup);
+    observer.observe(dayStrip);
+    updateShift();
+    return () => {
+      observer.disconnect();
+    };
+  });
 </script>
 
 <header
+  bind:this={headerEl}
   class="border-border bg-surface-raised relative flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-2 sm:px-6"
 >
-  <div class="flex min-w-0 shrink-0 items-center gap-4 sm:gap-6 xl:gap-3">
+  <div bind:this={leftGroupEl} class="flex min-w-0 shrink-0 items-center gap-4 sm:gap-6 xl:gap-3">
     <div class="text-text flex items-center gap-2 text-sm font-semibold tracking-tight">
       <Clock class="text-accent-text size-5" aria-hidden="true" />
       <h1 class="sr-only sm:not-sr-only">World Clock</h1>
@@ -124,17 +163,19 @@
 
   {#if children}
     <div
-      class={`order-last flex w-full justify-center min-[1440px]:absolute min-[1440px]:top-1/2 min-[1440px]:w-auto min-[1440px]:-translate-x-1/2 min-[1440px]:-translate-y-1/2 ${
-        format === '12h' || showFocusYear
-          ? 'min-[1440px]:left-[calc(50%+4rem)] min-[1600px]:left-1/2'
-          : 'min-[1440px]:left-[calc(50%+1rem)] min-[1600px]:left-1/2'
-      }`}
+      bind:this={dayStripEl}
+      data-testid="day-strip"
+      style={`--day-shift: ${String(dayShift)}px`}
+      class="order-last flex w-full justify-center min-[1440px]:absolute min-[1440px]:top-1/2 min-[1440px]:left-[calc(50%_+_var(--day-shift))] min-[1440px]:w-auto min-[1440px]:-translate-x-1/2 min-[1440px]:-translate-y-1/2"
     >
       {@render children()}
     </div>
   {/if}
 
-  <div class="ml-auto flex max-w-full shrink-0 flex-wrap items-center justify-end gap-1">
+  <div
+    bind:this={rightGroupEl}
+    class="ml-auto flex max-w-full shrink-0 flex-wrap items-center justify-end gap-1"
+  >
     <div
       role="group"
       aria-label="Visible time window"

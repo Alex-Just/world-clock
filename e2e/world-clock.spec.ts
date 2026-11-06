@@ -1042,6 +1042,7 @@ test('jumps to a distant date from the calendar', async ({ page }) => {
 });
 
 test('keeps the day strip clear of the wide cross-year readout', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole('button', { name: /settings/i }).click();
   await page.getByLabel(/24-hour time/i).setChecked(false);
   await page.getByRole('button', { name: /close settings/i }).click();
@@ -1051,12 +1052,27 @@ test('keeps the day strip clear of the wide cross-year readout', async ({ page }
   await page.getByLabel('Jump to date').press('Enter');
 
   await expect(page.getByTestId('relative-badge')).toBeVisible();
+  await page.waitForTimeout(100);
   const [badge, nav] = await Promise.all([
     page.getByTestId('relative-badge').boundingBox(),
     page.getByRole('navigation', { name: 'Days' }).boundingBox(),
   ]);
   if (!badge || !nav) throw new Error('header detail or day strip missing');
-  expect(badge.x + badge.width).toBeLessThanOrEqual(nav.x);
+  expect(badge.x + badge.width).toBeLessThan(nav.x);
+
+  await page.setViewportSize({ width: 1920, height: 900 });
+  await page.waitForTimeout(100);
+  const [wideBadge, wideNav, dayStrip, header] = await Promise.all([
+    page.getByTestId('relative-badge').boundingBox(),
+    page.getByRole('navigation', { name: 'Days' }).boundingBox(),
+    page.getByTestId('day-strip').boundingBox(),
+    page.locator('header').boundingBox(),
+  ]);
+  if (!wideBadge || !wideNav || !dayStrip || !header) {
+    throw new Error('wide header layout missing');
+  }
+  expect(wideBadge.x + wideBadge.width).toBeLessThan(wideNav.x);
+  expect(dayStrip.x + dayStrip.width / 2).toBeCloseTo(header.x + header.width / 2, 0);
 });
 
 test('keeps the clicked time when a shifted window resets the day', async ({ page }) => {

@@ -152,9 +152,9 @@ docs/architecture.md  current design
   same day-navigation path as the date buttons. Its jump field accepts
   `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` (separators optional for compact digits).
   Below 1440px the day strip gets its own centered row. From 1440px upward it
-  sits inline with the header actions; between 1440 and 1599px it gets a small
-  right offset (larger for 12-hour or cross-year readouts) to clear the wider
-  focus details. At 1600px and above it is fully centered.
+  sits inline with the header actions, centered while it clears the focus
+  details and relative badge, then shifted right only as far as needed. Measure
+  the header groups; do not hard-code a pixel nudge.
 - Weekend dates in the seven-day strip use a blue-gray underline; today uses
   the dark-yellow home accent underline. Do not use background tints that
   could be mistaken for the selected-date state.
