@@ -747,3 +747,25 @@ test('marks hour boundaries under the ruler labels', async ({ page }) => {
     2,
   );
 });
+
+test('escape clears the range and then returns to now', async ({ page }) => {
+  const grid = page.getByRole('grid', { name: /world clock/i });
+  const ruler = page.getByTestId('ruler-surface');
+  const box = await ruler.boundingBox();
+  if (!box) throw new Error('ruler missing');
+
+  await page.mouse.move(box.x + box.width * 0.25, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.55, box.y + box.height / 2, { steps: 8 });
+  await page.mouse.up();
+  await expect(page.getByTestId('range-bar')).toBeVisible();
+  await expect(grid).toHaveAttribute('data-following', 'false');
+
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('range-bar')).toBeHidden();
+  await expect(grid).toHaveAttribute('data-following', 'false');
+
+  await page.keyboard.press('Escape');
+  await expect(grid).toHaveAttribute('data-following', 'true');
+  await expect(page.getByTestId('relative-badge')).toBeHidden();
+});

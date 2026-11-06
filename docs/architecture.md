@@ -96,6 +96,7 @@ Import replaces the current document only after confirmation. Export includes
   that duplicates the zone label is omitted, and zero relative offsets are
   hidden. DST badges render only while DST is active.
 - Keyboard shortcuts are global except in text fields or open dialogs.
+  Escape closes overlays, clears an active range, then returns the board to Now.
 - Tailwind `dark:` variants are bound to `data-theme='dark'` so the explicit
   theme works when the OS theme differs. Status, warning, danger, and accent
   text use semantic tokens defined in `src/app.css`.

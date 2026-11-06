@@ -160,8 +160,12 @@
         openHelp: () => {
           helpOpen = true;
         },
-        clearRange: () => {
-          boardStore.clearRange();
+        resetBoard: () => {
+          if (boardStore.range) {
+            boardStore.clearRange();
+          } else {
+            boardStore.now();
+          }
         },
       },
       window,

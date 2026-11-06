@@ -11,7 +11,7 @@ function makeHandlers() {
     openAddZone: vi.fn(),
     openSettings: vi.fn(),
     openHelp: vi.fn(),
-    clearRange: vi.fn(),
+    resetBoard: vi.fn(),
   };
 }
 
@@ -28,6 +28,8 @@ it('maps keys to actions', () => {
   expect(handlers.setDayEdge).toHaveBeenCalledWith('end');
   window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }));
   expect(handlers.openHelp).toHaveBeenCalled();
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(handlers.resetBoard).toHaveBeenCalled();
   stop();
 });
 

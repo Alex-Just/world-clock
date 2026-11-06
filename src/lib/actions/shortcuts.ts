@@ -7,7 +7,7 @@ export interface ShortcutHandlers {
   openAddZone: () => void;
   openSettings: () => void;
   openHelp: () => void;
-  clearRange: () => void;
+  resetBoard: () => void;
 }
 
 export function installShortcuts(
@@ -23,7 +23,7 @@ export function installShortcuts(
 
     const element = event.target instanceof Element ? event.target : null;
     if (element?.closest('input, textarea, select, [contenteditable="true"]')) return;
-    if (document.querySelector('dialog[open], [role="dialog"]')) return;
+    if (document.querySelector('dialog[open], [role="dialog"], [popover]:popover-open')) return;
 
     const mod = event.metaKey || event.ctrlKey;
     if (mod && event.key.toLowerCase() === 'k') {
@@ -73,7 +73,7 @@ export function installShortcuts(
         handlers.openHelp();
         break;
       case 'Escape':
-        handlers.clearRange();
+        handlers.resetBoard();
         break;
       default:
         return;

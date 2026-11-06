@@ -103,6 +103,8 @@ docs/architecture.md  current design
 - Hour labels in the active column are semibold.
 - Display toggles must change the rendered row, not only stored state.
 - Keep keyboard shortcuts working outside inputs and open dialogs.
+- Escape closes overlays first, then clears the range, then returns focus to Now
+  and the initial board state. Pointer hover tracking is global to the board.
 - Test with axe; do not introduce color-only status.
 - Keep every user-facing font size at 12px or larger; use the scale in
   [`docs/typography.md`](docs/typography.md). Do not add arbitrary px sizes.

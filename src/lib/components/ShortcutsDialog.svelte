@@ -14,7 +14,7 @@
     ['Cmd/Ctrl + K', 'Add a time zone'],
     ['Cmd/Ctrl + ,', 'Open settings'],
     ['?', 'Show this help'],
-    ['Esc', 'Clear the range'],
+    ['Esc', 'Clear the range; press again for Now'],
   ];
 </script>
 

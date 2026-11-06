@@ -183,9 +183,21 @@
         hoveredZone = null;
       }
     };
+    const clearOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      hoverSlot = null;
+      hoveredZone = null;
+    };
+    const handleGlobalMove = (event: PointerEvent) => {
+      handlePointerMove(event);
+    };
     document.addEventListener('pointerdown', resetOutside, true);
+    window.addEventListener('pointermove', handleGlobalMove, { passive: true });
+    window.addEventListener('keydown', clearOnEscape);
     return () => {
       document.removeEventListener('pointerdown', resetOutside, true);
+      window.removeEventListener('pointermove', handleGlobalMove);
+      window.removeEventListener('keydown', clearOnEscape);
     };
   });
 
@@ -214,7 +226,6 @@
   aria-colcount={2}
   data-following={followNow}
   onpointerdown={handleRowPointerDown}
-  onpointermove={handlePointerMove}
   onpointerleave={() => {
     hoverSlot = null;
     hoveredZone = null;
