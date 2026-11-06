@@ -63,8 +63,8 @@
       class:bg-surface={date === viewDate}
       class:font-semibold={date === viewDate}
     >
-      <span class="text-muted text-xs tracking-wide uppercase">{weekdayShort(date)}</span>
-      <span class="text-text text-sm tabular-nums">{dayNumber(date)}</span>
+      <span class="text-muted text-sm tracking-wide uppercase">{weekdayShort(date)}</span>
+      <span class="text-text text-base tabular-nums">{dayNumber(date)}</span>
     </button>
   {/each}
 

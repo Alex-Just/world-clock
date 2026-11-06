@@ -96,6 +96,8 @@ docs/architecture.md  current design
 - Test with axe; do not introduce color-only status.
 - Keep every user-facing font size at 12px or larger; use the scale in
   [`docs/typography.md`](docs/typography.md). Do not add arbitrary px sizes.
+- UI controls use a 16px base via the global rules in `src/app.css`. Do not
+  shrink buttons, labels, inputs, or menu items with `text-xs`.
 - The day picker lives in the header on wide screens and wraps below the
   controls on narrow screens. Keep it centered with `mx-auto`/absolute
   positioning; do not restore a separate full-width strip.

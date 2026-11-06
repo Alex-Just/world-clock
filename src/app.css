@@ -30,6 +30,8 @@
 
 :root {
   color-scheme: light;
+  --ui-font-size: 1rem;
+  --ui-control-height: 2.75rem;
   --surface: #f5f5f5;
   --surface-raised: #ffffff;
   --text: #212121;
@@ -158,6 +160,7 @@ body {
 
 body {
   margin: 0;
+  font-size: var(--ui-font-size);
   background: var(--surface);
   color: var(--text);
   font-family:
@@ -178,13 +181,26 @@ body {
   outline-offset: 2px;
 }
 
-@media (max-width: 639px) {
-  input:not([type='checkbox']):not([type='radio']),
-  select,
-  textarea {
-    font-size: 1rem;
-    min-height: 2.75rem;
-  }
+button,
+label,
+legend,
+input:not([type='checkbox']):not([type='radio']),
+select,
+textarea {
+  font-size: var(--ui-font-size);
+}
+
+input:not([type='checkbox']):not([type='radio']),
+select,
+textarea {
+  min-height: var(--ui-control-height);
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

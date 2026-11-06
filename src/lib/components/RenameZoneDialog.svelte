@@ -39,8 +39,8 @@
     <div class="p-4">
       <div class="flex items-start justify-between gap-3">
         <div>
-          <h2 id="rename-zone-title" class="text-sm font-semibold">Edit zone</h2>
-          <p class="text-muted mt-0.5 text-xs">{zone.timeZone}</p>
+          <h2 id="rename-zone-title" class="text-xl font-semibold">Edit zone</h2>
+          <p class="text-muted mt-0.5 text-sm">{zone.timeZone}</p>
         </div>
         <button
           type="button"
@@ -48,9 +48,9 @@
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
         >
-          <span aria-hidden="true">×</span>
+          <span class="text-2xl" aria-hidden="true">×</span>
         </button>
       </div>
 
@@ -80,7 +80,7 @@
           onclick={() => {
             onClose();
           }}
-          class="border-border text-text hover:bg-surface h-8 rounded-lg border px-2.5 text-xs font-medium"
+          class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
         >
           Cancel
         </button>
@@ -88,7 +88,7 @@
           type="button"
           disabled={!trimmed}
           onclick={save}
-          class="bg-accent text-accent-contrast h-8 rounded-lg px-2.5 text-xs font-medium disabled:opacity-50"
+          class="bg-accent text-accent-contrast h-10 rounded-lg px-3 text-sm font-medium disabled:opacity-50"
         >
           Save
         </button>

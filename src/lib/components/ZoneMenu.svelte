@@ -96,11 +96,11 @@
   popover={supportsPopover ? 'manual' : undefined}
   role="menu"
   aria-label={`Actions for ${zone.label}`}
-  class="border-border bg-surface-raised fixed inset-auto z-50 m-0 max-h-[calc(100vh-1rem)] w-48 overflow-y-auto rounded-xl border p-1 shadow-xl"
+  class="border-border bg-surface-raised fixed inset-auto z-50 m-0 max-h-[calc(100vh-1rem)] w-60 overflow-y-auto rounded-xl border p-2 shadow-xl"
 >
-  <div class="px-2 py-1.5">
-    <p class="text-text truncate text-xs font-medium">{zone.label}</p>
-    <p class="text-muted truncate text-xs">{zone.timeZone}</p>
+  <div class="px-2.5 py-2">
+    <p class="text-text truncate text-base font-semibold">{zone.label}</p>
+    <p class="text-muted truncate text-sm">{zone.timeZone}</p>
   </div>
 
   <button
@@ -111,7 +111,7 @@
       onSetHome();
       onClose();
     }}
-    class="text-text hover:bg-surface block w-full rounded-lg px-2 py-1.5 text-left text-xs disabled:opacity-40"
+    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base disabled:opacity-40"
   >
     Set as home
   </button>
@@ -122,7 +122,7 @@
       onRename();
       onClose();
     }}
-    class="text-text hover:bg-surface block w-full rounded-lg px-2 py-1.5 text-left text-xs"
+    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base"
   >
     Rename
   </button>
@@ -134,7 +134,7 @@
       onMoveUp();
       onClose();
     }}
-    class="text-text hover:bg-surface block w-full rounded-lg px-2 py-1.5 text-left text-xs disabled:opacity-40"
+    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base disabled:opacity-40"
   >
     Move up
   </button>
@@ -146,7 +146,7 @@
       onMoveDown();
       onClose();
     }}
-    class="text-text hover:bg-surface block w-full rounded-lg px-2 py-1.5 text-left text-xs disabled:opacity-40"
+    class="text-text hover:bg-surface block w-full rounded-lg px-2.5 py-2.5 text-left text-base disabled:opacity-40"
   >
     Move down
   </button>
@@ -158,7 +158,7 @@
       onRemove();
       onClose();
     }}
-    class="hover:bg-surface text-danger block w-full rounded-lg px-2 py-1.5 text-left text-xs disabled:opacity-40"
+    class="hover:bg-surface text-danger block w-full rounded-lg px-2.5 py-2.5 text-left text-base disabled:opacity-40"
   >
     Remove
   </button>

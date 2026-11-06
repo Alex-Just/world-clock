@@ -85,16 +85,16 @@
   >
     <div class="flex flex-col">
       <header class="border-border flex items-center justify-between border-b px-4 py-3">
-        <h2 id="add-zone-title" class="text-base font-semibold">Add a time zone</h2>
+        <h2 id="add-zone-title" class="text-xl font-semibold">Add a time zone</h2>
         <button
           type="button"
           aria-label="Close add zone"
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
         >
-          <span aria-hidden="true">×</span>
+          <span class="text-2xl" aria-hidden="true">×</span>
         </button>
       </header>
 
@@ -142,9 +142,9 @@
             >
               <span class="flex min-w-0 items-baseline gap-2">
                 <span class="text-text truncate font-medium">{result.label}</span>
-                <span class="text-muted truncate text-xs">{result.timeZone}</span>
+                <span class="text-muted truncate text-sm">{result.timeZone}</span>
               </span>
-              <span class="text-muted shrink-0 text-right text-xs">
+              <span class="text-muted shrink-0 text-right text-sm">
                 {result.abbreviation} · {formatOffset(result.offsetMinutes)}
                 {#if added.has(result.timeZone)}
                   · Added
@@ -152,7 +152,7 @@
               </span>
             </li>
           {:else}
-            <li class="text-muted px-2 py-6 text-center text-xs">No zones match that search.</li>
+            <li class="text-muted px-2 py-6 text-center text-sm">No zones match that search.</li>
           {/each}
         </ul>
       </div>

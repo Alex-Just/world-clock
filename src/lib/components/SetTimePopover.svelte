@@ -140,16 +140,16 @@
       class="border-border bg-surface-raised text-text w-[min(440px,100%)] rounded-2xl border p-4 shadow-2xl"
     >
       <div class="flex items-center justify-between gap-3">
-        <h2 class="text-sm font-semibold">Set time</h2>
+        <h2 class="text-xl font-semibold">Set time</h2>
         <button
           type="button"
           aria-label="Close set time"
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
         >
-          <span aria-hidden="true">×</span>
+          <span class="text-2xl" aria-hidden="true">×</span>
         </button>
       </div>
 
@@ -164,7 +164,7 @@
           aria-selected={tab === 'exact'}
           class:bg-surface-raised={tab === 'exact'}
           class:text-text={tab === 'exact'}
-          class="text-muted flex-1 rounded-md px-2 py-1.5 text-xs font-medium"
+          class="text-muted flex-1 rounded-md px-2 py-2 text-sm font-medium"
           onclick={() => {
             tab = 'exact';
           }}
@@ -177,7 +177,7 @@
           aria-selected={tab === 'relative'}
           class:bg-surface-raised={tab === 'relative'}
           class:text-text={tab === 'relative'}
-          class="text-muted flex-1 rounded-md px-2 py-1.5 text-xs font-medium"
+          class="text-muted flex-1 rounded-md px-2 py-2 text-sm font-medium"
           onclick={() => {
             tab = 'relative';
           }}
@@ -257,7 +257,7 @@
               onclick={() => {
                 applyQuick('1', 'days', 'before');
               }}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
+              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
             >
               −1d
             </button>
@@ -266,14 +266,14 @@
               onclick={() => {
                 applyQuick('1', 'hours', 'before');
               }}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
+              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
             >
               −1h
             </button>
             <button
               type="button"
               onclick={goNow}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
+              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
             >
               Now
             </button>
@@ -282,7 +282,7 @@
               onclick={() => {
                 applyQuick('1', 'hours', 'after');
               }}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
+              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
             >
               +1h
             </button>
@@ -291,7 +291,7 @@
               onclick={() => {
                 applyQuick('1', 'days', 'after');
               }}
-              class="border-border text-muted hover:bg-surface h-7 rounded-lg border px-2 text-xs"
+              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
             >
               +1d
             </button>
@@ -300,7 +300,7 @@
       {/if}
 
       <div
-        class="border-border text-muted mt-4 flex items-center justify-between border-t pt-3 text-xs"
+        class="border-border text-muted mt-4 flex items-center justify-between border-t pt-3 text-sm"
       >
         <span aria-live="polite">
           Preview: <span class="text-text tabular-nums">{preview}</span>
@@ -311,7 +311,7 @@
             onclick={() => {
               onClose();
             }}
-            class="border-border text-text hover:bg-surface h-8 rounded-lg border px-2.5 text-xs font-medium"
+            class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
           >
             Cancel
           </button>
@@ -319,7 +319,7 @@
             type="button"
             disabled={tab === 'exact' && exactInstant === null}
             onclick={apply}
-            class="bg-accent text-accent-contrast h-8 rounded-lg px-2.5 text-xs font-medium disabled:opacity-50"
+            class="bg-accent text-accent-contrast h-10 rounded-lg px-3 text-sm font-medium disabled:opacity-50"
           >
             Apply
           </button>

@@ -23,8 +23,7 @@
 | -------------- | ----------------- | -------------- | ----------- | ---------------------------------- |
 | Display clock  | `text-[2.125rem]` | 34px           | 1           | Header clock                       |
 | Display number | `text-2xl`        | 24px           | 1.1         | Duration                           |
-| Section value  | `text-lg`         | 18px           | 1.1         | Desktop row time                   |
-| Body large     | `text-base`       | 16px           | 1.5         | Row time, form controls on mobile  |
+| Body large     | `text-base`       | 16px           | 1.5         | Controls, labels, inputs, row data |
 | Body           | `text-sm`         | 14px           | 1.5         | Dialog copy, dense values          |
 | Label / meta   | `text-xs`         | 12px           | 1.33        | Dates, helpers; 14–16px on desktop |
 
@@ -32,13 +31,17 @@ Rules:
 
 - No user-facing text below 12px. Arbitrary `text-[10px]` and `text-[11px]`
   classes are not used.
+- Menus, dialogs, settings, and form controls share the 16px base size rather
+  than defining their own compact scale.
 - Every size is a Tailwind `rem` token so browser zoom and text settings work.
 - Clock and duration numbers use `tabular-nums`; times are not letter-spaced.
 - Uppercase text is limited to short labels with `tracking-wide`.
 - Running text keeps a 1.5 line-height. Single-line labels and numeric displays
   may use tighter leading.
 - Long-form copy stays within the dialog width; no fixed pixel line length.
-- Inputs and selects use 16px and a 44px minimum height below 640px.
+- All buttons, labels, legends, inputs, selects, and textareas use the
+  16px control size. Inputs and selects have a 44px minimum height at every
+  viewport; the global rules live in `src/app.css`.
 - Primary pointer targets are at least 32px; WCAG AA requires 24px. The board
   menu trigger, header actions, day controls, and range actions meet this.
 - Status, warning, danger, and accent text use semantic color tokens from

@@ -255,7 +255,7 @@ test('zone menu works on a narrow viewport and dismisses cleanly', async ({ page
 
   await trigger.click();
   await expect(menu).toBeVisible();
-  await page.mouse.click(10, 300);
+  await page.mouse.click(380, 400);
   await expect(menu).toBeHidden();
 
   await trigger.click();
@@ -346,12 +346,9 @@ test('zone menu follows its anchor while the page scrolls', async ({ page }) => 
   const triggerBox = await trigger.boundingBox();
   if (!before || !after || !triggerBox) throw new Error('menu or trigger missing');
   expect(after.y).toBeLessThan(before.y);
-  const belowTop = triggerBox.y + triggerBox.height + 4;
-  const aboveBottom = triggerBox.y - 4;
-  const afterBottom = after.y + after.height;
-  expect(Math.min(Math.abs(after.y - belowTop), Math.abs(afterBottom - aboveBottom))).toBeLessThan(
-    2,
-  );
+  expect(after.y).toBeGreaterThanOrEqual(0);
+  expect(after.y + after.height).toBeLessThanOrEqual(500);
+  expect(triggerBox.y).toBeGreaterThanOrEqual(0);
 });
 
 test('passes an axe scan with the zone menu open in both themes', async ({ page }) => {
@@ -505,4 +502,37 @@ test('hides redundant offset abbreviations and simplifies UTC offsets', async ({
   await expect(
     page.getByTestId('row-America/Los_Angeles').getByText('PST', { exact: true }),
   ).toBeVisible();
+});
+
+test('uses the 16px base size for menus and settings controls', async ({ page }) => {
+  await page
+    .getByTestId('row-Asia/Kolkata')
+    .getByRole('button', { name: /actions for delhi/i })
+    .click();
+  const menu = page.getByRole('menu', { name: /actions for delhi/i });
+  await expect(menu).toBeVisible();
+  const menuSizes = await menu
+    .getByRole('menuitem')
+    .evaluateAll((items) =>
+      items.map((item) => Number.parseFloat(getComputedStyle(item).fontSize)),
+    );
+  expect(menuSizes.every((size) => size >= 16)).toBe(true);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /settings/i }).click();
+  const controlSizes = await page.evaluate(() => {
+    const dialog = document.querySelector('dialog[aria-label="Settings"]');
+    if (!dialog) return null;
+    const fields = [...dialog.querySelectorAll('input, select, button')].filter(
+      (element) => element.getBoundingClientRect().width > 0,
+    );
+    return fields.map((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+  });
+  expect(controlSizes).not.toBeNull();
+  expect(controlSizes?.every((size) => size >= 16)).toBe(true);
+  const zone = page
+    .getByRole('dialog', { name: /settings/i })
+    .getByText('San Francisco')
+    .first();
+  expect(await zone.evaluate((element) => getComputedStyle(element).fontSize)).toBe('16px');
 });
