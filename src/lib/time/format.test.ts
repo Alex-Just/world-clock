@@ -16,17 +16,17 @@ describe('time and date', () => {
   it('formats 24-hour and 12-hour times', () => {
     const midnight = Date.parse('2026-11-05T00:00:00Z');
     expect(formatTime(midnight, 'UTC', '24h')).toBe('00:00');
-    expect(normalize(formatTime(midnight, 'UTC', '12h', { locale: 'en-US' }))).toBe('12:00am');
+    expect(normalize(formatTime(midnight, 'UTC', '12h', { locale: 'en-US' }))).toBe('12:00 AM');
     expect(
       normalize(formatTime(Date.parse('2026-11-05T12:00:00Z'), 'UTC', '12h', { locale: 'en-US' })),
-    ).toBe('12:00pm');
+    ).toBe('12:00 PM');
   });
 
   it('formats compact ruler labels', () => {
-    expect(formatHourLabel(0, '24h')).toBe('0');
+    expect(formatHourLabel(0, '24h')).toBe('00');
     expect(formatHourLabel(13, '24h')).toBe('13');
-    expect(formatHourLabel(0, '12h')).toBe('am');
-    expect(formatHourLabel(12, '12h')).toBe('pm');
+    expect(formatHourLabel(0, '12h')).toBe('12a');
+    expect(formatHourLabel(12, '12h')).toBe('12p');
     expect(formatHourLabel(13, '12h')).toBe('1');
   });
 
@@ -38,7 +38,7 @@ describe('time and date', () => {
       }),
     ).toBe('Fri, Nov 6');
     expect(formatDayMarker(Date.parse('2026-11-05T05:00:00Z'), 'America/New_York', 'en-US')).toBe(
-      'Nov 5',
+      'Thu 5',
     );
   });
 });

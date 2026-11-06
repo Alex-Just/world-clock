@@ -44,6 +44,12 @@
     return `${(position * 100).toFixed(4)}%`;
   }
 
+  function labelStyle(position: number): string {
+    if (position <= 0.005) return 'left: 0; transform: none;';
+    if (position >= 0.995) return 'left: 100%; transform: translateX(-100%);';
+    return `left: ${pct(position)}; transform: translateX(-50%);`;
+  }
+
   const focusPosition = $derived(pct(positionForInstant(axis, focusMs)));
   const nowInView = $derived(nowMs >= axis.startMs && nowMs <= axis.endMs);
   const nowPosition = $derived(pct(positionForInstant(axis, nowMs)));
@@ -179,24 +185,31 @@
   data-timeline
   data-format={format}
   use:horizontalDrag={surfaceHandlers}
-  class="bg-surface-raised relative h-10 min-w-0 touch-none select-none"
+  class="border-border bg-surface-raised relative h-14 min-w-0 touch-none border-b select-none"
 >
-  <div
-    class="bg-track absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full"
-    aria-hidden="true"
-  >
+  <div class="bg-border/50 absolute inset-x-0 top-0 h-1" aria-hidden="true">
     {#each work as segment (segment.start)}
       <div
-        class="bg-accent/30 absolute inset-y-0"
+        class="bg-accent/45 absolute inset-y-0"
         style={`left: ${pct(segment.start)}; width: ${pct(segment.end - segment.start)}`}
       ></div>
     {/each}
   </div>
 
+  {#each axis.ticks as tick (tick.instantMs)}
+    <div
+      data-testid="hour-label"
+      class="text-muted absolute bottom-1 px-0.5 text-xs tabular-nums"
+      style={labelStyle(tick.position)}
+    >
+      {tick.label}
+    </div>
+  {/each}
+
   {#if rangeStart !== null && rangeWidth !== null}
     <div
       data-testid="range-fill"
-      class="bg-now/35 absolute top-1/2 z-10 h-0.5 -translate-y-1/2"
+      class="bg-accent/5 absolute inset-y-2 z-10"
       style={`left: ${rangeStart}; width: ${rangeWidth}`}
     ></div>
   {/if}
@@ -205,27 +218,23 @@
     <div
       data-testid="range-start-handle"
       use:horizontalDrag={startHandleHandlers}
-      class="absolute top-1/2 z-40 flex size-6 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize items-center justify-center"
+      class="border-surface-raised bg-accent absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
       style={`left: ${rangeStart}`}
       title="Drag range start"
-    >
-      <span class="border-surface-raised bg-now size-4 rounded-full border-2 shadow-sm"></span>
-    </div>
+    ></div>
     <div
       data-testid="range-end-handle"
       use:horizontalDrag={endHandleHandlers}
-      class="absolute top-1/2 z-40 flex size-6 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize items-center justify-center"
+      class="border-surface-raised bg-accent absolute top-1 z-40 h-3 w-3 -translate-x-1/2 cursor-ew-resize rounded-full border-2 shadow"
       style={`left: ${rangeEnd}`}
       title="Drag range end"
-    >
-      <span class="border-surface-raised bg-now size-4 rounded-full border-2 shadow-sm"></span>
-    </div>
+    ></div>
   {/if}
 
   {#if nowInView}
     <div
       data-testid="now-line"
-      class="border-accent/60 pointer-events-none absolute inset-y-0 z-10 w-px border-l border-dashed"
+      class="border-muted pointer-events-none absolute inset-y-0 z-10 w-px border-l border-dashed"
       style={`--position: ${nowPosition}; left: var(--position)`}
       title="Now"
     ></div>
@@ -245,16 +254,14 @@
   >
     <div
       data-testid="focus-line"
-      class="border-now pointer-events-none absolute inset-y-0 w-0 border-l border-dashed"
+      class="bg-accent pointer-events-none absolute inset-y-0 w-0.5"
       style={`--position: ${focusPosition}`}
     ></div>
     <div
       data-testid="focus-handle"
       use:horizontalDrag={focusHandlers}
-      class="absolute bottom-0 left-1/2 flex size-6 -translate-x-1/2 translate-y-1/2 items-center justify-center"
+      class="border-surface-raised bg-accent absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border-2 shadow"
       title="Drag to move the focus time"
-    >
-      <span class="border-surface-raised bg-now size-4 rounded-full border-2 shadow-sm"></span>
-    </div>
+    ></div>
   </div>
 </div>

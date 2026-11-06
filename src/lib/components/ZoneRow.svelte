@@ -1,7 +1,7 @@
 <script lang="ts">
   import { House } from '@lucide/svelte';
   import ZoneMenu from './ZoneMenu.svelte';
-  import { formatUtcOffset } from '$lib/time/format';
+  import { formatOffset, formatUtcOffset } from '$lib/time/format';
   import type { Availability, ZoneRowModel } from '$lib/time/types';
 
   let {
@@ -69,6 +69,14 @@
         : 'Night',
   );
 
+  const statusClass = $derived(
+    model.focusedStatus === 'working'
+      ? 'text-accent-text'
+      : model.focusedStatus === 'day'
+        ? 'text-status-day'
+        : 'text-muted',
+  );
+
   const rangeStatusLabel = $derived(
     rangeStatus === 'in'
       ? 'Working hours'
@@ -83,43 +91,69 @@
 <div
   role="row"
   data-testid={`row-${model.timeZone}`}
-  class="border-border relative border-b last:border-b-0"
+  class="border-border flex min-w-[980px] border-b last:border-b-0"
 >
   <div
     role="gridcell"
-    class="bg-surface-raised sticky left-0 z-30 flex w-[calc(100vw-2rem)] flex-wrap items-center gap-x-2 gap-y-0.5 px-3 py-1 sm:w-full sm:flex-nowrap sm:px-4"
+    class="border-border bg-surface-raised sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 border-r px-2 py-1.5 sm:w-[260px] sm:flex-nowrap sm:px-3"
+    title={`${model.timeZone} · ${formatUtcOffset(model.offsetMinutes)}`}
   >
-    <div class="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5">
-      {#if isHome}
-        <House class="text-accent-text size-3.5 shrink-0" aria-hidden="true" />
-        <span class="sr-only">Home zone</span>
-      {/if}
-      <span class="text-text truncate text-base leading-tight">{model.label}</span>
-      {#if showAbbreviation}
-        <span class="text-muted text-base leading-tight">{model.abbreviation}</span>
-      {/if}
-      {#if showUtcOffset}
-        <span class="text-muted text-base leading-tight"
-          >{formatUtcOffset(model.offsetMinutes)}</span
+    <div class="w-full min-w-0 sm:w-auto sm:flex-1">
+      <div class="flex items-center gap-1.5">
+        {#if isHome}
+          <House class="text-accent-text size-3 shrink-0" aria-hidden="true" />
+          <span class="sr-only">Home zone</span>
+        {/if}
+        <span class="text-text truncate text-xs font-medium sm:text-sm">{model.label}</span>
+        <span
+          class="bg-surface text-muted shrink-0 rounded px-1 text-xs tabular-nums"
+          title={`UTC offset ${formatUtcOffset(model.offsetMinutes)}`}
         >
-      {/if}
-      {#if showDst && model.dst.active}
-        <span class="bg-status-day/15 text-status-day rounded px-1 text-xs">DST</span>
-      {/if}
-      {#if showIana}
-        <span class="text-muted hidden max-w-40 truncate text-xs sm:inline">{model.timeZone}</span>
-      {/if}
+          {formatOffset(model.relativeOffsetMinutes)}
+        </span>
+      </div>
+      <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-xs">
+        {#if showAbbreviation}
+          <span>{model.abbreviation}</span>
+        {/if}
+        {#if showUtcOffset}
+          <span>{formatUtcOffset(model.offsetMinutes)}</span>
+        {/if}
+        {#if showDst && model.dst.active}
+          <span class="bg-status-day/15 text-status-day rounded px-1">DST</span>
+        {/if}
+        {#if showIana}
+          <span class="max-w-24 truncate sm:max-w-40">{model.timeZone}</span>
+        {/if}
+      </div>
     </div>
 
-    <div class="ml-auto flex shrink-0 items-baseline gap-2">
-      <span class="text-text text-base leading-tight tabular-nums">
-        {rangeLabel ?? model.focusedTime}
-      </span>
-      {#if rangeLabel !== null}
-        <span class="text-muted text-xs leading-tight">{rangeStatusLabel}</span>
-      {:else}
-        <span class="sr-only">{statusLabel}</span>
-      {/if}
+    <div class="flex w-full shrink-0 items-start justify-between gap-1 sm:w-auto sm:justify-start">
+      <div
+        class="text-right max-sm:flex max-sm:flex-wrap max-sm:items-baseline max-sm:gap-x-1 max-sm:text-left"
+      >
+        {#if rangeLabel !== null}
+          <div
+            class="text-text text-sm leading-none font-medium tabular-nums max-sm:basis-full sm:text-base"
+          >
+            {rangeLabel}
+          </div>
+          <div
+            class={`mt-0.5 text-xs max-sm:mt-0 ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
+          >
+            {rangeStatusLabel}
+          </div>
+        {:else}
+          <div
+            class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full sm:text-lg"
+          >
+            {model.focusedTime}
+          </div>
+          <div class="text-muted mt-0.5 text-xs max-sm:mt-0">{model.focusedDate}</div>
+          <div class={`mt-0.5 text-xs max-sm:mt-0 ${statusClass}`}>{statusLabel}</div>
+        {/if}
+      </div>
+
       <div class="relative">
         <button
           bind:this={menuButton}
@@ -130,7 +164,7 @@
           onclick={() => {
             menuOpen = !menuOpen;
           }}
-          class="text-muted hover:bg-surface hover:text-text -my-1 inline-flex size-8 items-center justify-center rounded-full"
+          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-md"
         >
           <span aria-hidden="true">⋯</span>
         </button>
@@ -155,77 +189,81 @@
     </div>
   </div>
 
-  <div class="relative min-w-[720px]">
-    <div role="gridcell" data-timeline data-row-timeline class="relative flex h-6 overflow-hidden">
-      {#each model.hourCells as cell (cell.start)}
-        {@const current =
-          nowPosition !== null && nowPosition >= cell.start && nowPosition < cell.end}
-        <div
-          class={`relative flex h-full shrink-0 items-center justify-center ${
-            current
-              ? 'bg-cell-current text-cell-current-text'
-              : cell.midnight
-                ? 'bg-cell-midnight text-text'
-                : cell.kind === 'day'
-                  ? 'bg-cell-day text-text'
-                  : 'bg-cell-night text-text'
-          }`}
-          style={`width: ${pct(cell.end - cell.start)}`}
-        >
-          <span data-testid="hour-label" class="text-base tabular-nums">{cell.label}</span>
-        </div>
-      {/each}
-
-      {#if showWorkingHours}
-        {#each model.bands.work as segment (segment.start)}
-          <div
-            class="bg-band-work pointer-events-none absolute inset-y-0 z-[2]"
-            style={`left: ${pct(segment.start)}; width: ${pct(segment.end - segment.start)}`}
-          ></div>
-        {/each}
-      {/if}
-
-      {#if rangeStartPosition !== null && rangeEndPosition !== null}
-        <div
-          data-testid="row-range-fill"
-          class="bg-now/15 pointer-events-none absolute inset-y-0 z-[5]"
-          style={`left: ${pct(rangeStartPosition)}; width: ${pct(rangeEndPosition - rangeStartPosition)}`}
-        ></div>
-      {/if}
-
-      {#each model.dstMarkers as marker (marker.position)}
-        <div
-          class="border-dst-marker/70 pointer-events-none absolute inset-y-0 z-10 w-0 border-l border-dashed"
-          style={`left: ${pct(marker.position)}`}
-          title={marker.label}
-          aria-hidden="true"
-        ></div>
-      {/each}
-
+  <div
+    role="gridcell"
+    data-timeline
+    data-row-timeline
+    class="border-border bg-band-night relative min-h-14 min-w-[720px] flex-1 overflow-hidden"
+  >
+    {#each model.bands.base as band (band.start)}
       <div
-        class="border-now pointer-events-none absolute inset-y-0 z-20 w-px border-l border-dashed"
-        style={`left: ${pct(focusPosition)}`}
+        class={`absolute inset-y-0 ${
+          band.kind === 'day'
+            ? 'bg-band-day'
+            : band.kind === 'twilight'
+              ? 'bg-band-twilight'
+              : 'bg-band-night'
+        }`}
+        style={`left: ${pct(band.start)}; width: ${pct(band.end - band.start)}`}
+      ></div>
+    {/each}
+
+    {#if showWorkingHours}
+      {#each model.bands.work as segment (segment.start)}
+        <div
+          class="bg-band-work absolute inset-y-0"
+          style={`left: ${pct(segment.start)}; width: ${pct(segment.end - segment.start)}`}
+        ></div>
+      {/each}
+    {/if}
+
+    {#if rangeStartPosition !== null && rangeEndPosition !== null}
+      <div
+        data-testid="row-range-fill"
+        class="bg-accent/5 absolute inset-y-0 z-[5]"
+        style={`left: ${pct(rangeStartPosition)}; width: ${pct(rangeEndPosition - rangeStartPosition)}`}
+      ></div>
+    {/if}
+
+    {#each model.dstMarkers as marker (marker.position)}
+      <div
+        class="border-dst-marker/70 absolute inset-y-0 z-10 w-0 border-l border-dashed"
+        style={`left: ${pct(marker.position)}`}
+        title={marker.label}
         aria-hidden="true"
       ></div>
-      {#if nowPosition !== null}
-        <div
-          class="border-accent pointer-events-none absolute inset-y-0 z-20 w-px border-l border-dashed"
-          style={`left: ${pct(nowPosition)}`}
-          aria-hidden="true"
-        ></div>
-      {/if}
-    </div>
+    {/each}
 
-    <div class="relative h-4">
-      {#each model.dayMarkers as marker (marker.position)}
-        <div
-          data-testid="day-marker"
-          class="text-muted absolute bottom-0 text-xs whitespace-nowrap"
-          style={labelStyle(marker.position)}
-        >
-          {marker.label}
-        </div>
-      {/each}
-    </div>
+    {#each model.hourLabels as label (label.position)}
+      <div
+        data-testid="hour-label"
+        class="text-band-text absolute bottom-1 z-10 px-0.5 text-xs tabular-nums"
+        style={labelStyle(label.position)}
+      >
+        {label.label}
+      </div>
+    {/each}
+
+    {#each model.dayMarkers as marker (marker.position)}
+      <div
+        data-testid="day-marker"
+        class="border-border bg-band-marker text-band-marker-text absolute top-1 z-10 rounded border px-1.5 text-xs font-medium whitespace-nowrap"
+        style={labelStyle(marker.position)}
+      >
+        {marker.label}
+      </div>
+    {/each}
+
+    {#if nowPosition !== null}
+      <div
+        class="border-now pointer-events-none absolute inset-y-0 z-10 w-px border-l border-dashed"
+        style={`left: ${pct(nowPosition)}`}
+      ></div>
+    {/if}
+
+    <div
+      class="bg-accent pointer-events-none absolute inset-y-0 z-20 w-0.5"
+      style={`left: ${pct(focusPosition)}`}
+    ></div>
   </div>
 </div>

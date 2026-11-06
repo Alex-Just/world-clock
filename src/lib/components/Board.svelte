@@ -192,19 +192,47 @@
   onpointerleave={() => {
     hoverSlot = null;
   }}
-  class="border-border bg-surface-raised overflow-hidden border-y"
+  class="border-border bg-surface-raised overflow-hidden rounded-xl border"
 >
   <div data-testid="board-scroll" class="overflow-x-auto">
-    <div class="min-w-[720px]">
+    <div class="min-w-[980px]">
+      <div role="row" class="border-border bg-surface-raised sticky top-0 z-30 flex border-b">
+        <div
+          role="columnheader"
+          class="border-border text-muted flex w-[120px] shrink-0 items-center border-r px-2 text-xs font-medium tracking-wide uppercase sm:w-[260px] sm:px-3"
+        >
+          Zone
+        </div>
+        <div role="columnheader" class="min-w-[720px] flex-1">
+          <Ruler
+            {axis}
+            {focusMs}
+            {nowMs}
+            {range}
+            format={settings.timeFormat}
+            stepMinutes={settings.stepMinutes}
+            {homeZone}
+            zoneLabel={homeLabel}
+            {onSetFocus}
+            {onNow}
+            {onSetRange}
+            {onRangeChange}
+            {onExtendRange}
+            {onClearRange}
+            work={settings.showWorkingHours ? homeWork : []}
+          />
+        </div>
+      </div>
+
       <div class="relative">
         {#if rangeStartPosition !== null && rangeEndPosition !== null}
           <div
-            class="pointer-events-none absolute inset-y-0 right-0 left-0 z-20"
+            class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-20 sm:left-[260px]"
             aria-hidden="true"
           >
             <div
               data-testid="range-outline"
-              class="border-now/80 absolute inset-y-0 border-x"
+              class="border-accent/80 absolute inset-y-0 border"
               style={`left: ${pct(rangeStartPosition)}; width: ${pct(rangeEndPosition - rangeStartPosition)}`}
             ></div>
           </div>
@@ -212,12 +240,12 @@
 
         {#if hoverLeft !== null && hoverWidth !== null}
           <div
-            class="pointer-events-none absolute inset-y-0 right-0 left-0 z-30"
+            class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-30 sm:left-[260px]"
             aria-hidden="true"
           >
             <div
               data-testid="hover-slot"
-              class="border-text/20 bg-accent/10 absolute inset-y-0 border-x"
+              class="border-text/35 bg-accent/10 absolute inset-y-0 border"
               style={`left: ${hoverLeft}; width: ${hoverWidth}`}
             ></div>
           </div>
@@ -257,28 +285,6 @@
             }}
           />
         {/each}
-      </div>
-
-      <div role="row" class="border-border bg-surface-raised sticky left-0 w-full border-t">
-        <div role="gridcell" class="w-full">
-          <Ruler
-            {axis}
-            {focusMs}
-            {nowMs}
-            {range}
-            format={settings.timeFormat}
-            stepMinutes={settings.stepMinutes}
-            {homeZone}
-            zoneLabel={homeLabel}
-            {onSetFocus}
-            {onNow}
-            {onSetRange}
-            {onRangeChange}
-            {onExtendRange}
-            {onClearRange}
-            work={settings.showWorkingHours ? homeWork : []}
-          />
-        </div>
       </div>
     </div>
   </div>

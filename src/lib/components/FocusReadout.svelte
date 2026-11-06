@@ -26,12 +26,10 @@
   onclick={onOpen}
   class="group hover:bg-surface rounded-lg px-1 py-0.5 text-left transition-colors"
 >
-  <span
-    class="text-muted block text-[2.125rem] leading-none font-light tracking-tight tabular-nums"
-  >
+  <span class="text-text block text-3xl leading-none font-light tracking-tight tabular-nums">
     {time}
   </span>
-  <span class="text-muted mt-1 block text-sm">
+  <span class="text-muted mt-1 block text-xs">
     {date} · {zoneLabel}
   </span>
   <span class="sr-only">Set time</span>

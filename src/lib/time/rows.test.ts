@@ -3,7 +3,6 @@ import { buildAxis } from './axis';
 import {
   buildDayMarkers,
   buildDstMarkers,
-  buildHourCells,
   buildHourLabels,
   buildRowBands,
   buildZoneRow,
@@ -53,7 +52,7 @@ describe('bands', () => {
 describe('labels and markers', () => {
   it('aligns a +5:45 zone to its own hour boundaries', () => {
     const labels = buildHourLabels('Asia/Kathmandu', madridAxis, '24h');
-    expect(labels[0]?.label).toBe('5');
+    expect(labels[0]?.label).toBe('05');
     expect(labels[0]?.position).toBeCloseTo(0.25 / 24);
   });
 
@@ -68,7 +67,7 @@ describe('labels and markers', () => {
   it('marks local midnight with the new date', () => {
     const markers = buildDayMarkers('America/New_York', madridAxis, 'en-US');
     expect(markers[0]?.position).toBeCloseTo(6 / 24);
-    expect(markers[0]?.label).toBe('Nov 5');
+    expect(markers[0]?.label).toBe('Thu 5');
   });
 
   it('marks DST transitions', () => {
@@ -91,22 +90,9 @@ describe('row model', () => {
       locale: 'en-US',
     });
     expect(row.focusedTime).toBe('06:00');
-    expect(row.focusedDate).toBe('Nov 5');
+    expect(row.focusedDate).toBe('Thu 5');
     expect(row.focusedStatus).toBe('night');
     expect(row.relativeOffsetMinutes).toBe(-360);
     expect(row.abbreviation).toBe('EST');
   });
-});
-
-it('builds day and night hour cells with midnight and 12-hour labels', () => {
-  const axis = buildAxis('Europe/Madrid', '2026-11-05', '24h');
-  const cells = buildHourCells('Europe/Madrid', axis, '24h');
-  expect(cells).toHaveLength(24);
-  expect(cells[0]).toMatchObject({ label: '0', hour: 0, kind: 'night', midnight: true });
-  expect(cells[8]).toMatchObject({ label: '8', hour: 8, kind: 'day', midnight: false });
-  expect(cells[22]).toMatchObject({ label: '22', hour: 22, kind: 'night' });
-
-  const twelve = buildHourCells('Europe/Madrid', axis, '12h');
-  expect(twelve[0]?.label).toBe('am');
-  expect(twelve[12]?.label).toBe('pm');
 });

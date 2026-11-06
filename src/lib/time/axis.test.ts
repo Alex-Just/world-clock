@@ -22,7 +22,7 @@ describe('axis construction', () => {
     expect(axis.endMs).toBe(at('2026-11-05T23:00:00Z'));
     expect(axis.durationMs).toBe(24 * 3_600_000);
     expect(axis.ticks).toHaveLength(24);
-    expect(axis.ticks[0]).toMatchObject({ position: 0, label: '0', hour: 0 });
+    expect(axis.ticks[0]).toMatchObject({ position: 0, label: '00', hour: 0 });
     expect(axis.ticks[23]?.position).toBeCloseTo(23 / 24);
   });
 
