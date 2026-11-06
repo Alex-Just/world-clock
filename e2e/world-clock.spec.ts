@@ -561,8 +561,35 @@ test('keeps the board in place when a range appears', async ({ page }) => {
   expect(rowBefore.height).toBe(normalRow.height);
 });
 
-test('restores hover after closing the zone menu outside the board', async ({ page }) => {
-  await expect(page.getByTestId('relative-badge')).toHaveCount(0);
+test('restores hover after closing the menu and outside pointerdown', async ({ page }) => {
+  await expect(page.getByTestId('relative-badge')).toBeHidden();
+  const timeline = page.getByTestId('row-America/New_York').locator('[data-timeline]');
+  const box = await timeline.boundingBox();
+  const cell = page.getByTestId('row-America/New_York').locator('[role="gridcell"]').first();
+  if (!box) throw new Error('timeline missing');
+  const slot = page.getByTestId('hover-slot');
+  const resting = await slot.boundingBox();
+
+  await page.mouse.move(box.x + box.width * 0.5, box.y + box.height / 2);
+  await page.waitForTimeout(100);
+  expect((await slot.boundingBox())?.x).not.toBe(resting?.x);
+  expect(await cell.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
+    'rgb(255, 255, 255)',
+  );
+
+  // This pointerdown has no preceding pointer movement, so only the
+  // document-level reset can clear the hover state.
+  await page.evaluate(() => {
+    document.body.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true, clientX: 5, clientY: 5 }),
+    );
+  });
+  await page.waitForTimeout(100);
+  expect((await slot.boundingBox())?.x).toBeCloseTo(resting?.x ?? -1, 0);
+  expect(await cell.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(
+    'rgb(255, 255, 255)',
+  );
+
   const trigger = page
     .getByTestId('row-America/New_York')
     .getByRole('button', { name: /actions for new york/i });
@@ -571,20 +598,9 @@ test('restores hover after closing the zone menu outside the board', async ({ pa
   await expect(menu).toBeVisible();
   await page.mouse.click(10, 500);
   await expect(menu).toBeHidden();
-
-  const madridTimeline = page.getByTestId('row-Europe/Madrid').locator('[data-timeline]');
-  const box = await madridTimeline.boundingBox();
-  if (!box) throw new Error('timeline missing');
-  const slot = page.getByTestId('hover-slot');
-  const before = await slot.boundingBox();
   await page.mouse.move(box.x + box.width * 0.75, box.y + box.height / 2);
   await page.waitForTimeout(100);
-  const after = await slot.boundingBox();
-  expect(after?.x).not.toBe(before?.x);
-  const cell = page.getByTestId('row-Europe/Madrid').locator('[role="gridcell"]').first();
-  expect(await cell.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
-    'rgb(255, 255, 255)',
-  );
+  expect((await slot.boundingBox())?.x).not.toBe(resting?.x);
 
   await trigger.click();
   await expect(menu).toBeVisible();
@@ -592,9 +608,7 @@ test('restores hover after closing the zone menu outside the board', async ({ pa
   await expect(menu).toBeHidden();
   await page.mouse.move(box.x + box.width * 0.35, box.y + box.height / 2);
   await page.waitForTimeout(100);
-  expect(await cell.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
-    'rgb(255, 255, 255)',
-  );
+  expect((await slot.boundingBox())?.x).not.toBe(resting?.x);
 });
 
 test('keeps work-hour markings warm instead of night blue', async ({ page }) => {
@@ -607,4 +621,92 @@ test('keeps work-hour markings warm instead of night blue', async ({ page }) => 
   expect(channels).toHaveLength(3);
   const [red = 0, , blue = 0] = channels;
   expect(red).toBeGreaterThan(blue);
+});
+
+test('keeps the header height when the relative badge appears', async ({ page }) => {
+  for (const width of [480, 560]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.reload();
+    await page.getByTestId('board-scroll').waitFor();
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    const board = page.getByTestId('board-scroll');
+    const before = await board.boundingBox();
+    if (!before) throw new Error('board missing');
+
+    await page.getByRole('button', { name: /set time/i }).click();
+    await page.getByRole('tab', { name: /relative/i }).click();
+    await page.getByLabel(/amount/i).fill('3');
+    await page.getByRole('button', { name: /apply/i }).click();
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    await expect(page.getByTestId('relative-badge')).toBeVisible();
+    const focused = await board.boundingBox();
+    if (!focused) throw new Error('board missing');
+    expect(focused.y).toBe(before.y);
+
+    await page.getByRole('button', { name: /^now$/i }).click();
+    await expect(page.getByTestId('relative-badge')).toBeHidden();
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    const restored = await board.boundingBox();
+    if (!restored) throw new Error('board missing');
+    expect(restored.y).toBe(before.y);
+  }
+});
+
+test('keeps mobile range labels inside the zone cell', async ({ page }) => {
+  for (const { width, twentyFourHour } of [
+    { width: 320, twentyFourHour: false },
+    { width: 390, twentyFourHour: false },
+    { width: 320, twentyFourHour: true },
+    { width: 390, twentyFourHour: true },
+  ]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.getByRole('button', { name: /settings/i }).click();
+    await page.getByLabel(/24-hour time/i).setChecked(twentyFourHour);
+    await page.getByRole('button', { name: /close settings/i }).click();
+
+    const clear = page.getByRole('button', { name: /^clear$/i });
+    if ((await clear.count()) > 0) await clear.click();
+
+    const ruler = page.getByTestId('ruler-surface');
+    await ruler.scrollIntoViewIfNeeded();
+    const box = await ruler.boundingBox();
+    if (!box) throw new Error('ruler missing');
+    const startX = Math.max(box.x + 20, 170);
+    const endX = Math.min(box.x + box.width - 20, startX + 80);
+    await page.mouse.move(startX, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(endX, box.y + box.height / 2, { steps: 8 });
+    await page.mouse.up();
+    await expect(page.getByTestId('range-bar')).toBeVisible();
+
+    const time = page.getByTestId('range-time');
+    const details = page.getByRole('button', { name: /^details$/i });
+    const [timeBox, detailsBox] = await Promise.all([time.boundingBox(), details.boundingBox()]);
+    if (!timeBox || !detailsBox) throw new Error('range bar content missing');
+    expect(timeBox.x + timeBox.width).toBeLessThanOrEqual(detailsBox.x - 2);
+
+    const label = page.getByTestId('range-label-value').first();
+    await expect(label).toBeVisible();
+    const bleeds = await page.evaluate(() => {
+      const cell = document.querySelector('[data-testid="row-America/New_York"] [role="gridcell"]');
+      const label = document.querySelector(
+        '[data-testid="row-America/New_York"] [data-testid="range-label-value"]',
+      );
+      if (!cell || !label) return true;
+      const cellRect = cell.getBoundingClientRect();
+      const labelRect = label.getBoundingClientRect();
+      const target = document.elementFromPoint(
+        cellRect.right + 3,
+        labelRect.top + labelRect.height / 2,
+      );
+      return target !== null && label.contains(target);
+    });
+    expect(bleeds).toBe(false);
+  }
 });

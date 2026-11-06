@@ -111,6 +111,7 @@ it('shows abbreviation, exact offset, and DST when enabled', () => {
   expect(screen.getByText('EDT')).toBeInTheDocument();
   expect(screen.getByText('UTC−4')).toBeInTheDocument();
   expect(screen.getAllByText('DST').length).toBeGreaterThan(0);
+  expect(within(screen.getByTestId('row-Asia/Kolkata')).queryByText('DST')).toBeNull();
 });
 
 it('preselects the focus hour and follows hover', async () => {

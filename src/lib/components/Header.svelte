@@ -35,7 +35,7 @@
   } = $props();
 
   const relative = $derived(followNow ? 'Now' : formatRelative(focusMs - nowMs));
-  const showRelative = $derived(relative.toLowerCase() !== 'now');
+  const showRelative = $derived(!followNow && Math.abs(focusMs - nowMs) >= 60_000);
 </script>
 
 <header
@@ -49,14 +49,15 @@
 
     <FocusReadout {focusMs} {homeZone} {zoneLabel} {format} onOpen={onOpenSetTime} />
 
-    {#if showRelative}
-      <span
-        data-testid="relative-badge"
-        class="border-border text-muted rounded-full border px-2.5 py-1 text-xs font-medium"
-      >
-        {relative}
-      </span>
-    {/if}
+    <span
+      data-testid="relative-badge"
+      class={`border-border text-muted w-[5.75rem] rounded-full border px-2.5 py-1 text-center text-xs font-medium ${
+        showRelative ? '' : 'invisible'
+      }`}
+      aria-hidden={!showRelative}
+    >
+      {relative}
+    </span>
   </div>
 
   {#if children}

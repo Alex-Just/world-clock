@@ -118,7 +118,7 @@
 >
   <div
     role="gridcell"
-    class={`border-border sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 border-r px-2 py-1 sm:w-[320px] sm:flex-nowrap sm:px-3 ${
+    class={`border-border sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 overflow-hidden border-r px-2 py-1 sm:w-[320px] sm:flex-nowrap sm:px-3 ${
       isHovered ? 'bg-accent/10' : isHome ? 'bg-accent/5' : 'bg-surface-raised'
     }`}
     title={`${model.timeZone} · ${formatUtcOffset(model.offsetMinutes)}`}
@@ -164,7 +164,9 @@
       >
         {#if rangeLabel !== null}
           <div
-            class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full max-sm:text-sm max-sm:whitespace-nowrap"
+            data-testid="range-label-value"
+            class="text-text text-base leading-none font-medium tabular-nums max-sm:w-full max-sm:min-w-0 max-sm:basis-full max-sm:truncate max-sm:text-sm"
+            title={rangeLabel}
           >
             {rangeLabel}
           </div>

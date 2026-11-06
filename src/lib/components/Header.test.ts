@@ -27,9 +27,22 @@ it('wires the header actions', async () => {
   expect(baseProps.onNow).toHaveBeenCalled();
 });
 
-it('hides the relative badge when it would only say now', () => {
+it('reserves but hides the relative badge when it would only say now', () => {
   render(Header, {
     props: { ...baseProps, nowMs: baseProps.focusMs, followNow: true },
   });
-  expect(screen.queryByTestId('relative-badge')).not.toBeInTheDocument();
+  const badge = screen.getByTestId('relative-badge');
+  expect(badge).toHaveClass('invisible');
+  expect(badge).toHaveAttribute('aria-hidden', 'true');
+});
+
+it('hides the relative badge for a near-now focus', () => {
+  render(Header, {
+    props: {
+      ...baseProps,
+      nowMs: baseProps.focusMs - 30_000,
+      followNow: false,
+    },
+  });
+  expect(screen.getByTestId('relative-badge')).toHaveClass('invisible');
 });
