@@ -9,7 +9,7 @@ persist in `localStorage`. There is no server, account, or sync.
 ```text
 App.svelte
 ├─ Header (brand, focus clock, inline day picker, actions)
-│  └─ DayStrip (seven-day window)
+│  └─ DayStrip (seven-day window) + DatePicker (month calendar)
 ├─ Board
 │  ├─ Ruler (hour scale, work strip, focus/now lines, range handles)
 │  └─ ZoneRow[] (local times, bands, labels, day/DST markers)

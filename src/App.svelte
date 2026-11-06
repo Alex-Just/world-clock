@@ -221,6 +221,7 @@
   >
     <DayStrip
       viewDate={boardStore.viewDate}
+      nowMs={clockStore.nowMs}
       homeZone={settingsStore.value.homeZone}
       onSelectDate={selectDate}
       onShiftDay={shiftDay}

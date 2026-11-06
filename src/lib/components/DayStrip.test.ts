@@ -6,6 +6,7 @@ it('renders seven days and marks the selected date', () => {
   render(DayStrip, {
     props: {
       viewDate: '2026-11-05',
+      nowMs: Date.parse('2026-11-05T12:00:00Z'),
       homeZone: 'Europe/Madrid',
       onSelectDate: vi.fn(),
       onShiftDay: vi.fn(),
@@ -21,6 +22,7 @@ it('moves to the previous and next day', async () => {
   render(DayStrip, {
     props: {
       viewDate: '2026-11-05',
+      nowMs: Date.parse('2026-11-05T12:00:00Z'),
       homeZone: 'Europe/Madrid',
       onSelectDate: vi.fn(),
       onShiftDay,

@@ -126,7 +126,9 @@ docs/architecture.md  current design
   shrink buttons, labels, inputs, or menu items with `text-xs`.
 - The day picker lives in the header on wide screens and wraps below the
   controls on narrow screens. Keep it centered with `mx-auto`/absolute
-  positioning; do not restore a separate full-width strip.
+  positioning; do not restore a separate full-width strip. The calendar
+  trigger sits outside the scrollable seven-day row and selects through the
+  same day-navigation path as the date buttons.
 - Hide `GMT…`/`UTC…` abbreviations when the UTC offset is already visible.
   Format zero-minute offsets as `UTC+3`/`UTC−8`; zero is `UTC`.
 - Do not repeat metadata that equals the zone label. The UTC zone omits its

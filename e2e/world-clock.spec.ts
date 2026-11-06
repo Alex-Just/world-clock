@@ -876,6 +876,7 @@ test('uses a hand cursor for actionable controls', async ({ page }) => {
     page.getByRole('button', { name: /^today$/i }),
     page.getByRole('button', { name: 'Sat 7 2026' }),
     page.getByRole('button', { name: 'Actions for New York' }),
+    page.getByRole('button', { name: 'Pick a date' }),
   ]) {
     expect(await cursor(locator)).toBe('pointer');
   }
@@ -889,6 +890,41 @@ test('uses a hand cursor for actionable controls', async ({ page }) => {
 
   await page.getByRole('button', { name: /set time/i }).click();
   expect(await cursor(page.getByRole('button', { name: /apply/i }))).toBe('pointer');
+});
+
+test('selects a custom date from the calendar', async ({ page }) => {
+  const trigger = page.getByRole('button', { name: 'Pick a date' });
+  const dialog = page.getByRole('dialog', { name: 'Choose a date' });
+
+  await trigger.click();
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByText('November 2026')).toBeVisible();
+  await expect(dialog.getByRole('button', { name: 'Thursday, November 5, 2026' })).toHaveAttribute(
+    'aria-current',
+    'date',
+  );
+
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(
+    results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical'),
+  ).toEqual([]);
+
+  await dialog.getByRole('button', { name: 'Friday, November 20, 2026' }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Fri 20 2026' })).toHaveAttribute(
+    'aria-current',
+    'date',
+  );
+  await expect(page.getByTestId('focus-line')).toBeHidden();
+
+  await trigger.click();
+  await expect(dialog.getByRole('button', { name: 'Friday, November 20, 2026' })).toHaveAttribute(
+    'aria-current',
+    'date',
+  );
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
 });
 
 test('shifts the visible window by six hours', async ({ page }) => {

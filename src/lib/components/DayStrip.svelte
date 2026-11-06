@@ -1,9 +1,11 @@
 <script lang="ts">
   import { addDays } from '$lib/time/axis';
-  import type { DateString, ZoneId } from '$lib/time/types';
+  import type { DateString, InstantMs, ZoneId } from '$lib/time/types';
+  import DatePicker from './DatePicker.svelte';
 
   let {
     viewDate,
+    nowMs,
     homeZone,
     onSelectDate,
     onShiftDay,
@@ -11,6 +13,7 @@
     inline = false,
   }: {
     viewDate: DateString;
+    nowMs: InstantMs;
     homeZone: ZoneId;
     onSelectDate: (date: DateString) => void;
     onShiftDay: (days: number) => void;
@@ -32,58 +35,63 @@
   }
 </script>
 
-<nav
-  aria-label="Days"
-  title={`Dates in ${homeZone}`}
+<div
   class={inline
-    ? 'flex items-center gap-1 overflow-x-auto'
-    : 'border-border bg-surface flex items-center gap-1 overflow-x-auto border-b px-2 py-2 sm:px-4'}
+    ? 'flex min-w-0 items-center gap-1'
+    : 'border-border bg-surface flex items-center gap-1 border-b px-2 py-2 sm:px-4'}
 >
-  <button
-    type="button"
-    aria-label="Previous day"
-    onclick={() => {
-      onShiftDay(-1);
-    }}
-    class="text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
+  <nav
+    aria-label="Days"
+    title={`Dates in ${homeZone}`}
+    class="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto"
   >
-    <span aria-hidden="true">‹</span>
-  </button>
-
-  {#each days as date (date)}
     <button
       type="button"
-      aria-label={`${weekdayShort(date)} ${dayNumber(date)} ${date.slice(0, 4)}`}
-      aria-current={date === viewDate ? 'date' : undefined}
+      aria-label="Previous day"
       onclick={() => {
-        onSelectDate(date);
+        onShiftDay(-1);
       }}
-      class="hover:bg-surface flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
-      class:text-accent-text={date === viewDate}
-      class:bg-surface={date === viewDate}
-      class:font-semibold={date === viewDate}
+      class="text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
     >
-      <span class="text-muted text-sm tracking-wide uppercase">{weekdayShort(date)}</span>
-      <span class="text-text text-base tabular-nums">{dayNumber(date)}</span>
+      <span aria-hidden="true">‹</span>
     </button>
-  {/each}
 
-  <button
-    type="button"
-    aria-label="Next day"
-    onclick={() => {
-      onShiftDay(1);
-    }}
-    class="text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
-  >
-    <span aria-hidden="true">›</span>
-  </button>
+    {#each days as date (date)}
+      <button
+        type="button"
+        aria-label={`${weekdayShort(date)} ${dayNumber(date)} ${date.slice(0, 4)}`}
+        aria-current={date === viewDate ? 'date' : undefined}
+        onclick={() => {
+          onSelectDate(date);
+        }}
+        class="hover:bg-surface flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors"
+        class:text-accent-text={date === viewDate}
+        class:bg-surface={date === viewDate}
+        class:font-semibold={date === viewDate}
+      >
+        <span class="text-muted text-sm tracking-wide uppercase">{weekdayShort(date)}</span>
+        <span class="text-text text-base tabular-nums">{dayNumber(date)}</span>
+      </button>
+    {/each}
 
-  <button
-    type="button"
-    onclick={onToday}
-    class="border-border text-text hover:bg-surface ml-1 h-10 shrink-0 rounded-lg border px-2.5 text-xs font-medium transition-colors"
-  >
-    Today
-  </button>
-</nav>
+    <button
+      type="button"
+      aria-label="Next day"
+      onclick={() => {
+        onShiftDay(1);
+      }}
+      class="text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
+    >
+      <span aria-hidden="true">›</span>
+    </button>
+
+    <button
+      type="button"
+      onclick={onToday}
+      class="border-border text-text hover:bg-surface ml-1 h-10 shrink-0 rounded-lg border px-2.5 text-xs font-medium transition-colors"
+    >
+      Today
+    </button>
+  </nav>
+  <DatePicker {viewDate} {nowMs} {homeZone} {onSelectDate} {onToday} />
+</div>
