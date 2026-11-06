@@ -130,6 +130,7 @@
     hoverSlot = Math.min(slotCount - 1, Math.max(0, Math.floor(ratio * slotCount)));
   }
   let dragAnchor: number | null = null;
+  let dragAxis: TimeAxis | null = null;
   let dragStartX = 0;
   let dragRect: DOMRect | null = null;
   let dragMoved = false;
@@ -147,22 +148,29 @@
     window.removeEventListener('pointerup', finishRowDrag);
     window.removeEventListener('pointercancel', cancelRowDrag);
     dragAnchor = null;
+    dragAxis = null;
     dragRect = null;
     dragMoved = false;
   }
 
   function handleRowDragMove(event: PointerEvent): void {
-    if (dragAnchor === null || dragRect === null) return;
+    if (dragAnchor === null || dragAxis === null || dragRect === null) return;
     if (Math.abs(event.clientX - dragStartX) > 3) dragMoved = true;
     if (!dragMoved) return;
-    onRangeChange(dragAnchor, instantForPosition(axis, ratioFromClientX(event.clientX, dragRect)));
+    onRangeChange(
+      dragAnchor,
+      instantForPosition(dragAxis, ratioFromClientX(event.clientX, dragRect)),
+    );
   }
 
   function finishRowDrag(event: PointerEvent): void {
-    if (dragAnchor === null || dragRect === null) return;
-    const current = instantForPosition(axis, ratioFromClientX(event.clientX, dragRect));
-    if (dragMoved) onSetRange(dragAnchor, current);
-    else onSetFocus(current);
+    if (dragAnchor === null || dragAxis === null || dragRect === null) return;
+    if (dragMoved) {
+      const current = instantForPosition(dragAxis, ratioFromClientX(event.clientX, dragRect));
+      onSetRange(dragAnchor, current);
+    } else {
+      onSetFocus(dragAnchor);
+    }
     cleanupRowDrag();
   }
 
@@ -185,8 +193,9 @@
     hoverSlot = null;
     dragStartX = event.clientX;
     dragRect = rect;
+    dragAxis = axis;
     dragMoved = false;
-    dragAnchor = instantForPosition(axis, ratioFromClientX(event.clientX, rect));
+    dragAnchor = instantForPosition(dragAxis, ratioFromClientX(event.clientX, rect));
     onSetFocus(dragAnchor);
 
     window.addEventListener('pointermove', handleRowDragMove);

@@ -1022,6 +1022,25 @@ test('keeps the day strip clear of the wide cross-year readout', async ({ page }
   expect(badge.x + badge.width).toBeLessThanOrEqual(nav.x);
 });
 
+test('keeps the clicked time when a shifted window resets the day', async ({ page }) => {
+  const labels = page.getByTestId('ruler-surface').getByTestId('hour-label');
+  const next = page.getByRole('button', { name: 'Show next 6 hours' });
+  for (let index = 0; index < 3; index += 1) await next.click();
+  await expect(labels.first()).toHaveText('18');
+
+  const timeline = page.getByTestId('row-Europe/Madrid').locator('[data-row-timeline]');
+  const box = await timeline.boundingBox();
+  if (!box) throw new Error('timeline missing');
+  await page.mouse.click(box.x + box.width * (17.04 / 24), box.y + box.height / 2);
+
+  await expect(labels.first()).toHaveText('00');
+  await expect(page.getByRole('button', { name: 'Fri 6 2026' })).toHaveAttribute(
+    'aria-current',
+    'date',
+  );
+  await expect(page.getByRole('button', { name: /set time/i })).toContainText('11:00:00');
+});
+
 test('shifts the visible window by six hours', async ({ page }) => {
   const labels = page.getByTestId('ruler-surface').getByTestId('hour-label');
   const next = page.getByRole('button', { name: 'Show next 6 hours' });

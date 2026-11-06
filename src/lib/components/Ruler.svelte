@@ -83,7 +83,7 @@
   }
 
   function handleFocusMove(clientX: number): void {
-    onSetFocus(instantForPosition(axis, positionFromClientX(clientX)));
+    onSetFocus(instantForPosition(focusDragAxis ?? axis, positionFromClientX(clientX)));
   }
 
   function handleKeyDown(event: KeyboardEvent): void {
@@ -129,28 +129,36 @@
   }
 
   let dragAnchor: number | null = null;
+  let dragAxis: TimeAxis | null = null;
+  let handleDragAxis: TimeAxis | null = null;
+  let focusDragAxis: TimeAxis | null = null;
   let dragStartX = 0;
   let dragMoved = false;
 
   const surfaceHandlers = {
     onStart: (event: PointerEvent) => {
       dragStartX = event.clientX;
-      dragAnchor = instantForPosition(axis, positionFromClientX(event.clientX));
+      dragAxis = axis;
+      dragAnchor = instantForPosition(dragAxis, positionFromClientX(event.clientX));
       dragMoved = false;
       onSetFocus(dragAnchor);
     },
     onMove: (clientX: number) => {
-      if (dragAnchor === null) return;
+      if (dragAnchor === null || dragAxis === null) return;
       if (Math.abs(clientX - dragStartX) > 3) dragMoved = true;
       if (!dragMoved) return;
-      onRangeChange(dragAnchor, instantForPosition(axis, positionFromClientX(clientX)));
+      onRangeChange(dragAnchor, instantForPosition(dragAxis, positionFromClientX(clientX)));
     },
     onEnd: (clientX: number) => {
-      if (dragAnchor === null) return;
-      const current = instantForPosition(axis, positionFromClientX(clientX));
-      if (dragMoved) onSetRange(dragAnchor, current);
-      else onSetFocus(current);
+      if (dragAnchor === null || dragAxis === null) return;
+      if (dragMoved) {
+        const current = instantForPosition(dragAxis, positionFromClientX(clientX));
+        onSetRange(dragAnchor, current);
+      } else {
+        onSetFocus(dragAnchor);
+      }
       dragAnchor = null;
+      dragAxis = null;
       dragMoved = false;
     },
     onClick: () => {},
@@ -160,10 +168,14 @@
     thresholdPx: 0,
     onStart: (event: PointerEvent) => {
       event.stopPropagation();
+      handleDragAxis = axis;
     },
     onMove: (clientX: number) => {
-      if (!range) return;
-      onRangeChange(instantForPosition(axis, positionFromClientX(clientX)), range.endMs);
+      if (!range || handleDragAxis === null) return;
+      onRangeChange(instantForPosition(handleDragAxis, positionFromClientX(clientX)), range.endMs);
+    },
+    onEnd: () => {
+      handleDragAxis = null;
     },
   };
 
@@ -171,10 +183,17 @@
     thresholdPx: 0,
     onStart: (event: PointerEvent) => {
       event.stopPropagation();
+      handleDragAxis = axis;
     },
     onMove: (clientX: number) => {
-      if (!range) return;
-      onRangeChange(range.startMs, instantForPosition(axis, positionFromClientX(clientX)));
+      if (!range || handleDragAxis === null) return;
+      onRangeChange(
+        range.startMs,
+        instantForPosition(handleDragAxis, positionFromClientX(clientX)),
+      );
+    },
+    onEnd: () => {
+      handleDragAxis = null;
     },
   };
 
@@ -182,8 +201,12 @@
     thresholdPx: 0,
     onStart: (event: PointerEvent) => {
       event.stopPropagation();
+      focusDragAxis = axis;
     },
     onMove: handleFocusMove,
+    onEnd: () => {
+      focusDragAxis = null;
+    },
   };
 </script>
 

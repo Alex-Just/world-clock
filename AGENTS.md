@@ -99,6 +99,8 @@ docs/architecture.md  current design
   Off-window range visuals stay hidden while the selection and summary remain.
 - Base bands are day 08:00–18:00, twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00.
 - Click-drag a zone row to set a range; the duration bar above the board and row headers show the result.
+- Capture the visible axis at pointer-down for clicks and drags. A focus change
+  may reset the window/day, so do not remap pointer positions against the new axis.
 - The focus hour is the resting hour highlight; hover moves it and pointer leave,
   focus loss, or an outside pointer-down restores it. This is visual only and
   must not set focus, change the range, or persist.
