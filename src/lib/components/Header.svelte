@@ -97,7 +97,7 @@
 
     <span
       data-testid="relative-badge"
-      class={`border-border text-muted hidden w-[8.5rem] rounded-xl border px-1.5 py-1.5 text-center text-xs leading-tight font-medium sm:inline-flex sm:flex-col sm:items-center sm:gap-0.5 ${
+      class={`border-border text-muted hidden w-36 rounded-xl border px-1.5 py-1.5 text-center text-xs leading-tight font-medium sm:inline-flex sm:flex-col sm:items-center sm:gap-0.5 ${
         showRelative ? '' : 'invisible'
       }`}
       aria-hidden="true"
@@ -122,7 +122,9 @@
   {#if children}
     <div
       class={`order-last flex w-full justify-center min-[1440px]:absolute min-[1440px]:top-1/2 min-[1440px]:w-auto min-[1440px]:-translate-x-1/2 min-[1440px]:-translate-y-1/2 ${
-        showFocusYear ? 'min-[1440px]:left-[calc(50%+4rem)] 2xl:left-1/2' : 'min-[1440px]:left-1/2'
+        format === '12h' || showFocusYear
+          ? 'min-[1440px]:left-[calc(50%+4rem)] min-[1600px]:left-1/2'
+          : 'min-[1440px]:left-[calc(50%+1rem)] min-[1600px]:left-1/2'
       }`}
     >
       {@render children()}

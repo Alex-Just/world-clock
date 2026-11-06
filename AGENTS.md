@@ -141,8 +141,10 @@ docs/architecture.md  current design
   trigger sits outside the scrollable seven-day row and selects through the
   same day-navigation path as the date buttons. Its jump field accepts
   `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` (separators optional for compact digits).
-  Below 1440px the day strip gets its own centered row; at 1440px and above it
-  is inline-centered with the header actions.
+  Below 1440px the day strip gets its own centered row. From 1440px upward it
+  sits inline with the header actions; between 1440 and 1599px it gets a small
+  right offset (larger for 12-hour or cross-year readouts) to clear the wider
+  focus details. At 1600px and above it is fully centered.
 - Weekend dates in the seven-day strip use a blue-gray underline; today uses
   the dark-yellow home accent underline. Do not use background tints that
   could be mistaken for the selected-date state.

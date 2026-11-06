@@ -996,6 +996,24 @@ test('jumps to a distant date from the calendar', async ({ page }) => {
   await expect(badge).toContainText('from today, 13:00');
 });
 
+test('keeps the day strip clear of the wide cross-year readout', async ({ page }) => {
+  await page.getByRole('button', { name: /settings/i }).click();
+  await page.getByLabel(/24-hour time/i).setChecked(false);
+  await page.getByRole('button', { name: /close settings/i }).click();
+
+  await page.getByRole('button', { name: 'Pick a date' }).click();
+  await page.getByLabel('Jump to date').fill('1985-03-14');
+  await page.getByLabel('Jump to date').press('Enter');
+
+  await expect(page.getByTestId('relative-badge')).toBeVisible();
+  const [badge, nav] = await Promise.all([
+    page.getByTestId('relative-badge').boundingBox(),
+    page.getByRole('navigation', { name: 'Days' }).boundingBox(),
+  ]);
+  if (!badge || !nav) throw new Error('header detail or day strip missing');
+  expect(badge.x + badge.width).toBeLessThanOrEqual(nav.x);
+});
+
 test('shifts the visible window by six hours', async ({ page }) => {
   const labels = page.getByTestId('ruler-surface').getByTestId('hour-label');
   const next = page.getByRole('button', { name: 'Show next 6 hours' });
