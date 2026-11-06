@@ -199,7 +199,7 @@
   {#each axis.ticks as tick (tick.instantMs)}
     <div
       data-testid="hour-label"
-      class="text-muted absolute bottom-1 px-0.5 text-[10px] tabular-nums"
+      class="text-muted absolute bottom-1 px-0.5 text-xs tabular-nums"
       style={labelStyle(tick.position)}
     >
       {tick.label}

@@ -77,6 +77,13 @@ test('exports settings', async ({ page }) => {
 test('is usable on a narrow viewport without gesture conflicts', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.getByTestId('board-scroll')).toBeVisible();
+  await expect(page.getByTestId('row-America/New_York').getByText('New York')).toBeVisible();
+  await expect(page.getByTestId('row-America/New_York').getByText('EST')).toBeVisible();
+  const rowHeights = await page.getByTestId('row-America/New_York').evaluate((row) => ({
+    row: row.getBoundingClientRect().height,
+    timeline: row.querySelector('[data-row-timeline]')?.getBoundingClientRect().height ?? 0,
+  }));
+  expect(Math.abs(rowHeights.row - rowHeights.timeline)).toBeLessThanOrEqual(1);
   const ruler = page.getByTestId('ruler-surface');
   const box = await ruler.boundingBox();
   if (!box) throw new Error('ruler missing');
@@ -361,4 +368,22 @@ test('keeps light theme readable while the OS is dark', async ({ page }) => {
   expect(
     results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical'),
   ).toEqual([]);
+});
+
+test('keeps timeline hour and date labels readable', async ({ page }) => {
+  await expect(page.getByText('New York')).toBeVisible();
+  const sizes = await page.evaluate(() => {
+    const fontSize = (selector: string): number | null => {
+      const element = document.querySelector(selector);
+      return element ? Number.parseFloat(getComputedStyle(element).fontSize) : null;
+    };
+    return {
+      rulerHour: fontSize('[data-testid="ruler-surface"] [data-testid="hour-label"]'),
+      rowHour: fontSize('[data-testid="row-Europe/Madrid"] [data-testid="hour-label"]'),
+      dayMarker: fontSize('[data-testid="row-Europe/Madrid"] [data-testid="day-marker"]'),
+    };
+  });
+  expect(sizes.rulerHour).toBeGreaterThanOrEqual(12);
+  expect(sizes.rowHour).toBeGreaterThanOrEqual(12);
+  expect(sizes.dayMarker).toBeGreaterThanOrEqual(12);
 });

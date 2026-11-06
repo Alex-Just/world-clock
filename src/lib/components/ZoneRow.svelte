@@ -95,10 +95,10 @@
 >
   <div
     role="gridcell"
-    class="border-border bg-surface-raised sticky left-0 z-20 flex w-[120px] shrink-0 items-center justify-between gap-2 border-r px-2 py-1.5 sm:w-[260px] sm:px-3"
+    class="border-border bg-surface-raised sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 border-r px-2 py-1.5 sm:w-[260px] sm:flex-nowrap sm:px-3"
     title={`${model.timeZone} · ${formatUtcOffset(model.offsetMinutes)}`}
   >
-    <div class="min-w-0">
+    <div class="w-full min-w-0 sm:w-auto sm:flex-1">
       <div class="flex items-center gap-1.5">
         {#if isHome}
           <House class="text-accent-text size-3 shrink-0" aria-hidden="true" />
@@ -106,13 +106,13 @@
         {/if}
         <span class="text-text truncate text-xs font-medium sm:text-sm">{model.label}</span>
         <span
-          class="bg-surface text-muted shrink-0 rounded px-1 text-[10px] tabular-nums"
+          class="bg-surface text-muted hidden shrink-0 rounded px-1 text-[11px] tabular-nums sm:inline-block"
           title={`UTC offset ${formatUtcOffset(model.offsetMinutes)}`}
         >
           {formatOffset(model.relativeOffsetMinutes)}
         </span>
       </div>
-      <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-[10px]">
+      <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-[11px]">
         {#if showAbbreviation}
           <span>{model.abbreviation}</span>
         {/if}
@@ -128,23 +128,29 @@
       </div>
     </div>
 
-    <div class="flex shrink-0 items-start gap-1">
-      <div class="text-right">
+    <div class="flex w-full shrink-0 items-start justify-between gap-1 sm:w-auto sm:justify-start">
+      <div
+        class="text-right max-sm:flex max-sm:flex-wrap max-sm:items-baseline max-sm:gap-x-1 max-sm:text-left"
+      >
         {#if rangeLabel !== null}
-          <div class="text-text text-sm leading-none font-medium tabular-nums sm:text-base">
+          <div
+            class="text-text text-sm leading-none font-medium tabular-nums max-sm:basis-full sm:text-base"
+          >
             {rangeLabel}
           </div>
           <div
-            class={`mt-0.5 text-[10px] ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
+            class={`mt-0.5 text-[11px] max-sm:mt-0 ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
           >
             {rangeStatusLabel}
           </div>
         {:else}
-          <div class="text-text text-base leading-none font-medium tabular-nums sm:text-lg">
+          <div
+            class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full sm:text-lg"
+          >
             {model.focusedTime}
           </div>
-          <div class="text-muted mt-0.5 text-[10px]">{model.focusedDate}</div>
-          <div class={`mt-0.5 text-[10px] ${statusClass}`}>{statusLabel}</div>
+          <div class="text-muted mt-0.5 text-[11px] max-sm:mt-0">{model.focusedDate}</div>
+          <div class={`mt-0.5 text-[11px] max-sm:mt-0 ${statusClass}`}>{statusLabel}</div>
         {/if}
       </div>
 
@@ -187,7 +193,7 @@
     role="gridcell"
     data-timeline
     data-row-timeline
-    class="border-border bg-band-night relative h-14 min-w-[720px] flex-1 overflow-hidden"
+    class="border-border bg-band-night relative min-h-14 min-w-[720px] flex-1 overflow-hidden"
   >
     {#each model.bands.base as band (band.start)}
       <div
@@ -231,7 +237,7 @@
     {#each model.hourLabels as label (label.position)}
       <div
         data-testid="hour-label"
-        class="text-band-text absolute bottom-1 z-10 px-0.5 text-[10px] tabular-nums"
+        class="text-band-text absolute bottom-1 z-10 px-0.5 text-xs tabular-nums"
         style={labelStyle(label.position)}
       >
         {label.label}
@@ -240,7 +246,8 @@
 
     {#each model.dayMarkers as marker (marker.position)}
       <div
-        class="border-border bg-band-marker text-band-marker-text absolute top-1 z-10 rounded border px-1 text-[9px] font-medium whitespace-nowrap"
+        data-testid="day-marker"
+        class="border-border bg-band-marker text-band-marker-text absolute top-1 z-10 rounded border px-1.5 text-xs font-medium whitespace-nowrap"
         style={labelStyle(marker.position)}
       >
         {marker.label}

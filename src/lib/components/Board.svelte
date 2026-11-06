@@ -199,7 +199,7 @@
       <div role="row" class="border-border bg-surface-raised sticky top-0 z-30 flex border-b">
         <div
           role="columnheader"
-          class="border-border text-muted flex w-[120px] shrink-0 items-center border-r px-2 text-[10px] font-medium tracking-wide uppercase sm:w-[260px] sm:px-3"
+          class="border-border text-muted flex w-[120px] shrink-0 items-center border-r px-2 text-[11px] font-medium tracking-wide uppercase sm:w-[260px] sm:px-3"
         >
           Zone
         </div>

@@ -87,6 +87,8 @@ docs/architecture.md  current design
 - Display toggles must change the rendered row, not only stored state.
 - Keep keyboard shortcuts working outside inputs and open dialogs.
 - Test with axe; do not introduce color-only status.
+- Keep timeline hour labels and day markers at 12px or larger; row metadata
+  is at least 11px.
 - Respect `prefers-reduced-motion`.
 
 ## Testing
