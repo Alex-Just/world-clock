@@ -87,9 +87,11 @@ Override the base with `CODERABBIT_BASE_REF`. Bypass once with
 
 ## CI and deployment
 
+Live at **[alex-just.github.io/world-clock](https://alex-just.github.io/world-clock/)**.
+
 CI runs format check, lint, type check, tests, build, and Chromium end-to-end
 tests. The deploy workflow publishes the static `dist/` build to GitHub Pages
-from `main`. Set Pages to build from **GitHub Actions**.
+from `main`; Pages builds from **GitHub Actions**.
 
 ## Structure
 

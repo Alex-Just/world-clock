@@ -101,4 +101,5 @@ docs/architecture.md  current design
   `major`. Qlty runs its configured plugins. Missing tools are skipped.
 - CI runs format check, lint, type check, tests, build, and Chromium E2E.
 - Deployment publishes `dist/` to GitHub Pages from `main`.
-- No remote is configured in this checkout. Do not push until the owner asks.
+- `origin` is `Alex-Just/world-clock`; `main` tracks it. Push only when the owner asks.
+- Pages builds from GitHub Actions. Live URL: [alex-just.github.io/world-clock](https://alex-just.github.io/world-clock/).
