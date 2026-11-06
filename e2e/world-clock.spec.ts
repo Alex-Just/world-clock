@@ -406,6 +406,21 @@ test('applies explicit dark theme while the OS is light', async ({ page }) => {
   ).toEqual([]);
 });
 
+test('toggles light and dark from the header', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+
+  await page.getByRole('button', { name: 'Switch to dark mode' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect(page.getByRole('button', { name: 'Switch to light mode' })).toBeVisible();
+
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.getByRole('button', { name: 'Switch to light mode' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+});
+
 test('keeps light theme readable while the OS is dark', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.reload();

@@ -13,7 +13,7 @@
   import ShortcutsDialog from '$lib/components/ShortcutsDialog.svelte';
   import Toast from '$lib/components/Toast.svelte';
   import { addZone, moveZone, removeZone, renameZone } from '$lib/settings/mutations';
-  import { applyAppearance } from '$lib/settings/theme';
+  import { applyAppearance, resolveTheme } from '$lib/settings/theme';
   import type { Settings, ZoneSetting } from '$lib/settings/types';
   import { boardStore } from '$lib/state/board.svelte';
   import { clockStore } from '$lib/state/clock.svelte';
@@ -23,6 +23,17 @@
   import type { DateString, InstantMs, NormalizedRange, ZoneId } from '$lib/time/types';
 
   const persistenceAvailable = storageAvailable();
+
+  let prefersDark = $state(
+    typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches,
+  );
+  const resolvedTheme = $derived(resolveTheme(settingsStore.value.theme, prefersDark));
+
+  function toggleTheme(): void {
+    settingsStore.update({ theme: resolvedTheme === 'dark' ? 'light' : 'dark' });
+  }
 
   const homeLabel = $derived(
     settingsStore.value.zones.find((zone) => zone.timeZone === settingsStore.value.homeZone)
@@ -64,13 +75,6 @@
   let helpOpen = $state(false);
   let renameFor = $state<ZoneSetting | null>(null);
   let removed = $state<{ zone: ZoneSetting; index: number } | null>(null);
-
-  function openDuration(): void {
-    if (!boardStore.range) {
-      boardStore.setRange(boardStore.focusMs, boardStore.focusMs + 3_600_000);
-    }
-    durationOpen = true;
-  }
 
   function handleAddZone(timeZone: string): void {
     const current = settingsStore.value;
@@ -134,6 +138,15 @@
   onMount(() => {
     const stopClock = clockStore.start();
     const stopSync = startSettingsSync();
+    const media =
+      typeof window.matchMedia === 'function'
+        ? window.matchMedia('(prefers-color-scheme: dark)')
+        : null;
+    const updatePrefersDark = () => {
+      if (media) prefersDark = media.matches;
+    };
+    updatePrefersDark();
+    media?.addEventListener('change', updatePrefersDark);
     const stopShortcuts = installShortcuts(
       {
         now: () => {
@@ -176,6 +189,7 @@
     );
 
     return () => {
+      media?.removeEventListener('change', updatePrefersDark);
       stopClock();
       stopSync();
       stopShortcuts();
@@ -183,7 +197,7 @@
   });
 
   $effect(() => {
-    applyAppearance(settingsStore.value);
+    applyAppearance(settingsStore.value, document.documentElement, prefersDark);
   });
 </script>
 
@@ -208,7 +222,8 @@
     onOpenSetTime={() => {
       setTimeOpen = true;
     }}
-    onOpenDuration={openDuration}
+    theme={resolvedTheme}
+    onToggleTheme={toggleTheme}
     onOpenAddZone={() => {
       addZoneOpen = true;
     }}

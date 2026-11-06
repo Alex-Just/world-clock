@@ -17,12 +17,10 @@ export function resolveTheme(theme: Theme, prefersDark: boolean): 'light' | 'dar
 export function applyAppearance(
   settings: Settings,
   root: HTMLElement = document.documentElement,
-): void {
-  const prefersDark =
-    typeof window !== 'undefined' &&
+  prefersDark = typeof window !== 'undefined' &&
     typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches;
-
+    window.matchMedia('(prefers-color-scheme: dark)').matches,
+): void {
   root.dataset.theme = resolveTheme(settings.theme, prefersDark);
   root.dataset.accent = settings.accent;
 }

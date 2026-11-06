@@ -9,12 +9,13 @@ const baseProps = {
   format: '24h' as const,
   followNow: false,
   windowOffsetHours: 0,
+  theme: 'light' as const,
   onNow: vi.fn(),
   onOpenSetTime: vi.fn(),
-  onOpenDuration: vi.fn(),
   onOpenAddZone: vi.fn(),
   onOpenSettings: vi.fn(),
   onShiftWindow: vi.fn(),
+  onToggleTheme: vi.fn(),
 };
 
 it('shows the focused time and relative badge', () => {
@@ -45,6 +46,20 @@ it('wires the header actions', async () => {
   render(Header, { props: { ...baseProps, nowMs: baseProps.focusMs } });
   await fireEvent.click(screen.getByRole('button', { name: /now/i }));
   expect(baseProps.onNow).toHaveBeenCalled();
+});
+
+it('toggles the theme from the header', async () => {
+  const onToggleTheme = vi.fn();
+  render(Header, {
+    props: {
+      ...baseProps,
+      nowMs: baseProps.focusMs,
+      theme: 'dark',
+      onToggleTheme,
+    },
+  });
+  await fireEvent.click(screen.getByRole('button', { name: 'Switch to light mode' }));
+  expect(onToggleTheme).toHaveBeenCalled();
 });
 
 it('shifts the visible window from the header', async () => {

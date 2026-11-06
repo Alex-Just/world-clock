@@ -137,6 +137,9 @@ docs/architecture.md  current design
   [`docs/typography.md`](docs/typography.md). Do not add arbitrary px sizes.
 - UI controls use a 16px base via the global rules in `src/app.css`. Do not
   shrink buttons, labels, inputs, or menu items with `text-xs`.
+- The header theme button toggles between explicit light and dark modes.
+  System mode remains available in Settings. Duration remains reachable from
+  the selected-range Details action.
 - The day picker lives in the header on wide screens and wraps below the
   controls on narrow screens. Keep it centered with `mx-auto`/absolute
   positioning; do not restore a separate full-width strip. The calendar

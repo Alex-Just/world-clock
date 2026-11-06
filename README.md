@@ -20,6 +20,7 @@ availability without leaving the board.
 - Correct DST gaps/overlaps, half-hour and 45-minute offsets, date rollover.
 - Add, rename, reorder, remove, and pin zones; choose the home zone.
 - Light/dark/system themes, six accents, 12/24-hour, display toggles.
+- One-click light/dark toggle in the header; system mode remains in Settings.
 - JSON export/import. Everything stays in the browser.
 
 ## Tech stack

@@ -4,9 +4,10 @@
     ChevronLeft,
     ChevronRight,
     LocateFixed,
+    Moon,
     Plus,
     Settings,
-    Timer,
+    Sun,
   } from '@lucide/svelte';
   import { WINDOW_OFFSET_LIMIT_HOURS, WINDOW_SHIFT_HOURS } from '$lib/time/axis';
   import { formatDuration, formatRelativeBreakdown, formatSourceStamp } from '$lib/time/format';
@@ -23,12 +24,13 @@
     format,
     followNow,
     windowOffsetHours,
+    theme,
     onNow,
     onOpenSetTime,
-    onOpenDuration,
     onOpenAddZone,
     onOpenSettings,
     onShiftWindow,
+    onToggleTheme,
     children,
   }: {
     focusMs: InstantMs;
@@ -38,12 +40,13 @@
     format: TimeFormat;
     followNow: boolean;
     windowOffsetHours: number;
+    theme: 'light' | 'dark';
     onNow: () => void;
     onOpenSetTime: () => void;
-    onOpenDuration: () => void;
     onOpenAddZone: () => void;
     onOpenSettings: () => void;
     onShiftWindow: (hours: number) => void;
+    onToggleTheme: () => void;
     children?: Snippet;
   } = $props();
 
@@ -172,8 +175,15 @@
       Now
     </button>
 
-    <IconButton label="Duration" onclick={onOpenDuration}>
-      <Timer class="size-4" aria-hidden="true" />
+    <IconButton
+      label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      onclick={onToggleTheme}
+    >
+      {#if theme === 'dark'}
+        <Sun class="size-4" aria-hidden="true" />
+      {:else}
+        <Moon class="size-4" aria-hidden="true" />
+      {/if}
     </IconButton>
 
     <IconButton label="Add zone" onclick={onOpenAddZone}>
