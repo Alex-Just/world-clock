@@ -101,7 +101,9 @@ Import replaces the current document only after confirmation. Export includes
   retain focus context. Range fills and handles still render on any day. A
   hover overlay follows the cursor without changing selection, keeping the
   hovered zone row and hour column fully lit while the rest of the board uses
-  the theme-aware `crosshair-dim` wash.
+  the theme-aware `crosshair-dim` wash. Pointer state clears on Escape,
+  window blur, hidden visibility, lost capture, or a move with no pressed
+  buttons so hover can recover from a missed pointerup.
 - On narrow screens the row header wraps the time block below the zone name;
   timeline labels stay legible instead of shrinking.
 - Display settings control abbreviation, exact offset, DST badge, IANA name,

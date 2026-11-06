@@ -108,6 +108,9 @@ docs/architecture.md  current design
 - The home row keeps a subtle tint and left accent. Hovering a board cell
   keeps its whole zone row and hour column fully lit and dims the rest with
   `crosshair-dim`; never dim touch interactions.
+- Recover from a lost pointerup: cancel board and handle drags on window blur,
+  hidden visibility, Escape, lost pointer capture, or a move with no pressed
+  buttons, then resume hover tracking.
 - The range hint and selected-range bar share a fixed 48px slot above the board.
   Selecting a range must not move the board or change desktop/mobile row height.
 - Hour labels in the active column are semibold.

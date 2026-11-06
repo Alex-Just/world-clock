@@ -229,6 +229,71 @@ it('preselects the focus hour and follows hover', async () => {
   ).toHaveClass('opacity-0');
 });
 
+it('recovers hover when a drag ends without a pointerup', async () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  const { container } = render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h'),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: false,
+      range: null,
+      settings,
+      onSetFocus: vi.fn(),
+      onSetRange: vi.fn(),
+      onRangeChange: vi.fn(),
+    },
+  });
+  const timeline = container.querySelector<HTMLElement>(
+    '[data-testid="row-Europe/Madrid"] [data-row-timeline]',
+  );
+  if (!timeline) throw new Error('timeline missing');
+  timeline.getBoundingClientRect = () => ({
+    left: 0,
+    width: 240,
+    top: 0,
+    height: 56,
+    right: 240,
+    bottom: 56,
+    x: 0,
+    y: 0,
+    toJSON: () => ({}),
+  });
+
+  await fireEvent.pointerDown(timeline, {
+    clientX: 60,
+    pointerId: 1,
+    pointerType: 'mouse',
+    button: 0,
+    buttons: 1,
+  });
+  await fireEvent.pointerMove(timeline, {
+    clientX: 180,
+    pointerId: 1,
+    pointerType: 'mouse',
+    buttons: 0,
+  });
+  expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 75%');
+
+  await fireEvent.pointerDown(timeline, {
+    clientX: 60,
+    pointerId: 2,
+    pointerType: 'mouse',
+    button: 0,
+    buttons: 1,
+  });
+  await fireEvent.keyDown(window, { key: 'Escape' });
+  await fireEvent.pointerMove(timeline, {
+    clientX: 120,
+    pointerId: 2,
+    pointerType: 'mouse',
+    buttons: 1,
+  });
+  expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 50%');
+});
+
 it('creates a range by dragging on a zone row', async () => {
   const settings = createDefaultSettings('Europe/Madrid');
   const axis = buildAxis('Europe/Madrid', '2026-11-05', '24h');
@@ -272,7 +337,7 @@ it('creates a range by dragging on a zone row', async () => {
     pointerType: 'mouse',
     button: 0,
   });
-  await fireEvent.pointerMove(window, { clientX: 180, pointerType: 'mouse' });
+  await fireEvent.pointerMove(window, { clientX: 180, pointerType: 'mouse', buttons: 1 });
   await fireEvent.pointerUp(window, {
     clientX: 180,
     pointerId: 1,

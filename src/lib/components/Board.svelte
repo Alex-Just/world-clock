@@ -98,7 +98,14 @@
   const highlightEnd = $derived(activeSlot === null ? -1 : (activeSlot + 1) / slotCount);
 
   function handlePointerMove(event: PointerEvent): void {
-    if (dragAnchor !== null || event.pointerType === 'touch') return;
+    if (dragAnchor !== null) {
+      if (event.buttons === 0) {
+        cleanupRowDrag();
+      } else {
+        return;
+      }
+    }
+    if (event.pointerType === 'touch') return;
     const target =
       event.target instanceof Element ? event.target.closest<HTMLElement>('[data-timeline]') : null;
     const row =
@@ -192,27 +199,40 @@
   let boardEl = $state<HTMLElement>();
 
   onMount(() => {
+    const resetPointerState = () => {
+      cleanupRowDrag();
+      hoverSlot = null;
+      hoveredZone = null;
+    };
     const resetOutside = (event: PointerEvent) => {
       if (!(event.target instanceof Node) || !boardEl?.contains(event.target)) {
-        hoverSlot = null;
-        hoveredZone = null;
+        resetPointerState();
       }
     };
     const clearOnEscape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
-      hoverSlot = null;
-      hoveredZone = null;
+      resetPointerState();
+    };
+    const handleWindowBlur = () => {
+      resetPointerState();
+    };
+    const handleVisibilityChange = () => {
+      if (document.hidden) resetPointerState();
     };
     const handleGlobalMove = (event: PointerEvent) => {
       handlePointerMove(event);
     };
     document.addEventListener('pointerdown', resetOutside, true);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('pointermove', handleGlobalMove, { passive: true });
     window.addEventListener('keydown', clearOnEscape);
+    window.addEventListener('blur', handleWindowBlur);
     return () => {
       document.removeEventListener('pointerdown', resetOutside, true);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('pointermove', handleGlobalMove);
       window.removeEventListener('keydown', clearOnEscape);
+      window.removeEventListener('blur', handleWindowBlur);
     };
   });
 
