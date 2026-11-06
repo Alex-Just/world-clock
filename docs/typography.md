@@ -77,6 +77,21 @@ The light theme follows Material Blue:
 | Today      | `#b7791f` / `#fbbf24` | Today underline and ring      |
 | Weekend    | `#90a4ae` / `#b0bec5` | Weekend underline             |
 
-Status text uses the semantic warning and danger tokens. Dark mode keeps the
-same hierarchy with a dark surface, lighter blue accents, and yellow work-hour
-markings.
+Status text uses the semantic warning and danger tokens.
+
+### Warm Dark board (A1.2)
+
+| Token       | Value     | Use                    |
+| ----------- | --------- | ---------------------- |
+| Day band    | `#695750` | Daylight hours         |
+| Twilight    | `#5a4a44` | Twilight hours         |
+| Night band  | `#3c322e` | Night hours            |
+| Work cells  | `#7a665e` | Working-hours cells    |
+| Home row    | `#61483d` | Home-zone highlight    |
+| Home header | `#65443a` | Home-zone row header   |
+| Band text   | `#fdf6f2` | Labels on board cells  |
+| Marker      | `#3a312d` | Date markers           |
+| Focus       | `#26a69a` | Focus line and handles |
+
+Dark mode keeps the teal focus line and yellow work strip, with light text on
+the warm dark bands instead of the light-theme blue/white cells.

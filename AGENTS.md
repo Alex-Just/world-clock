@@ -84,6 +84,9 @@ docs/architecture.md  current design
   text that sits on themed surfaces.
 - Work-hours strip uses the amber `work-line` token; work cells use the
   white `band-work` token. Do not reuse the blue night palette for work markings.
+- Dark mode uses the Warm Dark A1.2 board tokens: warm brown bands, a deep-brown
+  home row, light band text, and the teal focus line. Do not reintroduce light
+  blue or white board cells in dark mode.
 - The home row uses the warm `home-row`/`home-row-header` tokens and
   `home-accent` edge, including its hour cells; never use blue for home emphasis.
 - Keep focus/now lines, hour boundary ticks, and range fills aligned across
