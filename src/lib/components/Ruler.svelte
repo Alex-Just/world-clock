@@ -259,16 +259,18 @@
     class="absolute inset-y-0 z-30 w-0 cursor-ew-resize focus-visible:outline-none"
     style={`left: ${focusPosition}`}
   >
-    <div
-      data-testid="focus-line"
-      class="border-focus-line-ui pointer-events-none absolute inset-y-0 w-0 border-l-2 border-dashed drop-shadow-[0_0_1px_rgba(255,255,255,0.85)]"
-      style={`--position: ${focusPosition}`}
-    ></div>
-    <div
-      data-testid="focus-handle"
-      use:horizontalDrag={focusHandlers}
-      class="border-surface-raised bg-focus-line-ui absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border-2 shadow"
-      title="Drag to move the focus time"
-    ></div>
+    {#if nowInView}
+      <div
+        data-testid="focus-line"
+        class="border-focus-line-ui pointer-events-none absolute inset-y-0 w-0 border-l-2 border-dashed drop-shadow-[0_0_1px_rgba(255,255,255,0.85)]"
+        style={`--position: ${focusPosition}`}
+      ></div>
+      <div
+        data-testid="focus-handle"
+        use:horizontalDrag={focusHandlers}
+        class="border-surface-raised bg-focus-line-ui absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border-2 shadow"
+        title="Drag to move the focus time"
+      ></div>
+    {/if}
   </div>
 </div>

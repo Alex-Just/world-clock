@@ -47,6 +47,26 @@ it('draws the focus line and only draws now when it is in view', () => {
   expect(container.querySelector('[data-testid="now-line"]')).not.toBeNull();
 });
 
+it('hides focus and now markers when another day is in view', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  const { container } = render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-06', '24h'),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-06T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: false,
+      range: null,
+      settings,
+    },
+  });
+  expect(container.querySelector('[data-testid="focus-line"]')).toBeNull();
+  expect(container.querySelector('[data-testid="focus-handle"]')).toBeNull();
+  expect(container.querySelector('[data-testid="now-line"]')).toBeNull();
+  expect(container.querySelectorAll('[data-testid="row-focus-line"]')).toHaveLength(0);
+});
+
 it('highlights the selected range across every row', () => {
   const settings = createDefaultSettings('Europe/Madrid');
   const { container } = render(Board, {

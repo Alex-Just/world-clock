@@ -313,9 +313,12 @@
       ></div>
     {/if}
 
-    <div
-      class="border-focus-line pointer-events-none absolute inset-y-0 z-20 w-0 border-l-2 border-dashed drop-shadow-[0_0_1px_rgba(255,255,255,0.85)]"
-      style={`left: ${pct(focusPosition)}`}
-    ></div>
+    {#if nowPosition !== null}
+      <div
+        data-testid="row-focus-line"
+        class="border-focus-line pointer-events-none absolute inset-y-0 z-20 w-0 border-l-2 border-dashed drop-shadow-[0_0_1px_rgba(255,255,255,0.85)]"
+        style={`left: ${pct(focusPosition)}`}
+      ></div>
+    {/if}
   </div>
 </div>

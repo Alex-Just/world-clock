@@ -88,8 +88,10 @@ Import replaces the current document only after confirmation. Export includes
 - Hour labels carry a tiny tick at each boundary in the ruler and every row.
 - Focus/now lines and range fills render in the ruler and every row. The focus
   line is a 2px dashed teal stroke with a soft light halo so it reads over
-  white work cells, blue bands, and the warm home row. A hover overlay follows
-  the cursor without changing selection.
+  white work cells, blue bands, and the warm home row. It is hidden when the
+  viewed day does not contain now; the header clock and focused-hour highlight
+  retain focus context. Range fills and handles still render on any day. A
+  hover overlay follows the cursor without changing selection.
 - On narrow screens the row header wraps the time block below the zone name;
   timeline labels stay legible instead of shrinking.
 - Display settings control abbreviation, exact offset, DST badge, IANA name,

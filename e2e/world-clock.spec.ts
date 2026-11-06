@@ -782,3 +782,18 @@ test('escape clears the range and then returns to now', async ({ page }) => {
   await expect(grid).toHaveAttribute('data-following', 'true');
   await expect(page.getByTestId('relative-badge')).toBeHidden();
 });
+
+test('hides the now marker when viewing another day', async ({ page }) => {
+  await expect(page.getByTestId('focus-line')).toBeVisible();
+  await expect(page.getByTestId('now-line')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Sat 7 2026' }).click();
+  await expect(page.getByTestId('focus-line')).toBeHidden();
+  await expect(page.getByTestId('focus-handle')).toBeHidden();
+  await expect(page.getByTestId('now-line')).toBeHidden();
+  await expect(page.getByTestId('relative-badge')).toBeVisible();
+
+  await page.getByRole('button', { name: /^today$/i }).click();
+  await expect(page.getByTestId('focus-line')).toBeVisible();
+  await expect(page.getByTestId('now-line')).toBeVisible();
+});
