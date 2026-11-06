@@ -126,7 +126,7 @@
     isHovered
       ? 'border-l-accent bg-accent/5'
       : isHome
-        ? 'border-l-home-accent bg-home-row'
+        ? 'border-l-home-accent'
         : 'border-l-transparent'
   }`}
 >
@@ -261,14 +261,6 @@
         style={`left: ${pct(band.start)}; width: ${pct(band.end - band.start)}`}
       ></div>
     {/each}
-
-    {#if isHome}
-      <div
-        data-testid="home-row-fill"
-        class="bg-home-row pointer-events-none absolute inset-0 z-[1]"
-        aria-hidden="true"
-      ></div>
-    {/if}
 
     {#if showWorkingHours}
       {#each model.bands.work as segment (segment.start)}

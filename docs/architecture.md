@@ -98,7 +98,7 @@ Import replaces the current document only after confirmation. Export includes
   work-cell overlay so they remain visible during working hours.
 - Focus/now lines and range fills render in the ruler and every row. The focus
   line is a 2px dashed teal stroke with a soft light halo so it reads over
-  white work cells, blue bands, and the warm home row. It is hidden when the
+  white work cells, blue bands, and the warm home header. It is hidden when the
   viewed day does not contain now; the header clock and focused-hour highlight
   retain focus context. Range fills and handles still render on any day. A
   hover overlay follows the cursor without changing selection, keeping the

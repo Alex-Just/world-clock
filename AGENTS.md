@@ -85,10 +85,11 @@ docs/architecture.md  current design
 - Work-hours strip uses the amber `work-line` token; work cells use the
   white `band-work` token. Do not reuse the blue night palette for work markings.
 - Dark mode uses the Warm Dark A1.2 board tokens: warm brown bands, a deep-brown
-  home row, light band text, and the teal focus line. Do not reintroduce light
-  blue or white board cells in dark mode.
-- The home row uses the warm `home-row`/`home-row-header` tokens and
-  `home-accent` edge, including its hour cells; never use blue for home emphasis.
+  home header, light band text, and the teal focus line. Do not reintroduce
+  light blue or white board cells in dark mode.
+- The home zone is marked by the `home-row-header` tint on its sticky name
+  column and the `home-accent` row edge. Its timeline cells keep the normal
+  day/twilight/night/work bands; never tint the whole home row.
 - Keep focus/now lines, hour boundary ticks, and range fills aligned across
   the ruler and rows. Hour labels are centered in their cells; boundary ticks
   stay at the cell starts. Ticks must paint above the white work-cell overlay
@@ -118,7 +119,8 @@ docs/architecture.md  current design
 - The focus readout date omits the year unless the target year differs from the
   current home-zone year. Show that year inline; at 1440–1535px the centered
   day strip nudges right just enough to clear the wider readout.
-- The home row keeps a subtle tint and left accent. Hovering a board cell
+- The home row keeps its left accent and tints only the sticky name column.
+  Hovering a board cell
   keeps its whole zone row and hour column fully lit, adds restrained 1px
   accent outlines, and dims the rest with `crosshair-dim`; never dim touch
   interactions.

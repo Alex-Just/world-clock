@@ -61,21 +61,21 @@ Rules:
 
 The light theme follows Material Blue:
 
-| Token      | Value                 | Use                           |
-| ---------- | --------------------- | ----------------------------- |
-| Page       | `#f5f5f5`             | Outside the app surface       |
-| Surface    | `#ffffff`             | Header, board, controls       |
-| Text       | `#212121`             | Primary labels and numbers    |
-| Muted      | `#757575`             | Zone metadata and helpers     |
-| Accent     | `#1976d2`             | Primary actions and selection |
-| Focus      | `#26a69a`             | Focus line and range handles  |
-| Day band   | `#e3f2fd`             | Daylight and twilight hours   |
-| Night band | `#bbdefb`             | Night hours                   |
-| Work strip | `#b45309` / `#fbbf24` | Work-hours indicator          |
-| Work cells | `#ffffff`             | Working-hours cells           |
-| Home row   | `#fff8e8` / `#f5e9c8` | Home-zone highlight           |
-| Today      | `#b7791f` / `#fbbf24` | Today underline and ring      |
-| Weekend    | `#90a4ae` / `#b0bec5` | Weekend underline             |
+| Token       | Value                 | Use                           |
+| ----------- | --------------------- | ----------------------------- |
+| Page        | `#f5f5f5`             | Outside the app surface       |
+| Surface     | `#ffffff`             | Header, board, controls       |
+| Text        | `#212121`             | Primary labels and numbers    |
+| Muted       | `#757575`             | Zone metadata and helpers     |
+| Accent      | `#1976d2`             | Primary actions and selection |
+| Focus       | `#26a69a`             | Focus line and range handles  |
+| Day band    | `#e3f2fd`             | Daylight and twilight hours   |
+| Night band  | `#bbdefb`             | Night hours                   |
+| Work strip  | `#b45309` / `#fbbf24` | Work-hours indicator          |
+| Work cells  | `#ffffff`             | Working-hours cells           |
+| Home header | `#fff8e8`             | Home-zone name column         |
+| Today       | `#b7791f` / `#fbbf24` | Today underline and ring      |
+| Weekend     | `#90a4ae` / `#b0bec5` | Weekend underline             |
 
 Status text uses the semantic warning and danger tokens.
 
@@ -87,8 +87,7 @@ Status text uses the semantic warning and danger tokens.
 | Twilight    | `#5a4a44` | Twilight hours         |
 | Night band  | `#3c322e` | Night hours            |
 | Work cells  | `#7a665e` | Working-hours cells    |
-| Home row    | `#61483d` | Home-zone highlight    |
-| Home header | `#65443a` | Home-zone row header   |
+| Home header | `#65443a` | Home-zone name column  |
 | Band text   | `#fdf6f2` | Labels on board cells  |
 | Marker      | `#3a312d` | Date markers           |
 | Focus       | `#26a69a` | Focus line and handles |

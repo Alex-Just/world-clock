@@ -16,7 +16,6 @@
   --color-band-night: var(--band-night);
   --color-band-work: var(--band-work);
   --color-work-line: var(--work-line);
-  --color-home-row: var(--home-row);
   --color-home-row-header: var(--home-row-header);
   --color-home-accent: var(--home-accent);
   --color-weekend-line: var(--weekend-line);
@@ -54,7 +53,6 @@
   --band-marker: #ffffff;
   --band-marker-text: #212121;
   --work-line: #b45309;
-  --home-row: #fff8e8;
   --home-row-header: #fff8e8;
   --home-accent: #b7791f;
   --weekend-line: #90a4ae;
@@ -84,7 +82,6 @@
   --band-marker: #3a312d;
   --band-marker-text: #fdf6f2;
   --work-line: #fbbf24;
-  --home-row: #61483d;
   --home-row-header: #65443a;
   --home-accent: #fbbf24;
   --weekend-line: #b0897c;

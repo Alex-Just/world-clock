@@ -187,6 +187,29 @@ test('emphasizes the home row and the hovered row', async ({ page }) => {
   );
 });
 
+test('tints only the home zone name column', async ({ page }) => {
+  const home = page.getByTestId('row-Europe/Madrid');
+  const nameCell = home.locator('[role="gridcell"]').first();
+  expect(await nameCell.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(
+    'rgb(255, 248, 232)',
+  );
+  expect(await home.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(
+    'rgba(0, 0, 0, 0)',
+  );
+  await expect(page.getByTestId('home-row-fill')).toHaveCount(0);
+
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  expect(
+    await page
+      .getByTestId('row-Europe/Madrid')
+      .locator('[role="gridcell"]')
+      .first()
+      .evaluate((element) => getComputedStyle(element).backgroundColor),
+  ).toBe('rgb(101, 68, 58)');
+});
+
 test('passes an axe scan in dark mode', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.reload();
@@ -656,7 +679,6 @@ test('keeps work-hour markings warm instead of night blue', async ({ page }) => 
       .first()
       .evaluate((element) => getComputedStyle(element).backgroundColor),
   ).toBe('rgb(255, 255, 255)');
-  await expect(page.getByTestId('home-row-fill')).toBeVisible();
 });
 
 test('keeps the header height when the relative badge appears', async ({ page }) => {
