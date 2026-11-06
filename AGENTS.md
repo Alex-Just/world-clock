@@ -136,6 +136,9 @@ docs/architecture.md  current design
   `hover:bg-surface`; `surface-raised` is invisible on the white header.
   Primary accent buttons use `hover:bg-accent/90`. Keep color transitions
   consistent.
+- Actionable buttons, links, menu items, and option rows use a hand cursor;
+  disabled controls keep the default cursor. Zone-menu items use
+  `hover:bg-accent/10`; Remove uses `hover:bg-danger/10`.
 - Respect `prefers-reduced-motion`.
 
 ## Testing

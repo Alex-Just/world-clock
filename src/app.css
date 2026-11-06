@@ -197,6 +197,23 @@ body {
     transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='menuitem']:not([disabled]),
+  [role='option']:not([aria-disabled='true']),
+  a[href],
+  label[for],
+  label:has(input[type='checkbox']:not(:disabled)),
+  label:has(input[type='radio']:not(:disabled)) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role='button'][aria-disabled='true'],
+  [role='menuitem'][disabled] {
+    cursor: default;
+  }
 }
 
 :focus-visible {

@@ -846,8 +846,33 @@ test('matches the settings hover across secondary controls', async ({ page }) =>
 
   await page.getByRole('button', { name: 'Actions for New York' }).click();
   const rename = page.getByRole('menuitem', { name: 'Rename' });
+  const menuBase = await background(rename);
   await rename.hover();
-  await expect.poll(() => background(rename)).toBe(hoverBackground);
+  await expect.poll(() => background(rename)).not.toBe(menuBase);
+});
+
+test('uses a hand cursor for actionable controls', async ({ page }) => {
+  const cursor = (locator: Locator) =>
+    locator.evaluate((element) => getComputedStyle(element).cursor);
+
+  for (const locator of [
+    page.getByRole('button', { name: 'Settings' }),
+    page.getByRole('button', { name: /^today$/i }),
+    page.getByRole('button', { name: 'Sat 7 2026' }),
+    page.getByRole('button', { name: 'Actions for New York' }),
+  ]) {
+    expect(await cursor(locator)).toBe('pointer');
+  }
+
+  await expect(page.getByRole('button', { name: 'Reset visible window' })).toBeDisabled();
+  expect(await cursor(page.getByRole('button', { name: 'Reset visible window' }))).toBe('default');
+
+  await page.getByRole('button', { name: 'Actions for New York' }).click();
+  expect(await cursor(page.getByRole('menuitem', { name: 'Rename' }))).toBe('pointer');
+  await page.keyboard.press('Escape');
+
+  await page.getByRole('button', { name: /set time/i }).click();
+  expect(await cursor(page.getByRole('button', { name: /apply/i }))).toBe('pointer');
 });
 
 test('shifts the visible window by six hours', async ({ page }) => {
