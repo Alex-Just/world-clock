@@ -90,6 +90,8 @@ docs/architecture.md  current design
   the range, or persist.
 - The home row keeps a subtle tint and left accent. Hovering a row dims the other
   rows; do not dim touch interactions.
+- The range hint and selected-range bar share a fixed 48px slot above the board.
+  Selecting a range must not move the board or change desktop/mobile row height.
 - Hour labels in the active column are semibold.
 - Display toggles must change the rendered row, not only stored state.
 - Keep keyboard shortcuts working outside inputs and open dialogs.
@@ -121,6 +123,8 @@ docs/architecture.md  current design
 
 ## Git, CI, and deploy
 
+- Never push automatically. Push only after an explicit request in the current
+  turn; a previous push is not standing permission.
 - Use feature branches. Do not push directly to `main`.
 - `pnpm install` enables `.githooks`; bypass once with `git push --no-verify`.
 - CodeRabbit reviews committed changes against `origin/main` or `main` at gate
