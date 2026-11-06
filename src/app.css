@@ -19,6 +19,10 @@
   --color-band-marker: var(--band-marker);
   --color-band-marker-text: var(--band-marker-text);
   --color-now: var(--now);
+  --color-status-day: var(--status-day);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-dst-marker: var(--dst-marker);
   --color-focus-ring: var(--focus-ring);
 }
 
@@ -40,6 +44,10 @@
   --band-marker: #fffefb;
   --band-marker-text: #1f2937;
   --now: #2f8f82;
+  --status-day: #92400e;
+  --warning: #92400e;
+  --danger: #be123c;
+  --dst-marker: #b45309;
   --focus-ring: var(--accent);
 }
 
@@ -58,6 +66,10 @@
   --band-marker: #ffffff;
   --band-marker-text: #334155;
   --now: #3f9c8f;
+  --status-day: #fcd34d;
+  --warning: #fcd34d;
+  --danger: #fda4af;
+  --dst-marker: #fbbf24;
   --accent-text: #8ec5f0;
 }
 

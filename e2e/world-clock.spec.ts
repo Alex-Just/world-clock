@@ -100,6 +100,14 @@ test('passes an axe scan on the board and settings', async ({ page }) => {
   expect(
     settingsResults.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical'),
   ).toEqual([]);
+
+  await page.getByLabel('Start').fill('09:00');
+  await page.getByLabel('End').fill('09:00');
+  await expect(page.getByText('Start and end must differ.')).toBeVisible();
+  const validationResults = await new AxeBuilder({ page }).analyze();
+  expect(
+    validationResults.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical'),
+  ).toEqual([]);
 });
 
 test('highlights the hovered hour across every row', async ({ page }) => {
@@ -331,6 +339,24 @@ test('applies explicit dark theme while the OS is light', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.waitForTimeout(250);
 
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(
+    results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical'),
+  ).toEqual([]);
+});
+
+test('keeps light theme readable while the OS is dark', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.reload();
+  await expect(page.getByText('New York')).toBeVisible();
+  await page.getByRole('button', { name: /settings/i }).click();
+  await page.getByRole('radio', { name: /^light$/i }).check();
+  await page.getByRole('button', { name: /close settings/i }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await page.waitForTimeout(250);
+
+  const daytime = page.getByTestId('row-America/New_York').getByText('Daytime');
+  await expect(daytime).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   expect(
     results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical'),

@@ -73,7 +73,7 @@
     model.focusedStatus === 'working'
       ? 'text-accent-text'
       : model.focusedStatus === 'day'
-        ? 'text-amber-800 dark:text-amber-300'
+        ? 'text-status-day'
         : 'text-muted',
   );
 
@@ -120,7 +120,7 @@
           <span>{formatUtcOffset(model.offsetMinutes)}</span>
         {/if}
         {#if showDst && model.dst.active}
-          <span class="rounded bg-amber-500/15 px-1 text-amber-700 dark:text-amber-300">DST</span>
+          <span class="bg-status-day/15 text-status-day rounded px-1">DST</span>
         {/if}
         {#if showIana}
           <span class="max-w-24 truncate sm:max-w-40">{model.timeZone}</span>
@@ -221,7 +221,7 @@
 
     {#each model.dstMarkers as marker (marker.position)}
       <div
-        class="absolute inset-y-0 z-10 w-0 border-l border-dashed border-amber-500/70"
+        class="border-dst-marker/70 absolute inset-y-0 z-10 w-0 border-l border-dashed"
         style={`left: ${pct(marker.position)}`}
         title={marker.label}
         aria-hidden="true"

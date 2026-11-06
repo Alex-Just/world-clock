@@ -158,7 +158,7 @@
       onRemove();
       onClose();
     }}
-    class="hover:bg-surface block w-full rounded-lg px-2 py-1.5 text-left text-xs text-rose-700 disabled:opacity-40 dark:text-rose-300"
+    class="hover:bg-surface text-danger block w-full rounded-lg px-2 py-1.5 text-left text-xs disabled:opacity-40"
   >
     Remove
   </button>

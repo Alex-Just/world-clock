@@ -292,7 +292,7 @@
             </button>
           </div>
           {#if invalidHours}
-            <p class="mt-1 text-xs text-rose-600 dark:text-rose-400">Start and end must differ.</p>
+            <p class="text-danger mt-1 text-xs">Start and end must differ.</p>
           {:else if workEnd < workStart}
             <p class="text-muted mt-1 text-xs">Overnight window — ends on the next day.</p>
           {/if}
@@ -366,7 +366,7 @@
                     onclick={() => {
                       onReplace(removeZone(settings, zone.timeZone));
                     }}
-                    class="hover:bg-surface h-6 rounded px-1 text-[10px] text-rose-600 disabled:opacity-30 dark:text-rose-400"
+                    class="hover:bg-surface text-danger h-6 rounded px-1 text-[10px] disabled:opacity-30"
                   >
                     ×
                   </button>
@@ -403,7 +403,7 @@
             <button
               type="button"
               onclick={resetAll}
-              class="hover:bg-surface h-8 rounded-lg px-2.5 text-xs font-medium text-rose-600 dark:text-rose-400"
+              class="hover:bg-surface text-danger h-8 rounded-lg px-2.5 text-xs font-medium"
             >
               Reset all settings
             </button>

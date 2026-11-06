@@ -87,7 +87,8 @@ Import replaces the current document only after confirmation. Export includes
   date labels, and work bands.
 - Keyboard shortcuts are global except in text fields or open dialogs.
 - Tailwind `dark:` variants are bound to `data-theme='dark'` so the explicit
-  theme works when the OS theme differs.
+  theme works when the OS theme differs. Status, warning, danger, and accent
+  text use semantic tokens defined in `src/app.css`.
 - Colors meet WCAG AA contrast; status is never color-only; reduced motion is
   respected.
 

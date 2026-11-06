@@ -210,10 +210,7 @@
   />
 
   {#if !persistenceAvailable}
-    <div
-      role="status"
-      class="border-amber-500/30 bg-amber-500/10 px-4 py-2 text-xs text-amber-800 dark:text-amber-200"
-    >
+    <div role="status" class="border-warning/30 bg-warning/10 text-warning px-4 py-2 text-xs">
       Settings can't be saved in this browser. Changes last until you reload.
     </div>
   {/if}

@@ -209,7 +209,7 @@
           </div>
 
           {#if computed.durationMs > 86_400_000}
-            <p class="mt-2 text-xs text-amber-700 dark:text-amber-300">
+            <p class="text-warning mt-2 text-xs">
               Multi-day span — availability is shown per local day.
             </p>
           {/if}
@@ -237,7 +237,7 @@
             </table>
           </div>
         {:else}
-          <p class="mt-4 text-xs text-rose-600 dark:text-rose-400">Enter a valid start and end.</p>
+          <p class="text-danger mt-4 text-xs">Enter a valid start and end.</p>
         {/if}
       </div>
 
