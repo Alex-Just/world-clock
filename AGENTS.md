@@ -108,7 +108,8 @@ docs/architecture.md  current design
 - The relative badge is hidden below `sm`; at `sm` and above reserve its
   footprint and announce meaningful relative values through a separate polite
   live region. For long ranges show the calendar breakdown (`y`/`mo`/`d`/
-  `h`/`m`), the total duration, and the source “now” date in the home zone.
+  `h`/`m`), the total duration, and the source “now” date and time in the home
+  zone. Omit year/month when they match the current year/month.
 - The home row keeps a subtle tint and left accent. Hovering a board cell
   keeps its whole zone row and hour column fully lit, adds restrained 1px
   accent outlines, and dims the rest with `crosshair-dim`; never dim touch

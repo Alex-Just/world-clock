@@ -140,11 +140,31 @@ export function formatRelativeBreakdown(
   };
 }
 
-export function formatSourceDate(instantMs: InstantMs, zone: ZoneId, locale?: string): string {
-  return new Intl.DateTimeFormat(locale, {
-    timeZone: zone,
+export function formatSourceStamp(
+  sourceMs: InstantMs,
+  nowMs: InstantMs,
+  zone: ZoneId,
+  format: TimeFormat,
+  locale?: string,
+): string {
+  const source = Temporal.Instant.fromEpochMilliseconds(sourceMs).toZonedDateTimeISO(zone);
+  const now = Temporal.Instant.fromEpochMilliseconds(nowMs).toZonedDateTimeISO(zone);
+  const sourceDate = source.toPlainDate();
+  const nowDate = now.toPlainDate();
+  const time = formatTime(sourceMs, zone, format, locale === undefined ? {} : { locale });
+
+  if (sourceDate.toString() === nowDate.toString()) return `today, ${time}`;
+
+  const month = new Intl.DateTimeFormat(locale, {
     month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(new Date(instantMs));
+    timeZone: 'UTC',
+  }).format(new Date(`${sourceDate.toString()}T12:00:00Z`));
+
+  if (sourceDate.year === nowDate.year && sourceDate.month === nowDate.month) {
+    return `the ${String(sourceDate.day)}, ${time}`;
+  }
+  if (sourceDate.year === nowDate.year) {
+    return `${month} ${String(sourceDate.day)}, ${time}`;
+  }
+  return `${month} ${String(sourceDate.day)}, ${String(sourceDate.year)}, ${time}`;
 }

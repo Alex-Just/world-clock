@@ -7,7 +7,7 @@ import {
   formatOffset,
   formatRelative,
   formatRelativeBreakdown,
-  formatSourceDate,
+  formatSourceStamp,
   formatTime,
   formatUtcOffset,
 } from './format';
@@ -90,9 +90,17 @@ describe('durations', () => {
     });
   });
 
-  it('formats the source date', () => {
-    expect(formatSourceDate(Date.parse('2026-11-05T12:00:00Z'), 'Europe/Madrid', 'en-US')).toBe(
-      'Nov 5, 2026',
+  it('formats the source time and omits redundant date parts', () => {
+    const now = Date.parse('2026-11-05T20:34:00Z');
+    expect(formatSourceStamp(now, now, 'UTC', '24h', 'en-US')).toBe('today, 20:34');
+    expect(formatSourceStamp(Date.parse('2026-11-03T20:34:00Z'), now, 'UTC', '24h', 'en-US')).toBe(
+      'the 3, 20:34',
+    );
+    expect(formatSourceStamp(Date.parse('2026-10-03T20:34:00Z'), now, 'UTC', '24h', 'en-US')).toBe(
+      'Oct 3, 20:34',
+    );
+    expect(formatSourceStamp(Date.parse('2025-10-03T20:34:00Z'), now, 'UTC', '24h', 'en-US')).toBe(
+      'Oct 3, 2025, 20:34',
     );
   });
 });

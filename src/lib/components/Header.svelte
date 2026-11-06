@@ -10,7 +10,7 @@
     Timer,
   } from '@lucide/svelte';
   import { WINDOW_OFFSET_LIMIT_HOURS, WINDOW_SHIFT_HOURS } from '$lib/time/axis';
-  import { formatDuration, formatRelativeBreakdown, formatSourceDate } from '$lib/time/format';
+  import { formatDuration, formatRelativeBreakdown, formatSourceStamp } from '$lib/time/format';
   import type { InstantMs, TimeFormat, ZoneId } from '$lib/time/types';
   import type { Snippet } from 'svelte';
   import FocusReadout from './FocusReadout.svelte';
@@ -52,7 +52,7 @@
 
   const relativeDelta = $derived(focusMs - nowMs);
   const relativeBreakdown = $derived(formatRelativeBreakdown(nowMs, focusMs, homeZone));
-  const relativeSource = $derived(formatSourceDate(nowMs, homeZone, 'en-US'));
+  const relativeSource = $derived(formatSourceStamp(nowMs, nowMs, homeZone, format, 'en-US'));
   const relativeText = $derived(
     followNow
       ? 'Now'

@@ -990,7 +990,7 @@ test('jumps to a distant date from the calendar', async ({ page }) => {
   await expect(badge).toContainText(/\d+y/);
   await expect(badge).toContainText(/\d+mo/);
   await expect(badge).toContainText('total');
-  await expect(badge).toContainText('from Nov 5, 2026');
+  await expect(badge).toContainText('from today, 13:00');
 });
 
 test('shifts the visible window by six hours', async ({ page }) => {
