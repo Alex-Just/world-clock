@@ -985,9 +985,8 @@ test('jumps to a distant date from the calendar', async ({ page }) => {
   );
   await expect(page.getByTestId('focus-line')).toBeHidden();
   await expect(page.getByRole('button', { name: /set time/i })).toContainText(
-    'Thu, Mar 14 · Madrid',
+    'Thu, Mar 14, 1985 · Madrid',
   );
-  await expect(page.getByRole('button', { name: /set time/i })).toContainText('1985');
 
   const badge = page.getByTestId('relative-badge');
   await expect(badge).toBeVisible();

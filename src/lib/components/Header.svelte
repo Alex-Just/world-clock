@@ -68,6 +68,13 @@
   );
   const canShiftBack = $derived(windowOffsetHours > -WINDOW_OFFSET_LIMIT_HOURS);
   const canShiftForward = $derived(windowOffsetHours < WINDOW_OFFSET_LIMIT_HOURS);
+  const focusYear = $derived(
+    Temporal.Instant.fromEpochMilliseconds(focusMs).toZonedDateTimeISO(homeZone).year,
+  );
+  const nowYear = $derived(
+    Temporal.Instant.fromEpochMilliseconds(nowMs).toZonedDateTimeISO(homeZone).year,
+  );
+  const showFocusYear = $derived(focusYear !== nowYear);
 </script>
 
 <header
@@ -79,7 +86,14 @@
       <h1 class="sr-only sm:not-sr-only">World Clock</h1>
     </div>
 
-    <FocusReadout {focusMs} {nowMs} {homeZone} {zoneLabel} {format} onOpen={onOpenSetTime} />
+    <FocusReadout
+      {focusMs}
+      showYear={showFocusYear}
+      {homeZone}
+      {zoneLabel}
+      {format}
+      onOpen={onOpenSetTime}
+    />
 
     <span
       data-testid="relative-badge"
@@ -107,7 +121,9 @@
 
   {#if children}
     <div
-      class="order-last flex w-full justify-center min-[1440px]:absolute min-[1440px]:top-1/2 min-[1440px]:left-1/2 min-[1440px]:w-auto min-[1440px]:-translate-x-1/2 min-[1440px]:-translate-y-1/2"
+      class={`order-last flex w-full justify-center min-[1440px]:absolute min-[1440px]:top-1/2 min-[1440px]:w-auto min-[1440px]:-translate-x-1/2 min-[1440px]:-translate-y-1/2 ${
+        showFocusYear ? 'min-[1440px]:left-[calc(50%+4rem)] 2xl:left-1/2' : 'min-[1440px]:left-1/2'
+      }`}
     >
       {@render children()}
     </div>

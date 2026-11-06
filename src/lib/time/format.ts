@@ -32,7 +32,7 @@ export function formatTime(
 export function formatDate(
   instantMs: InstantMs,
   zone: ZoneId,
-  options: { style?: 'short' | 'long'; locale?: string } = {},
+  options: { style?: 'short' | 'long'; locale?: string; year?: boolean } = {},
 ): string {
   const long = options.style === 'long';
   const formatter = new Intl.DateTimeFormat(options.locale, {
@@ -40,7 +40,7 @@ export function formatDate(
     weekday: long ? 'long' : 'short',
     day: 'numeric',
     month: long ? 'long' : 'short',
-    ...(long ? { year: 'numeric' } : {}),
+    ...(long || options.year ? { year: 'numeric' } : {}),
   });
   return formatter.format(new Date(instantMs));
 }

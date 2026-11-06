@@ -39,6 +39,13 @@ describe('time and date', () => {
         locale: 'en-US',
       }),
     ).toBe('Fri, Nov 6');
+    expect(
+      formatDate(Date.parse('2026-11-05T23:30:00Z'), 'Europe/Madrid', {
+        style: 'short',
+        locale: 'en-US',
+        year: true,
+      }),
+    ).toBe('Fri, Nov 6, 2026');
     expect(formatDayMarker(Date.parse('2026-11-05T05:00:00Z'), 'America/New_York', 'en-US')).toBe(
       'Thu 5',
     );
