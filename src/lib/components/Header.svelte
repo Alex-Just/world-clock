@@ -77,7 +77,7 @@
 <header
   class="border-border bg-surface-raised relative flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-2 sm:px-6"
 >
-  <div class="flex min-w-0 shrink-0 items-center gap-4 sm:gap-6 xl:gap-4">
+  <div class="flex min-w-0 shrink-0 items-center gap-4 sm:gap-6 xl:gap-3">
     <div class="text-text flex items-center gap-2 text-sm font-semibold tracking-tight">
       <Clock class="text-accent-text size-5" aria-hidden="true" />
       <h1 class="sr-only sm:not-sr-only">World Clock</h1>
@@ -87,7 +87,7 @@
 
     <span
       data-testid="relative-badge"
-      class={`border-border text-muted hidden w-32 rounded-xl border px-2 py-1.5 text-center text-xs leading-tight font-medium sm:inline-flex sm:flex-col sm:items-center sm:gap-0.5 ${
+      class={`border-border text-muted hidden w-[8.5rem] rounded-xl border px-1.5 py-1.5 text-center text-xs leading-tight font-medium sm:inline-flex sm:flex-col sm:items-center sm:gap-0.5 ${
         showRelative ? '' : 'invisible'
       }`}
       aria-hidden="true"
