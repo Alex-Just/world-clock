@@ -113,7 +113,7 @@ it('shows abbreviation, exact offset, and DST when enabled', () => {
   expect(screen.getAllByText('DST').length).toBeGreaterThan(0);
 });
 
-it('highlights the hovered hour across all rows', async () => {
+it('preselects the focus hour and follows hover', async () => {
   const settings = createDefaultSettings('Europe/Madrid');
   const { container } = render(Board, {
     props: {
@@ -145,12 +145,14 @@ it('highlights the hovered hour across all rows', async () => {
     toJSON: () => ({}),
   });
 
+  expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 54.1667%');
+
   await fireEvent.pointerMove(timeline, { clientX: 110, pointerType: 'mouse' });
   expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 45.8333%');
   expect(screen.getByTestId('hover-slot')).toHaveStyle('width: 4.1667%');
 
   await fireEvent.pointerLeave(grid);
-  expect(screen.queryByTestId('hover-slot')).not.toBeInTheDocument();
+  expect(screen.getByTestId('hover-slot')).toHaveStyle('left: 54.1667%');
 });
 
 it('creates a range by dragging on a zone row', async () => {

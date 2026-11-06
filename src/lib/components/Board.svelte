@@ -71,16 +71,26 @@
   const rangeStartPosition = $derived(range ? positionForInstant(axis, range.startMs) : null);
   const rangeEndPosition = $derived(range ? positionForInstant(axis, range.endMs) : null);
   let hoverSlot = $state<number | null>(null);
+  let hoveredZone = $state<ZoneId | null>(null);
   const slotCount = $derived(Math.max(1, axis.ticks.length));
-  const hoverLeft = $derived(
-    hoverSlot === null ? null : `${((hoverSlot / slotCount) * 100).toFixed(4)}%`,
+  const focusSlot = $derived(
+    Math.min(slotCount - 1, Math.max(0, Math.floor(focusPosition * slotCount))),
   );
-  const hoverWidth = $derived(hoverSlot === null ? null : `${((1 / slotCount) * 100).toFixed(4)}%`);
+  const activeSlot = $derived(hoverSlot ?? focusSlot);
+  const hoverLeft = $derived(`${((activeSlot / slotCount) * 100).toFixed(4)}%`);
+  const hoverWidth = $derived(`${((1 / slotCount) * 100).toFixed(4)}%`);
+  const highlightStart = $derived(activeSlot / slotCount);
+  const highlightEnd = $derived((activeSlot + 1) / slotCount);
 
   function handlePointerMove(event: PointerEvent): void {
     if (dragAnchor !== null || event.pointerType === 'touch') return;
     const target =
       event.target instanceof Element ? event.target.closest<HTMLElement>('[data-timeline]') : null;
+    const row =
+      event.target instanceof Element
+        ? event.target.closest<HTMLElement>('[data-testid^="row-"]')
+        : null;
+    hoveredZone = row?.getAttribute('data-testid')?.slice(4) ?? null;
     if (!target) {
       hoverSlot = null;
       return;
@@ -191,6 +201,14 @@
   onpointermove={handlePointerMove}
   onpointerleave={() => {
     hoverSlot = null;
+    hoveredZone = null;
+  }}
+  onfocusout={(event) => {
+    const next = event.relatedTarget;
+    if (!(next instanceof Node) || !event.currentTarget.contains(next)) {
+      hoverSlot = null;
+      hoveredZone = null;
+    }
   }}
   class="border-border bg-surface-raised overflow-hidden rounded-xl border"
 >
@@ -238,18 +256,16 @@
           </div>
         {/if}
 
-        {#if hoverLeft !== null && hoverWidth !== null}
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-30 sm:left-[320px]"
+          aria-hidden="true"
+        >
           <div
-            class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-30 sm:left-[320px]"
-            aria-hidden="true"
-          >
-            <div
-              data-testid="hover-slot"
-              class="border-text/35 bg-accent/10 absolute inset-y-0 border"
-              style={`left: ${hoverLeft}; width: ${hoverWidth}`}
-            ></div>
-          </div>
-        {/if}
+            data-testid="hover-slot"
+            class="border-accent/40 bg-accent/15 absolute inset-y-0 border"
+            style={`left: ${hoverLeft}; width: ${hoverWidth}`}
+          ></div>
+        </div>
 
         {#each rows as row, index (row.timeZone)}
           <ZoneRow
@@ -266,6 +282,9 @@
             showAbbreviation={settings.showAbbreviation}
             showUtcOffset={settings.showUtcOffset}
             showDst={settings.showDst}
+            isHovered={hoveredZone === row.timeZone}
+            {highlightStart}
+            {highlightEnd}
             canMoveUp={index > 0}
             canMoveDown={index < rows.length - 1}
             onSetHome={() => {

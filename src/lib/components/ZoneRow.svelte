@@ -18,6 +18,9 @@
     showAbbreviation,
     showUtcOffset,
     showDst,
+    isHovered,
+    highlightStart,
+    highlightEnd,
     canMoveUp,
     canMoveDown,
     onSetHome,
@@ -39,6 +42,9 @@
     showAbbreviation: boolean;
     showUtcOffset: boolean;
     showDst: boolean;
+    isHovered: boolean;
+    highlightStart: number;
+    highlightEnd: number;
     canMoveUp: boolean;
     canMoveDown: boolean;
     onSetHome: () => void;
@@ -96,11 +102,19 @@
 <div
   role="row"
   data-testid={`row-${model.timeZone}`}
-  class="border-border flex min-w-[1000px] border-b last:border-b-0"
+  class={`border-border flex min-w-[1000px] border-b border-l-2 transition-opacity duration-150 last:border-b-0 ${
+    isHovered
+      ? 'border-l-accent bg-accent/5'
+      : isHome
+        ? 'border-l-accent/40 bg-accent/[0.02]'
+        : 'border-l-transparent'
+  }`}
 >
   <div
     role="gridcell"
-    class="border-border bg-surface-raised sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 border-r px-2 py-1 sm:w-[320px] sm:flex-nowrap sm:px-3"
+    class={`border-border sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 border-r px-2 py-1 sm:w-[320px] sm:flex-nowrap sm:px-3 ${
+      isHovered ? 'bg-accent/10' : isHome ? 'bg-accent/5' : 'bg-surface-raised'
+    }`}
     title={`${model.timeZone} · ${formatUtcOffset(model.offsetMinutes)}`}
   >
     <div class="w-full min-w-0 sm:w-auto sm:flex-1">
@@ -239,9 +253,13 @@
     {/each}
 
     {#each model.hourLabels as label (label.position)}
+      {@const activeLabel =
+        label.position >= highlightStart - 1e-6 && label.position < highlightEnd - 1e-6}
       <div
         data-testid="hour-label"
-        class="text-band-text absolute bottom-1 z-10 px-0.5 text-base tabular-nums"
+        class={`text-band-text absolute bottom-1 z-10 px-0.5 text-base tabular-nums ${
+          activeLabel ? 'font-semibold' : 'font-normal'
+        }`}
         style={labelStyle(label.position)}
       >
         {label.label}

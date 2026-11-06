@@ -85,7 +85,12 @@ docs/architecture.md  current design
 - Keep focus/now lines and range fills aligned across the ruler and rows.
 - Base bands are day 08:00–18:00, twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00.
 - Click-drag a zone row to set a range; the duration bar above the board and row headers show the result.
-- Hover highlighting is visual only. It must not set focus, change the range, or persist.
+- The focus hour is the resting hour highlight; hover moves it and pointer leave or
+  board focus loss restores it. This is visual only and must not set focus, change
+  the range, or persist.
+- The home row keeps a subtle tint and left accent. Hovering a row dims the other
+  rows; do not dim touch interactions.
+- Hour labels in the active column are semibold.
 - Display toggles must change the rendered row, not only stored state.
 - Keep keyboard shortcuts working outside inputs and open dialogs.
 - Test with axe; do not introduce color-only status.

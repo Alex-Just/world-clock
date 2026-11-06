@@ -12,7 +12,7 @@ availability without leaving the board.
 - Focus by click, tap, drag, keyboard, exact wall time, or relative offset.
 - Click-drag the board to select a period; duration appears above the board.
 - Material-blue day/night shading with a teal focus and range accent.
-- Hover highlight follows the cursor across all rows.
+- Focus-hour highlight at rest; hover follows the cursor, emphasizes the hovered zone, and dims the rest.
 - Range duration, wall-clock duration across DST, and per-zone availability.
 - Correct DST gaps/overlaps, half-hour and 45-minute offsets, date rollover.
 - Add, rename, reorder, remove, and pin zones; choose the home zone.

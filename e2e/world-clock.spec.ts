@@ -117,23 +117,60 @@ test('passes an axe scan on the board and settings', async ({ page }) => {
   ).toEqual([]);
 });
 
-test('highlights the hovered hour across every row', async ({ page }) => {
+test('preselects the focus hour and follows hover across every row', async ({ page }) => {
   const timeline = page.getByTestId('row-Europe/Madrid').locator('[data-timeline]');
   const box = await timeline.boundingBox();
   if (!box) throw new Error('timeline missing');
+  const slot = page.getByTestId('hover-slot');
+  await expect(slot).toBeVisible();
+  const resting = await slot.boundingBox();
 
   await page.mouse.move(box.x + box.width * 0.5, box.y + box.height / 2);
-  const first = page.getByTestId('hover-slot');
-  await expect(first).toBeVisible();
-  const firstBox = await first.boundingBox();
+  const hovered = await slot.boundingBox();
+  expect(hovered?.x).not.toBe(resting?.x);
 
   await page.mouse.move(box.x + box.width * 0.75, box.y + box.height / 2);
-  const secondBox = await first.boundingBox();
-  if (!firstBox || !secondBox) throw new Error('hover slot missing');
-  expect(secondBox.x).toBeGreaterThan(firstBox.x);
+  const second = await slot.boundingBox();
+  if (!hovered || !second) throw new Error('hover slot missing');
+  expect(second.x).toBeGreaterThan(hovered.x);
+
+  const hourWeight = async (hour: string) =>
+    page
+      .getByTestId('row-Europe/Madrid')
+      .locator('[data-testid="hour-label"]', { hasText: new RegExp(`^${hour}$`) })
+      .evaluate((element) => getComputedStyle(element).fontWeight);
+  expect(await hourWeight('18')).toBe('600');
 
   await page.mouse.move(10, 10);
-  await expect(first).toBeHidden();
+  await expect(slot).toBeVisible();
+  const returned = await slot.boundingBox();
+  expect(returned?.x).toBeCloseTo(resting?.x ?? -1, 0);
+  expect(await hourWeight('13')).toBe('600');
+});
+
+test('emphasizes the home row and the hovered row', async ({ page }) => {
+  const madrid = page.getByTestId('row-Europe/Madrid');
+  const newYork = page.getByTestId('row-America/New_York');
+  const madridCell = madrid.locator('[role="gridcell"]').first();
+  const newYorkCell = newYork.locator('[role="gridcell"]').first();
+  expect(
+    await madridCell.evaluate((element) => getComputedStyle(element).backgroundColor),
+  ).not.toBe(await newYorkCell.evaluate((element) => getComputedStyle(element).backgroundColor));
+
+  const restingBackground = await newYorkCell.evaluate(
+    (element) => getComputedStyle(element).backgroundColor,
+  );
+  await newYorkCell.hover();
+  await page.waitForTimeout(200);
+  expect(
+    await newYorkCell.evaluate((element) => getComputedStyle(element).backgroundColor),
+  ).not.toBe(restingBackground);
+
+  await page.mouse.move(10, 10);
+  await page.waitForTimeout(200);
+  expect(await newYorkCell.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(
+    restingBackground,
+  );
 });
 
 test('passes an axe scan in dark mode', async ({ page }) => {
@@ -323,6 +360,7 @@ test('passes an axe scan with the zone menu open in both themes', async ({ page 
     .getByRole('button', { name: /actions for new york/i })
     .click();
   await expect(page.getByRole('menu', { name: /actions for new york/i })).toBeVisible();
+  await page.waitForTimeout(200);
 
   const light = await new AxeBuilder({ page }).analyze();
   expect(light.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')).toEqual(
