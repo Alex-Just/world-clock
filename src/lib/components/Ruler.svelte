@@ -22,6 +22,7 @@
     crosshairActive = false,
     crosshairLeft = '0%',
     crosshairRight = '100%',
+    showFocusLine = true,
     work = [],
   }: {
     axis: TimeAxis;
@@ -41,6 +42,7 @@
     crosshairActive?: boolean;
     crosshairLeft?: string;
     crosshairRight?: string;
+    showFocusLine?: boolean;
     work?: WorkSegment[];
   } = $props();
 
@@ -57,7 +59,7 @@
   }
 
   const focusPosition = $derived(pct(positionForInstant(axis, focusMs)));
-  const nowInView = $derived(nowMs >= axis.startMs && nowMs <= axis.endMs);
+  const nowInView = $derived(nowMs >= axis.startMs && nowMs < axis.endMs);
   const nowPosition = $derived(pct(positionForInstant(axis, nowMs)));
   const rangeStart = $derived(range ? pct(positionForInstant(axis, range.startMs)) : null);
   const rangeWidth = $derived(
@@ -265,7 +267,7 @@
     class="absolute inset-y-0 z-30 w-0 cursor-ew-resize focus-visible:outline-none"
     style={`left: ${focusPosition}`}
   >
-    {#if nowInView}
+    {#if showFocusLine}
       <div
         data-testid="focus-line"
         class="border-focus-line-ui pointer-events-none absolute inset-y-0 w-0 border-l-2 border-dashed drop-shadow-[0_0_1px_rgba(255,255,255,0.85)]"

@@ -26,7 +26,8 @@ props and emit callbacks, which keeps them testable with fixtures.
 All instants are epoch milliseconds. IANA zone IDs are strings. Temporal handles
 calendar math, offsets, DST gaps/overlaps, and zoned wall times.
 
-- `src/lib/time/axis.ts` builds the home-zone day. A normal day is 24 hours; DST
+- `src/lib/time/axis.ts` builds the visible home-zone window at a 0–18 hour
+  wall-clock offset, moved in 6-hour steps. A normal window is 24 hours; DST
   days are 23 or 25. The axis is continuous elapsed time, not fixed cells.
 - `src/lib/time/rows.ts` builds each row from the axis: day 08:00–18:00,
   twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00, plus the working
@@ -40,8 +41,14 @@ calendar math, offsets, DST gaps/overlaps, and zoned wall times.
 
 Invariants:
 
-- The focus instant is always inside the visible home-zone day. `viewDate` is
-  derived from the focus; it is not separate state.
+- The visible window is the home-zone day shifted in 6-hour wall-clock steps,
+  limited to ±18 hours. `viewDate` is derived from the focus and remains the
+  anchor day; the window may extend into adjacent days.
+- Day selection, Today/Now, and changing the home zone reset the window offset
+  to zero. Moving focus or a range endpoint outside the window also resets it.
+- Focus and now markers render only while their instants are inside the
+  visible window. Range fills, outlines, and handles hide when the range is
+  entirely outside it; the selection and summary stay intact.
 - A new focus clears the range. Range endpoints snap to the configured step.
   The pointer-down anchor stays the focus while dragging.
 - A missing wall time resolves to the first valid instant; a repeated wall time
@@ -55,7 +62,8 @@ Three runes modules:
 
 - `clock.svelte.ts` updates `nowMs` once per second and on visibility changes.
 - `settings.svelte.ts` holds the validated, persisted settings document.
-- `board.svelte.ts` holds ephemeral focus, follow-now, range, and derived axis.
+- `board.svelte.ts` holds ephemeral focus, follow-now, range, window offset,
+  and the derived axis.
 
 Only the clock store reads `Date.now()`. `searchZones` also reads it for
 display-only offsets; callers can inject an instant.

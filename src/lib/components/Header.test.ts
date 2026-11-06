@@ -8,11 +8,14 @@ const baseProps = {
   zoneLabel: 'Madrid',
   format: '24h' as const,
   followNow: false,
+  windowOffsetHours: 0,
   onNow: vi.fn(),
   onOpenSetTime: vi.fn(),
   onOpenDuration: vi.fn(),
   onOpenAddZone: vi.fn(),
   onOpenSettings: vi.fn(),
+  onShiftWindow: vi.fn(),
+  onResetWindow: vi.fn(),
 };
 
 it('shows the focused time and relative badge', () => {
@@ -25,6 +28,40 @@ it('wires the header actions', async () => {
   render(Header, { props: { ...baseProps, nowMs: baseProps.focusMs } });
   await fireEvent.click(screen.getByRole('button', { name: /now/i }));
   expect(baseProps.onNow).toHaveBeenCalled();
+});
+
+it('shifts the visible window from the header', async () => {
+  const onShiftWindow = vi.fn();
+  const onResetWindow = vi.fn();
+  render(Header, {
+    props: {
+      ...baseProps,
+      nowMs: baseProps.focusMs,
+      windowOffsetHours: 6,
+      onShiftWindow,
+      onResetWindow,
+    },
+  });
+
+  await fireEvent.click(screen.getByRole('button', { name: 'Show previous 6 hours' }));
+  expect(onShiftWindow).toHaveBeenCalledWith(-6);
+  await fireEvent.click(screen.getByRole('button', { name: 'Show next 6 hours' }));
+  expect(onShiftWindow).toHaveBeenCalledWith(6);
+  await fireEvent.click(screen.getByRole('button', { name: 'Reset visible window' }));
+  expect(onResetWindow).toHaveBeenCalled();
+});
+
+it('disables the window control at its limit', () => {
+  render(Header, {
+    props: {
+      ...baseProps,
+      nowMs: baseProps.focusMs,
+      windowOffsetHours: -18,
+    },
+  });
+  expect(screen.getByRole('button', { name: 'Show previous 6 hours' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Show next 6 hours' })).toBeEnabled();
+  expect(screen.getByRole('button', { name: 'Reset visible window' })).toBeEnabled();
 });
 
 it('reserves but hides the relative badge when it would only say now', () => {

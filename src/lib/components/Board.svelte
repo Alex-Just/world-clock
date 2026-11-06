@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import { instantForPosition, positionForInstant } from '$lib/time/axis';
+  import { dateInZone, instantForPosition, positionForInstant } from '$lib/time/axis';
   import { buildRowBands, buildZoneRow } from '$lib/time/rows';
   import { availabilityForZone, localRangeForZone } from '$lib/time/range';
   import type { Availability, InstantMs, NormalizedRange, TimeAxis, ZoneId } from '$lib/time/types';
@@ -66,23 +66,36 @@
   );
 
   const focusPosition = $derived(positionForInstant(axis, focusMs));
-  const nowInView = $derived(nowMs >= axis.startMs && nowMs <= axis.endMs);
+  const nowInView = $derived(nowMs >= axis.startMs && nowMs < axis.endMs);
+  const focusInView = $derived(focusMs >= axis.startMs && focusMs < axis.endMs);
+  const focusDayIsToday = $derived(axis.date === dateInZone(nowMs, homeZone));
+  const showFocusLine = $derived(focusInView && focusDayIsToday);
   const nowPosition = $derived(nowInView ? positionForInstant(axis, nowMs) : null);
-  const rangeStartPosition = $derived(range ? positionForInstant(axis, range.startMs) : null);
-  const rangeEndPosition = $derived(range ? positionForInstant(axis, range.endMs) : null);
+  const rangeInView = $derived(
+    range !== null && range.endMs > axis.startMs && range.startMs < axis.endMs,
+  );
+  const rangeStartPosition = $derived(
+    range && rangeInView ? positionForInstant(axis, range.startMs) : null,
+  );
+  const rangeEndPosition = $derived(
+    range && rangeInView ? positionForInstant(axis, range.endMs) : null,
+  );
   let hoverSlot = $state<number | null>(null);
   let hoveredZone = $state<ZoneId | null>(null);
   const slotCount = $derived(Math.max(1, axis.ticks.length));
   const focusSlot = $derived(
     Math.min(slotCount - 1, Math.max(0, Math.floor(focusPosition * slotCount))),
   );
-  const activeSlot = $derived(hoverSlot ?? focusSlot);
-  const hoverLeft = $derived(`${((activeSlot / slotCount) * 100).toFixed(4)}%`);
+  const activeSlot = $derived(hoverSlot ?? (focusInView ? focusSlot : null));
+  const activeSlotPosition = $derived(activeSlot ?? 0);
+  const hoverLeft = $derived(`${((activeSlotPosition / slotCount) * 100).toFixed(4)}%`);
   const hoverWidth = $derived(`${((1 / slotCount) * 100).toFixed(4)}%`);
   const crosshairActive = $derived(hoverSlot !== null && hoveredZone !== null);
-  const crosshairRight = $derived(`${(100 - ((activeSlot + 1) / slotCount) * 100).toFixed(4)}%`);
-  const highlightStart = $derived(activeSlot / slotCount);
-  const highlightEnd = $derived((activeSlot + 1) / slotCount);
+  const crosshairRight = $derived(
+    `${(100 - ((activeSlotPosition + 1) / slotCount) * 100).toFixed(4)}%`,
+  );
+  const highlightStart = $derived(activeSlot === null ? -1 : activeSlot / slotCount);
+  const highlightEnd = $derived(activeSlot === null ? -1 : (activeSlot + 1) / slotCount);
 
   function handlePointerMove(event: PointerEvent): void {
     if (dragAnchor !== null || event.pointerType === 'touch') return;
@@ -266,7 +279,7 @@
             {axis}
             {focusMs}
             {nowMs}
-            {range}
+            range={rangeInView ? range : null}
             format={settings.timeFormat}
             stepMinutes={settings.stepMinutes}
             {homeZone}
@@ -280,13 +293,14 @@
             {crosshairActive}
             crosshairLeft={hoverLeft}
             {crosshairRight}
+            {showFocusLine}
             work={settings.showWorkingHours ? homeWork : []}
           />
         </div>
       </div>
 
       <div class="relative">
-        {#if rangeStartPosition !== null && rangeEndPosition !== null}
+        {#if rangeInView && rangeStartPosition !== null && rangeEndPosition !== null}
           <div
             class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-20 sm:left-[320px]"
             aria-hidden="true"
@@ -303,11 +317,13 @@
           class="pointer-events-none absolute inset-y-0 right-0 left-[120px] z-30 sm:left-[320px]"
           aria-hidden="true"
         >
-          <div
-            data-testid="hover-slot"
-            class="border-accent/40 bg-accent/15 absolute inset-y-0 border"
-            style={`left: ${hoverLeft}; width: ${hoverWidth}`}
-          ></div>
+          {#if activeSlot !== null}
+            <div
+              data-testid="hover-slot"
+              class="border-accent/40 bg-accent/15 absolute inset-y-0 border"
+              style={`left: ${hoverLeft}; width: ${hoverWidth}`}
+            ></div>
+          {/if}
         </div>
 
         {#each rows as row, index (row.timeZone)}
@@ -324,6 +340,7 @@
             {crosshairActive}
             crosshairLeft={hoverLeft}
             {crosshairRight}
+            {showFocusLine}
             showIana={settings.showIana}
             showAbbreviation={settings.showAbbreviation}
             showUtcOffset={settings.showUtcOffset}

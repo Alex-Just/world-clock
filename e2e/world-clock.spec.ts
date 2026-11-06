@@ -849,3 +849,39 @@ test('matches the settings hover across secondary controls', async ({ page }) =>
   await rename.hover();
   await expect.poll(() => background(rename)).toBe(hoverBackground);
 });
+
+test('shifts the visible window by six hours', async ({ page }) => {
+  const labels = page.getByTestId('ruler-surface').getByTestId('hour-label');
+  const next = page.getByRole('button', { name: 'Show next 6 hours' });
+  const reset = page.getByRole('button', { name: 'Reset visible window' });
+
+  await expect(labels.first()).toHaveText('00');
+  await expect(reset).toBeDisabled();
+
+  await next.click();
+  await expect(labels.first()).toHaveText('06');
+  await expect(labels.last()).toHaveText('05');
+  await expect(page.getByTestId('row-Europe/Madrid').getByTestId('hour-label').first()).toHaveText(
+    '06',
+  );
+  await expect(page.getByTestId('focus-line')).toBeVisible();
+  await expect(page.getByTestId('now-line')).toBeVisible();
+
+  await next.click();
+  await next.click();
+  await expect(labels.first()).toHaveText('18');
+  await expect(next).toBeDisabled();
+  await expect(page.getByTestId('focus-line')).toBeHidden();
+  await expect(page.getByTestId('now-line')).toBeHidden();
+
+  await reset.click();
+  await expect(labels.first()).toHaveText('00');
+  await expect(reset).toBeDisabled();
+  await expect(page.getByTestId('focus-line')).toBeVisible();
+  await expect(page.getByTestId('now-line')).toBeVisible();
+
+  await next.click();
+  await page.getByRole('button', { name: 'Sat 7 2026' }).click();
+  await expect(labels.first()).toHaveText('00');
+  await expect(reset).toBeDisabled();
+});

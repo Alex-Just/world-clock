@@ -11,6 +11,7 @@ availability without leaving the board.
 - Any number of IANA time zones on one continuous day axis.
 - Focus by click, tap, drag, keyboard, exact wall time, or relative offset.
 - Click-drag the board to select a period; duration appears above the board.
+- Shift the visible window backward or forward in 6-hour steps; reset returns to the anchor day.
 - Material-blue day/night shading with a teal focus and range accent.
 - Focus-hour highlight at rest; hover follows the cursor, emphasizes the hovered zone, and dims the rest.
 - Range duration, wall-clock duration across DST, and per-zone availability.
@@ -35,8 +36,9 @@ short version:
 - `App.svelte` wires stores to prop-driven components.
 - Settings persist under the `world-clock` key; the schema validates and repairs
   stored data.
-- The focus stays inside the visible home-zone day; a new focus clears the
-  range; range endpoints snap to the selection step.
+- The visible window is the home-zone day shifted in 6-hour wall-clock steps,
+  limited to ±18 hours. A new focus clears the range; range endpoints snap to
+  the selection step.
 
 Read [`docs/typography.md`](docs/typography.md) for the type scale and
 accessibility rules: 12px minimum metadata, 16px body and mobile inputs, 24px

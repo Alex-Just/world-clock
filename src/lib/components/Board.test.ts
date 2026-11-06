@@ -67,6 +67,45 @@ it('hides focus and now markers when another day is in view', () => {
   expect(container.querySelectorAll('[data-testid="row-focus-line"]')).toHaveLength(0);
 });
 
+it('hides markers when the window shifts past the focus and now', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  const { container } = render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h', 18),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: true,
+      range: null,
+      settings,
+    },
+  });
+  expect(container.querySelector('[data-testid="focus-line"]')).toBeNull();
+  expect(container.querySelector('[data-testid="focus-handle"]')).toBeNull();
+  expect(container.querySelector('[data-testid="now-line"]')).toBeNull();
+  expect(container.querySelector('[data-testid="hover-slot"]')).toBeNull();
+});
+
+it('hides range visuals when the range is outside the shifted window', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  const { container } = render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h', 18),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: false,
+      range: normalizeRange(at('2026-11-05T04:00:00Z'), at('2026-11-05T06:00:00Z')),
+      settings,
+    },
+  });
+  expect(container.querySelector('[data-testid="range-fill"]')).toBeNull();
+  expect(container.querySelector('[data-testid="range-outline"]')).toBeNull();
+  expect(container.querySelectorAll('[data-testid="row-range-fill"]')).toHaveLength(0);
+});
+
 it('highlights the selected range across every row', () => {
   const settings = createDefaultSettings('Europe/Madrid');
   const { container } = render(Board, {

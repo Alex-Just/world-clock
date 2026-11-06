@@ -41,6 +41,32 @@ describe('axis construction', () => {
     expect(axis.ticks).toHaveLength(25);
     expect(axis.ticks.filter((tick) => tick.hour === 1)).toHaveLength(2);
   });
+
+  it('shifts the visible window in six-hour steps', () => {
+    const forward = buildAxis(madrid, '2026-11-05', '24h', 6);
+    expect(forward.startMs).toBe(at('2026-11-05T05:00:00Z'));
+    expect(forward.endMs).toBe(at('2026-11-06T05:00:00Z'));
+    expect(forward.ticks).toHaveLength(24);
+    expect(forward.ticks[0]).toMatchObject({ position: 0, label: '06', hour: 6 });
+    expect(forward.ticks.at(-1)?.label).toBe('05');
+
+    const backward = buildAxis(madrid, '2026-11-05', '24h', -6);
+    expect(backward.startMs).toBe(at('2026-11-04T17:00:00Z'));
+    expect(backward.ticks).toHaveLength(24);
+    expect(backward.ticks[0]).toMatchObject({ position: 0, label: '18', hour: 18 });
+    expect(backward.ticks.at(-1)?.label).toBe('17');
+  });
+
+  it('keeps wall-clock start and DST length when the window is shifted', () => {
+    const forward = buildAxis(newYork, '2026-03-08', '24h', 6);
+    expect(forward.durationMs).toBe(24 * 3_600_000);
+    expect(forward.ticks[0]?.hour).toBe(6);
+
+    const backward = buildAxis(newYork, '2026-03-08', '24h', -6);
+    expect(backward.durationMs).toBe(23 * 3_600_000);
+    expect(backward.ticks[0]?.hour).toBe(18);
+    expect(backward.ticks.some((tick) => tick.hour === 2)).toBe(false);
+  });
 });
 
 describe('positions', () => {

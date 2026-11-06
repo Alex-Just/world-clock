@@ -198,6 +198,7 @@
     zoneLabel={homeLabel}
     format={settingsStore.value.timeFormat}
     followNow={boardStore.followNow}
+    windowOffsetHours={boardStore.windowOffsetHours}
     onNow={() => {
       boardStore.now();
     }}
@@ -210,6 +211,12 @@
     }}
     onOpenSettings={() => {
       settingsOpen = true;
+    }}
+    onShiftWindow={(hours: number) => {
+      boardStore.shiftWindow(hours);
+    }}
+    onResetWindow={() => {
+      boardStore.resetWindow();
     }}
   >
     <DayStrip

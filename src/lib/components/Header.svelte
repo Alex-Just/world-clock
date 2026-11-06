@@ -1,5 +1,15 @@
 <script lang="ts">
-  import { Clock, LocateFixed, Plus, Settings, Timer } from '@lucide/svelte';
+  import {
+    Clock,
+    ChevronLeft,
+    ChevronRight,
+    LocateFixed,
+    Plus,
+    RotateCcw,
+    Settings,
+    Timer,
+  } from '@lucide/svelte';
+  import { WINDOW_OFFSET_LIMIT_HOURS, WINDOW_SHIFT_HOURS } from '$lib/time/axis';
   import { formatRelative } from '$lib/time/format';
   import type { InstantMs, TimeFormat, ZoneId } from '$lib/time/types';
   import type { Snippet } from 'svelte';
@@ -13,11 +23,14 @@
     zoneLabel,
     format,
     followNow,
+    windowOffsetHours,
     onNow,
     onOpenSetTime,
     onOpenDuration,
     onOpenAddZone,
     onOpenSettings,
+    onShiftWindow,
+    onResetWindow,
     children,
   }: {
     focusMs: InstantMs;
@@ -26,16 +39,22 @@
     zoneLabel: string;
     format: TimeFormat;
     followNow: boolean;
+    windowOffsetHours: number;
     onNow: () => void;
     onOpenSetTime: () => void;
     onOpenDuration: () => void;
     onOpenAddZone: () => void;
     onOpenSettings: () => void;
+    onShiftWindow: (hours: number) => void;
+    onResetWindow: () => void;
     children?: Snippet;
   } = $props();
 
   const relative = $derived(followNow ? 'Now' : formatRelative(focusMs - nowMs));
   const showRelative = $derived(!followNow && Math.abs(focusMs - nowMs) >= 60_000);
+  const canShiftBack = $derived(windowOffsetHours > -WINDOW_OFFSET_LIMIT_HOURS);
+  const canShiftForward = $derived(windowOffsetHours < WINDOW_OFFSET_LIMIT_HOURS);
+  const canResetWindow = $derived(windowOffsetHours !== 0);
 </script>
 
 <header
@@ -71,7 +90,48 @@
     </div>
   {/if}
 
-  <div class="ml-auto flex shrink-0 items-center gap-1">
+  <div class="ml-auto flex max-w-full shrink-0 flex-wrap items-center justify-end gap-1">
+    <div
+      role="group"
+      aria-label="Visible time window"
+      class="border-border flex items-center rounded-lg border"
+    >
+      <button
+        type="button"
+        aria-label="Show previous 6 hours"
+        title="Show previous 6 hours"
+        disabled={!canShiftBack}
+        onclick={() => {
+          onShiftWindow(-WINDOW_SHIFT_HOURS);
+        }}
+        class="text-muted hover:bg-surface hover:text-text disabled:hover:text-muted inline-flex size-10 items-center justify-center rounded-l-lg disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
+      >
+        <ChevronLeft class="size-4" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        aria-label="Reset visible window"
+        title="Reset visible window"
+        disabled={!canResetWindow}
+        onclick={onResetWindow}
+        class="border-border text-muted hover:bg-surface hover:text-text disabled:hover:text-muted inline-flex size-10 items-center justify-center border-x disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
+      >
+        <RotateCcw class="size-4" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        aria-label="Show next 6 hours"
+        title="Show next 6 hours"
+        disabled={!canShiftForward}
+        onclick={() => {
+          onShiftWindow(WINDOW_SHIFT_HOURS);
+        }}
+        class="text-muted hover:bg-surface hover:text-text disabled:hover:text-muted inline-flex size-10 items-center justify-center rounded-r-lg disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
+      >
+        <ChevronRight class="size-4" aria-hidden="true" />
+      </button>
+    </div>
+
     <button
       type="button"
       onclick={onNow}

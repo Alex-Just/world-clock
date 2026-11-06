@@ -90,9 +90,11 @@ docs/architecture.md  current design
   the ruler and rows.
 - Keep the focus line a 2px dashed teal stroke with a soft light halo so it
   stays visible over white work cells, blue bands, and the warm home row.
-- Draw the focus/now marker only when the viewed day contains now. On other
-  days, focus context lives in the header clock and hour highlight; range
-  fills and handles still render normally.
+- The visible window is the home-zone day shifted in 6-hour wall-clock steps,
+  limited to ±18 hours. Day selection, Now, and home changes reset it.
+- Draw the focus marker only when its date is today and it lies inside the
+  visible window. Draw the now marker only when now lies inside the window.
+  Off-window range visuals stay hidden while the selection and summary remain.
 - Base bands are day 08:00–18:00, twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00.
 - Click-drag a zone row to set a range; the duration bar above the board and row headers show the result.
 - The focus hour is the resting hour highlight; hover moves it and pointer leave,

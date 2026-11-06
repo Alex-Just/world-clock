@@ -1,6 +1,7 @@
 import {
   addDays,
   buildAxis,
+  clampWindowOffsetHours,
   dateInZone,
   instantFromWallTime,
   snapInstant,
@@ -16,11 +17,14 @@ export interface BoardStore {
   readonly followNow: boolean;
   readonly range: NormalizedRange | null;
   readonly viewDate: DateString;
+  readonly windowOffsetHours: number;
   readonly axis: TimeAxis;
   setFocus(instantMs: InstantMs): void;
   nudge(minutes: number): void;
   goToDay(date: DateString): void;
   shiftDay(days: number): void;
+  shiftWindow(hours: number): void;
+  resetWindow(): void;
   now(): void;
   setRange(startMs: InstantMs, endMs: InstantMs, options?: { focus?: 'start' | 'keep' }): void;
   extendRange(minutes: number): void;
@@ -35,19 +39,37 @@ export function createBoardStore(deps: {
   let selectedMs = $state(deps.clock.nowMs);
   let followNow = $state(true);
   let range = $state<NormalizedRange | null>(null);
+  let windowOffsetHours = $state(0);
 
   const focusMs = $derived(followNow ? deps.clock.nowMs : selectedMs);
   const viewDate = $derived(dateInZone(focusMs, deps.settings.value.homeZone));
   const axis = $derived(
-    buildAxis(deps.settings.value.homeZone, viewDate, deps.settings.value.timeFormat),
+    buildAxis(
+      deps.settings.value.homeZone,
+      viewDate,
+      deps.settings.value.timeFormat,
+      windowOffsetHours,
+    ),
   );
 
+  const resetWindowIfNeeded = (instantMs: InstantMs) => {
+    if (
+      dateInZone(instantMs, deps.settings.value.homeZone) !== viewDate ||
+      instantMs < axis.startMs ||
+      instantMs >= axis.endMs
+    ) {
+      windowOffsetHours = 0;
+    }
+  };
+
   const setFocus = (instantMs: InstantMs) => {
-    selectedMs = snapInstant(
+    const snapped = snapInstant(
       deps.settings.value.homeZone,
       instantMs,
       deps.settings.value.stepMinutes,
     );
+    resetWindowIfNeeded(snapped);
+    selectedMs = snapped;
     followNow = false;
     range = null;
   };
@@ -65,6 +87,9 @@ export function createBoardStore(deps: {
     get viewDate() {
       return viewDate;
     },
+    get windowOffsetHours() {
+      return windowOffsetHours;
+    },
     get axis() {
       return axis;
     },
@@ -77,6 +102,7 @@ export function createBoardStore(deps: {
       selectedMs = instantFromWallTime(deps.settings.value.homeZone, date, wallTime);
       followNow = false;
       range = null;
+      windowOffsetHours = 0;
     },
     shiftDay(days) {
       const next = addDays(viewDate, days);
@@ -84,10 +110,18 @@ export function createBoardStore(deps: {
       selectedMs = instantFromWallTime(deps.settings.value.homeZone, next, wallTime);
       followNow = false;
       range = null;
+      windowOffsetHours = 0;
+    },
+    shiftWindow(hours) {
+      windowOffsetHours = clampWindowOffsetHours(windowOffsetHours + hours);
+    },
+    resetWindow() {
+      windowOffsetHours = 0;
     },
     now() {
       followNow = true;
       range = null;
+      windowOffsetHours = 0;
     },
     setRange(startMs, endMs, options) {
       const snappedStart = snapInstant(
@@ -100,6 +134,7 @@ export function createBoardStore(deps: {
         endMs,
         deps.settings.value.stepMinutes,
       );
+      resetWindowIfNeeded(snappedStart);
       const normalized = normalizeRange(snappedStart, snappedEnd);
       if (options?.focus !== 'keep') selectedMs = snappedStart;
       followNow = false;
@@ -122,6 +157,7 @@ export function createBoardStore(deps: {
     setHomeZone(zone) {
       deps.settings.update({ homeZone: zone });
       range = null;
+      windowOffsetHours = 0;
     },
   };
 }

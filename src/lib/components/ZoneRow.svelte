@@ -17,6 +17,7 @@
     crosshairActive = false,
     crosshairLeft = '0%',
     crosshairRight = '100%',
+    showFocusLine = true,
     showIana,
     showAbbreviation,
     showUtcOffset,
@@ -44,6 +45,7 @@
     crosshairActive?: boolean;
     crosshairLeft?: string;
     crosshairRight?: string;
+    showFocusLine?: boolean;
     showIana: boolean;
     showAbbreviation: boolean;
     showUtcOffset: boolean;
@@ -326,7 +328,7 @@
       ></div>
     {/if}
 
-    {#if nowPosition !== null}
+    {#if showFocusLine}
       <div
         data-testid="row-focus-line"
         class="border-focus-line pointer-events-none absolute inset-y-0 z-20 w-0 border-l-2 border-dashed drop-shadow-[0_0_1px_rgba(255,255,255,0.85)]"
