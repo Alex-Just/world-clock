@@ -90,7 +90,7 @@ it('hides display fields when their settings are off', () => {
   });
   expect(screen.queryByText('EDT')).not.toBeInTheDocument();
   expect(screen.getByText('America/New_York')).toBeInTheDocument();
-  expect(screen.queryByText('UTC−04:00')).not.toBeInTheDocument();
+  expect(screen.queryByText('UTC−4')).not.toBeInTheDocument();
   expect(screen.queryByText('DST')).not.toBeInTheDocument();
 });
 
@@ -109,7 +109,7 @@ it('shows abbreviation, exact offset, and DST when enabled', () => {
     },
   });
   expect(screen.getByText('EDT')).toBeInTheDocument();
-  expect(screen.getByText('UTC−04:00')).toBeInTheDocument();
+  expect(screen.getByText('UTC−4')).toBeInTheDocument();
   expect(screen.getAllByText('DST').length).toBeGreaterThan(0);
 });
 

@@ -94,6 +94,8 @@ docs/architecture.md  current design
 - The day picker lives in the header on wide screens and wraps below the
   controls on narrow screens. Keep it centered with `mx-auto`/absolute
   positioning; do not restore a separate full-width strip.
+- Hide `GMT…`/`UTC…` abbreviations when the UTC offset is already visible.
+  Format zero-minute offsets as `UTC+3`/`UTC−8`; zero is `UTC`.
 - Mobile inputs and selects are 16px and at least 44px tall to avoid iOS zoom.
 - Keep primary pointer targets at least 24×24; aim for 32px or more.
 - Respect `prefers-reduced-motion`.

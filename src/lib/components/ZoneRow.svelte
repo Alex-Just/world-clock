@@ -86,6 +86,11 @@
           ? 'Multi-day'
           : 'Outside hours',
   );
+
+  const offsetAbbreviation = $derived(/^(GMT|UTC)/i.test(model.abbreviation));
+  const showAbbreviationLabel = $derived(
+    showAbbreviation && (!offsetAbbreviation || !showUtcOffset),
+  );
 </script>
 
 <div
@@ -113,7 +118,7 @@
         </span>
       </div>
       <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-xs sm:text-base">
-        {#if showAbbreviation}
+        {#if showAbbreviationLabel}
           <span>{model.abbreviation}</span>
         {/if}
         {#if showUtcOffset}

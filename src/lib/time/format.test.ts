@@ -52,8 +52,8 @@ describe('offsets', () => {
   });
 
   it('formats exact UTC offsets', () => {
-    expect(formatUtcOffset(-420)).toBe('UTC−07:00');
-    expect(formatUtcOffset(345)).toBe('UTC+05:45');
+    expect(formatUtcOffset(-420)).toBe('UTC−7');
+    expect(formatUtcOffset(345)).toBe('UTC+5:45');
   });
 });
 

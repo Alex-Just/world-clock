@@ -74,9 +74,12 @@ export function formatOffset(minutes: number): string {
 }
 
 export function formatUtcOffset(minutes: number): string {
+  if (minutes === 0) return 'UTC';
   const sign = minutes < 0 ? '−' : '+';
   const absolute = Math.abs(minutes);
-  return `UTC${sign}${pad(Math.floor(absolute / 60))}:${pad(absolute % 60)}`;
+  const hours = String(Math.floor(absolute / 60));
+  const remaining = absolute % 60;
+  return remaining === 0 ? `UTC${sign}${hours}` : `UTC${sign}${hours}:${pad(remaining)}`;
 }
 
 export function formatDuration(ms: number): string {

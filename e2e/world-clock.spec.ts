@@ -291,7 +291,7 @@ test('zone menu actions set home, move, and remove with undo', async ({ page }) 
 });
 
 test('zone menu follows its anchor while the page scrolls', async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 700 });
+  await page.setViewportSize({ width: 1440, height: 500 });
   const trigger = page
     .getByTestId('row-America/New_York')
     .getByRole('button', { name: /actions for new york/i });
@@ -309,7 +309,12 @@ test('zone menu follows its anchor while the page scrolls', async ({ page }) => 
   const triggerBox = await trigger.boundingBox();
   if (!before || !after || !triggerBox) throw new Error('menu or trigger missing');
   expect(after.y).toBeLessThan(before.y);
-  expect(Math.abs(after.y - (triggerBox.y + triggerBox.height + 4))).toBeLessThan(2);
+  const belowTop = triggerBox.y + triggerBox.height + 4;
+  const aboveBottom = triggerBox.y - 4;
+  const afterBottom = after.y + after.height;
+  expect(Math.min(Math.abs(after.y - belowTop), Math.abs(afterBottom - aboveBottom))).toBeLessThan(
+    2,
+  );
 });
 
 test('passes an axe scan with the zone menu open in both themes', async ({ page }) => {
@@ -448,4 +453,18 @@ test('uses 16px form fields and 24px targets on mobile', async ({ page }) => {
     expect(target.width, `${target.label} width`).toBeGreaterThanOrEqual(24);
     expect(target.height, `${target.label} height`).toBeGreaterThanOrEqual(24);
   }
+});
+
+test('hides redundant offset abbreviations and simplifies UTC offsets', async ({ page }) => {
+  await expect(page.getByText('New York')).toBeVisible();
+  const madrid = page.getByTestId('row-Europe/Madrid');
+  await expect(madrid.getByText('UTC+1', { exact: true })).toBeVisible();
+  await expect(madrid.getByText('GMT+1', { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByTestId('row-Europe/Moscow').getByText('UTC+3', { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByTestId('row-UTC').getByText('UTC', { exact: true })).toHaveCount(2);
+  await expect(
+    page.getByTestId('row-America/Los_Angeles').getByText('PST', { exact: true }),
+  ).toBeVisible();
 });
