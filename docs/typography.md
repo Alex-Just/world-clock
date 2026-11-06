@@ -69,7 +69,7 @@ The light theme follows Material Blue:
 | Muted        | `#757575`             | Zone metadata and helpers     |
 | Accent       | `#1976d2`             | Primary actions and selection |
 | Focus        | `#26a69a`             | Focus line and range handles  |
-| Day band     | `#fafdff`             | Daylight hours                |
+| Day band     | `#e3f2fd`             | Daylight and twilight hours   |
 | Night band   | `#bbdefb`             | Night hours                   |
 | Work marking | `#b45309` / `#fbbf24` | Work-hours strip and tint     |
 
