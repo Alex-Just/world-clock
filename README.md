@@ -9,7 +9,7 @@ availability without leaving the board.
 ## Features
 
 - Any number of IANA time zones on one continuous day axis.
-- Seven-day strip plus a month calendar for jumping to any date.
+- Seven-day strip plus a month calendar with a year/month/date jump for distant dates.
 - Focus by click, tap, drag, keyboard, exact wall time, or relative offset.
 - Click-drag the board to select a period; duration appears above the board.
 - Shift the visible window backward or forward in 6-hour steps; reset returns to the anchor day.

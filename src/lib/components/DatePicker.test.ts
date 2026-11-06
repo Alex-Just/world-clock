@@ -16,6 +16,7 @@ it('opens on the selected month and selects a custom date', async () => {
 
   await fireEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
   expect(screen.getByRole('dialog', { name: 'Choose a date' })).toBeInTheDocument();
+  expect(screen.getByLabelText('Jump to date')).toHaveFocus();
   expect(screen.getByText('November 2026')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Thursday, November 5, 2026' })).toHaveAttribute(
     'aria-current',
@@ -58,4 +59,43 @@ it('runs the shared Today action from the footer', async () => {
   await fireEvent.click(within(dialog).getByRole('button', { name: 'Today' }));
   expect(onToday).toHaveBeenCalled();
   expect(screen.queryByRole('dialog', { name: 'Choose a date' })).not.toBeInTheDocument();
+});
+
+it('jumps directly to a distant date', async () => {
+  const onSelectDate = vi.fn();
+  render(DatePicker, { props: { ...baseProps, onSelectDate } });
+
+  await fireEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
+  const input = screen.getByLabelText('Jump to date');
+  await fireEvent.input(input, { target: { value: '1985-03-14' } });
+  await fireEvent.click(screen.getByRole('button', { name: 'Go to date' }));
+
+  expect(onSelectDate).toHaveBeenCalledWith('1985-03-14');
+  expect(screen.queryByRole('dialog', { name: 'Choose a date' })).not.toBeInTheDocument();
+});
+
+it('jumps the calendar to a distant year or month without selecting', async () => {
+  const onSelectDate = vi.fn();
+  render(DatePicker, { props: { ...baseProps, onSelectDate } });
+
+  await fireEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
+  const input = screen.getByLabelText('Jump to date');
+  await fireEvent.input(input, { target: { value: '1985-03' } });
+  await fireEvent.click(screen.getByRole('button', { name: 'Go to date' }));
+
+  expect(screen.getByText('March 1985')).toBeInTheDocument();
+  expect(screen.getByRole('dialog', { name: 'Choose a date' })).toBeInTheDocument();
+  expect(onSelectDate).not.toHaveBeenCalled();
+});
+
+it('explains an impossible jumped date', async () => {
+  render(DatePicker, { props: baseProps });
+
+  await fireEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
+  const input = screen.getByLabelText('Jump to date');
+  await fireEvent.input(input, { target: { value: '2026-02-30' } });
+  await fireEvent.click(screen.getByRole('button', { name: 'Go to date' }));
+
+  expect(screen.getByRole('alert')).toHaveTextContent('That date does not exist.');
+  expect(screen.getByRole('dialog', { name: 'Choose a date' })).toBeInTheDocument();
 });

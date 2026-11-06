@@ -128,7 +128,8 @@ docs/architecture.md  current design
   controls on narrow screens. Keep it centered with `mx-auto`/absolute
   positioning; do not restore a separate full-width strip. The calendar
   trigger sits outside the scrollable seven-day row and selects through the
-  same day-navigation path as the date buttons.
+  same day-navigation path as the date buttons. Its jump field accepts
+  `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` (separators optional for compact digits).
 - Hide `GMT…`/`UTC…` abbreviations when the UTC offset is already visible.
   Format zero-minute offsets as `UTC+3`/`UTC−8`; zero is `UTC`.
 - Do not repeat metadata that equals the zone label. The UTC zone omits its

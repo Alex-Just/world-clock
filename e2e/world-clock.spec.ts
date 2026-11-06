@@ -927,6 +927,24 @@ test('selects a custom date from the calendar', async ({ page }) => {
   await expect(trigger).toBeFocused();
 });
 
+test('jumps to a distant date from the calendar', async ({ page }) => {
+  const trigger = page.getByRole('button', { name: 'Pick a date' });
+  await trigger.focus();
+  await page.keyboard.press('Enter');
+
+  const input = page.getByLabel('Jump to date');
+  await expect(input).toBeFocused();
+  await input.fill('1985-03-14');
+  await input.press('Enter');
+
+  await expect(page.getByRole('dialog', { name: 'Choose a date' })).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Thu 14 1985' })).toHaveAttribute(
+    'aria-current',
+    'date',
+  );
+  await expect(page.getByTestId('focus-line')).toBeHidden();
+});
+
 test('shifts the visible window by six hours', async ({ page }) => {
   const labels = page.getByTestId('ruler-surface').getByTestId('hour-label');
   const next = page.getByRole('button', { name: 'Show next 6 hours' });

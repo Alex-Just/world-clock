@@ -28,6 +28,9 @@
   let displayMonth = $state(firstOfMonth(viewDate));
   let trigger = $state<HTMLButtonElement>();
   let menuEl = $state<HTMLDivElement>();
+  let jumpValue = $state('');
+  let jumpError = $state<string | null>(null);
+  let jumpFocusRequested = false;
 
   const supportsPopover =
     typeof HTMLElement !== 'undefined' && 'showPopover' in HTMLElement.prototype;
@@ -99,17 +102,105 @@
     close(true);
   }
 
-  function toggle(): void {
+  function toggle(event: MouseEvent): void {
     if (open) {
       close();
       return;
     }
     displayMonth = firstOfMonth(viewDate);
+    jumpValue = '';
+    jumpError = null;
+    jumpFocusRequested = event.detail === 0;
     open = true;
   }
 
   function shiftMonth(delta: number): void {
     displayMonth = month.add({ months: delta }).with({ day: 1 }).toString();
+  }
+
+  function jumpToDate(): void {
+    const value = jumpValue.trim();
+    const parts = value.split(/[-/.]/).filter(Boolean);
+    let year: number | undefined;
+    let monthValue: number | undefined;
+    let day: number | undefined;
+
+    if (parts.length === 1) {
+      const token = parts[0] ?? '';
+      if (!/^\d+$/.test(token)) {
+        jumpError = 'Use YYYY, YYYY-MM, or YYYY-MM-DD.';
+        return;
+      }
+      if (token.length === 4) {
+        year = Number(token);
+      } else if (token.length === 6) {
+        year = Number(token.slice(0, 4));
+        monthValue = Number(token.slice(4, 6));
+      } else if (token.length === 8) {
+        year = Number(token.slice(0, 4));
+        monthValue = Number(token.slice(4, 6));
+        day = Number(token.slice(6, 8));
+      } else {
+        jumpError = 'Use YYYY, YYYY-MM, or YYYY-MM-DD.';
+        return;
+      }
+    } else if (parts.length === 2) {
+      const [yearPart, monthPart] = parts;
+      if (!yearPart || !monthPart || !/^\d{4}$/.test(yearPart) || !/^\d{1,2}$/.test(monthPart)) {
+        jumpError = 'Use YYYY, YYYY-MM, or YYYY-MM-DD.';
+        return;
+      }
+      year = Number(yearPart);
+      monthValue = Number(monthPart);
+    } else if (parts.length === 3) {
+      const [yearPart, monthPart, dayPart] = parts;
+      if (
+        !yearPart ||
+        !monthPart ||
+        !dayPart ||
+        !/^\d{4}$/.test(yearPart) ||
+        !/^\d{1,2}$/.test(monthPart) ||
+        !/^\d{1,2}$/.test(dayPart)
+      ) {
+        jumpError = 'Use YYYY, YYYY-MM, or YYYY-MM-DD.';
+        return;
+      }
+      year = Number(yearPart);
+      monthValue = Number(monthPart);
+      day = Number(dayPart);
+    } else {
+      jumpError = 'Use YYYY, YYYY-MM, or YYYY-MM-DD.';
+      return;
+    }
+
+    try {
+      if (day !== undefined && monthValue !== undefined) {
+        const date = Temporal.PlainDate.from(
+          { year, month: monthValue, day },
+          { overflow: 'reject' },
+        );
+        jumpValue = '';
+        jumpError = null;
+        selectDate(date.toString());
+        return;
+      }
+      if (monthValue !== undefined) {
+        const date = Temporal.PlainDate.from(
+          { year, month: monthValue, day: 1 },
+          { overflow: 'reject' },
+        );
+        displayMonth = date.toString();
+        jumpValue = '';
+        jumpError = null;
+        return;
+      }
+      const date = Temporal.PlainDate.from({ year, month: month.month, day: 1 });
+      displayMonth = date.toString();
+      jumpValue = '';
+      jumpError = null;
+    } catch {
+      jumpError = 'That date does not exist.';
+    }
   }
 
   function closeOnOutside(event: PointerEvent): void {
@@ -137,7 +228,11 @@
       }
     }
     positionMenu();
-    element.querySelector<HTMLElement>('[aria-current="date"]')?.focus();
+    const focusTarget = jumpFocusRequested
+      ? element.querySelector<HTMLInputElement>('#date-jump')
+      : element.querySelector<HTMLElement>('[aria-current="date"]');
+    focusTarget?.focus();
+    jumpFocusRequested = false;
 
     document.addEventListener('pointerdown', closeOnOutside, true);
     document.addEventListener('keydown', closeOnEscape);
@@ -174,6 +269,42 @@
     aria-label="Choose a date"
     class="border-border bg-surface-raised text-text fixed inset-auto z-50 m-0 max-h-[calc(100vh-1rem)] w-[min(20rem,calc(100vw-1rem))] overflow-y-auto rounded-xl border p-3 shadow-xl"
   >
+    <form
+      class="border-border mb-3 border-b pb-3"
+      onsubmit={(event) => {
+        event.preventDefault();
+        jumpToDate();
+      }}
+    >
+      <label class="text-muted text-xs font-medium" for="date-jump">Jump to date</label>
+      <div class="mt-1 flex gap-2">
+        <input
+          id="date-jump"
+          bind:value={jumpValue}
+          oninput={() => {
+            jumpError = null;
+          }}
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="YYYY-MM-DD"
+          aria-invalid={jumpError ? 'true' : undefined}
+          aria-describedby={jumpError ? 'date-jump-error' : undefined}
+          class="border-border bg-surface text-text h-11 min-w-0 flex-1 rounded-lg border px-3 text-base"
+        />
+        <button
+          type="submit"
+          aria-label="Go to date"
+          class="bg-accent text-accent-contrast hover:bg-accent/90 h-11 shrink-0 rounded-lg px-3 text-sm font-medium transition-colors"
+        >
+          Go
+        </button>
+      </div>
+      {#if jumpError}
+        <p id="date-jump-error" class="text-danger mt-1.5 text-xs" role="alert">{jumpError}</p>
+      {/if}
+    </form>
+
     <div class="flex items-center justify-between gap-2">
       <button
         type="button"
