@@ -1,0 +1,36 @@
+<script lang="ts">
+  import { formatDate, formatTime } from '$lib/time/format';
+  import type { InstantMs, TimeFormat, ZoneId } from '$lib/time/types';
+
+  let {
+    focusMs,
+    homeZone,
+    zoneLabel,
+    format,
+    onOpen,
+  }: {
+    focusMs: InstantMs;
+    homeZone: ZoneId;
+    zoneLabel: string;
+    format: TimeFormat;
+    onOpen: () => void;
+  } = $props();
+
+  const time = $derived(formatTime(focusMs, homeZone, format, { seconds: true, locale: 'en-US' }));
+  const date = $derived(formatDate(focusMs, homeZone, { style: 'short', locale: 'en-US' }));
+</script>
+
+<button
+  type="button"
+  aria-label="Set time"
+  title="Set an exact or relative time"
+  onclick={onOpen}
+  class="group hover:bg-surface rounded-lg px-1 py-0.5 text-left transition-colors"
+>
+  <span class="text-text block text-3xl leading-none font-light tracking-tight tabular-nums">
+    {time}
+  </span>
+  <span class="text-muted mt-1 block text-xs">
+    {date} · {zoneLabel}
+  </span>
+</button>

@@ -1,0 +1,46 @@
+config_version = "0"
+
+exclude_patterns = [
+  "**/node_modules/**",
+  "**/dist/**",
+  "**/coverage/**",
+  "**/playwright-report/**",
+  "**/test-results/**",
+  "**/.superpowers/**",
+  "**/*.d.ts",
+  "**/pnpm-lock.yaml",
+  "**/docs/screenshot.png",
+]
+
+test_patterns = [
+  "**/e2e/**",
+  "**/tests/**",
+  "**/*.test.*",
+  "**/*.spec.*",
+]
+
+[smells]
+mode = "comment"
+
+[[source]]
+name = "default"
+default = true
+
+[[plugin]]
+name = "ripgrep"
+mode = "comment"
+
+[[plugin]]
+name = "trufflehog"
+
+[[plugin]]
+name = "markdownlint"
+
+[[plugin]]
+name = "prettier"
+
+
+# README and architecture prose use long lines. Keep the other Markdown rules.
+[[triage]]
+match.rules = ["markdownlint:MD013"]
+set.ignored = true
