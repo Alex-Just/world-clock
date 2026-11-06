@@ -106,7 +106,7 @@
         {/if}
         <span class="text-text truncate text-xs font-medium sm:text-sm">{model.label}</span>
         <span
-          class="bg-surface text-muted hidden shrink-0 rounded px-1 text-[11px] tabular-nums sm:inline-block"
+          class="bg-surface text-muted shrink-0 rounded px-1 text-[11px] tabular-nums"
           title={`UTC offset ${formatUtcOffset(model.offsetMinutes)}`}
         >
           {formatOffset(model.relativeOffsetMinutes)}
