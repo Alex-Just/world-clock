@@ -84,7 +84,8 @@ docs/architecture.md  current design
   text that sits on themed surfaces.
 - Work-hours strip and tint use the amber `work-line`/`band-work` tokens;
   do not reuse the blue night palette for work markings.
-- Keep focus/now lines and range fills aligned across the ruler and rows.
+- Keep focus/now lines, hour boundary ticks, and range fills aligned across
+  the ruler and rows.
 - Base bands are day 08:00–18:00, twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00.
 - Click-drag a zone row to set a range; the duration bar above the board and row headers show the result.
 - The focus hour is the resting hour highlight; hover moves it and pointer leave,

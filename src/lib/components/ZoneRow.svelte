@@ -279,6 +279,12 @@
       >
         {label.label}
       </div>
+      <div
+        data-testid="hour-tick"
+        class="bg-band-text/25 pointer-events-none absolute bottom-0 h-1.5 w-px -translate-x-1/2"
+        style={`left: ${pct(label.position)}`}
+        aria-hidden="true"
+      ></div>
     {/each}
 
     {#each model.dayMarkers as marker (marker.position)}

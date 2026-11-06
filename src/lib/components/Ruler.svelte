@@ -205,6 +205,12 @@
     >
       {tick.label}
     </div>
+    <div
+      data-testid="hour-tick"
+      class="bg-muted/40 pointer-events-none absolute bottom-0 h-1.5 w-px -translate-x-1/2"
+      style={`left: ${pct(tick.position)}`}
+      aria-hidden="true"
+    ></div>
   {/each}
 
   {#if rangeStart !== null && rangeWidth !== null}

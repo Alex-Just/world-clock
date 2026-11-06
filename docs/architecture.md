@@ -85,6 +85,7 @@ Import replaces the current document only after confirmation. Export includes
   and flipped or clamped to stay inside the viewport.
 - The hint and selected-range bar share a fixed 48px slot above the board, so
   selecting a range does not reflow the board. Mobile row metrics stay stable.
+- Hour labels carry a tiny tick at each boundary in the ruler and every row.
 - Focus/now lines and range fills render in the ruler and every row. A hover
   overlay follows the cursor without changing selection.
 - On narrow screens the row header wraps the time block below the zone name;

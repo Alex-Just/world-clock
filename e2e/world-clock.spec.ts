@@ -728,3 +728,22 @@ test('keeps narrow 12-hour headers from overflowing', async ({ page }) => {
     await expect(page.getByTestId('relative-badge')).toBeHidden();
   }
 });
+
+test('marks hour boundaries under the ruler labels', async ({ page }) => {
+  await expect(page.getByText('New York')).toBeVisible();
+  const ruler = page.getByTestId('ruler-surface');
+  const labels = ruler.getByTestId('hour-label');
+  const ticks = ruler.getByTestId('hour-tick');
+  expect(await labels.count()).toBeGreaterThanOrEqual(24);
+  expect(await ticks.count()).toBe(await labels.count());
+
+  const index = Math.min(5, (await labels.count()) - 1);
+  const [labelBox, tickBox] = await Promise.all([
+    labels.nth(index).boundingBox(),
+    ticks.nth(index).boundingBox(),
+  ]);
+  if (!labelBox || !tickBox) throw new Error('hour marker missing');
+  expect(Math.abs(labelBox.x + labelBox.width / 2 - (tickBox.x + tickBox.width / 2))).toBeLessThan(
+    2,
+  );
+});
