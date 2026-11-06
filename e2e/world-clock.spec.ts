@@ -852,6 +852,7 @@ test('matches the settings hover across secondary controls', async ({ page }) =>
 
   for (const locator of [
     page.getByRole('button', { name: /^today$/i }),
+    page.getByRole('button', { name: 'Sat 7 2026' }),
     page.getByRole('button', { name: 'Fri 6 2026' }),
     page.getByRole('button', { name: /next day/i }),
     page.getByRole('button', { name: 'Actions for New York' }),
@@ -859,10 +860,6 @@ test('matches the settings hover across secondary controls', async ({ page }) =>
     await locator.hover();
     await expect.poll(() => background(locator)).toBe(hoverBackground);
   }
-
-  const saturday = page.getByRole('button', { name: 'Sat 7 2026' });
-  await saturday.hover();
-  await expect.poll(() => background(saturday)).toBe('rgb(251, 247, 239)');
 
   await page.getByRole('button', { name: 'Actions for New York' }).click();
   const rename = page.getByRole('menuitem', { name: 'Rename' });

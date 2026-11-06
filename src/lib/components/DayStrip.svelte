@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { addDays } from '$lib/time/axis';
+  import { addDays, dateInZone } from '$lib/time/axis';
   import type { DateString, InstantMs, ZoneId } from '$lib/time/types';
   import DatePicker from './DatePicker.svelte';
 
@@ -22,6 +22,7 @@
   } = $props();
 
   const days = $derived(Array.from({ length: 7 }, (_, index) => addDays(viewDate, index - 3)));
+  const today = $derived(dateInZone(nowMs, homeZone));
 
   function weekdayShort(date: DateString): string {
     return new Intl.DateTimeFormat('en-US', {
@@ -43,7 +44,7 @@
     if (date === viewDate) {
       return 'bg-surface text-accent-text font-semibold hover:bg-surface';
     }
-    return isWeekend(date) ? 'bg-weekend hover:bg-weekend-hover' : 'hover:bg-surface';
+    return 'hover:bg-surface';
   }
 </script>
 
@@ -76,10 +77,19 @@
         onclick={() => {
           onSelectDate(date);
         }}
-        class={`flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors ${dayClass(date)}`}
+        class={`relative flex min-h-10 min-w-12 shrink-0 flex-col items-center rounded-lg px-2 py-1.5 text-xs transition-colors ${dayClass(date)}`}
       >
         <span class="text-muted text-sm tracking-wide uppercase">{weekdayShort(date)}</span>
         <span class="text-text text-base tabular-nums">{dayNumber(date)}</span>
+        {#if date === today || isWeekend(date)}
+          <span
+            data-testid={date === today ? 'today-marker' : 'weekend-marker'}
+            class={`absolute bottom-0.5 left-1/2 h-0.5 w-5 -translate-x-1/2 rounded-full ${
+              date === today ? 'bg-home-accent' : 'bg-weekend-line'
+            }`}
+            aria-hidden="true"
+          ></span>
+        {/if}
       </button>
     {/each}
 

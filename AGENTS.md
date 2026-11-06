@@ -134,8 +134,9 @@ docs/architecture.md  current design
   `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` (separators optional for compact digits).
   Below 1440px the day strip gets its own centered row; at 1440px and above it
   is inline-centered with the header actions.
-- Weekend dates in the seven-day strip use the warm `weekend` tint. Keep it
-  subtle and let the selected-day state override it.
+- Weekend dates in the seven-day strip use a blue-gray underline; today uses
+  the dark-yellow home accent underline. Do not use background tints that
+  could be mistaken for the selected-date state.
 - Hide `GMT…`/`UTC…` abbreviations when the UTC offset is already visible.
   Format zero-minute offsets as `UTC+3`/`UTC−8`; zero is `UTC`.
 - Do not repeat metadata that equals the zone label. The UTC zone omits its

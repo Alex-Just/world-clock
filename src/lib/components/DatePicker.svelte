@@ -353,7 +353,7 @@
               : cell.inMonth
                 ? 'text-text hover:bg-surface'
                 : 'text-muted hover:bg-surface'
-          } ${cell.date === today && cell.date !== viewDate ? 'ring-accent/50 ring-1' : ''}`}
+          } ${cell.date === today && cell.date !== viewDate ? 'ring-home-accent/60 ring-1' : ''}`}
         >
           {cell.day}
         </button>
