@@ -39,7 +39,7 @@
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface-control hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
         >
           <span class="text-2xl" aria-hidden="true">×</span>
         </button>
@@ -60,7 +60,7 @@
           onclick={() => {
             onClose();
           }}
-          class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
+          class="border-border text-text hover:bg-surface-control h-10 rounded-lg border px-3 text-sm font-medium"
         >
           Close
         </button>

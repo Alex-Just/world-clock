@@ -114,13 +114,21 @@ Import replaces the current document only after confirmation. Export includes
   the exact UTC offset is shown; zero-minute offsets render as `UTC+3`. Metadata
   that duplicates the zone label is omitted, and zero relative offsets are
   hidden. DST badges render only while DST is active.
+- Zone row status names the local day period (night, early morning, morning,
+  afternoon, evening) and appends `Working` during configured work hours. The
+  date prefix appears only when the zone's focused date differs from the home
+  zone's focused date.
 - Keyboard shortcuts are global except in text fields or open dialogs.
   Left/Right shift the visible window; Alt+Left/Right nudge focus; the focus
   slider handles Left/Right for step nudging when focused.
   Escape closes overlays, clears an active range, then returns the board to Now.
 - Tailwind `dark:` variants are bound to `data-theme='dark'` so the explicit
-  theme works when the OS theme differs. Status, warning, danger, and accent
-  text use semantic tokens defined in `src/app.css`.
+  theme works when the OS theme differs. Theme surfaces are `surface` (page),
+  `surface-control` (inputs, selected chips, hover fills), and `surface-raised`
+  (header, dialogs, sticky columns); controls and active states must stay on
+  `surface-control` so they remain visible against raised panels in both
+  themes. Status, warning, danger, and accent text use semantic tokens defined
+  in `src/app.css`.
 - Typography, input sizing, and target sizes follow
   [`docs/typography.md`](typography.md).
 - Colors meet WCAG AA contrast; status is never color-only; reduced motion is

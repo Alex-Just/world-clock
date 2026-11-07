@@ -189,7 +189,7 @@
         onclick={() => {
           onShiftWindow(-WINDOW_SHIFT_HOURS);
         }}
-        class="text-muted hover:bg-surface hover:text-text border-border disabled:hover:text-muted inline-flex size-10 items-center justify-center rounded-l-lg border-r disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
+        class="text-muted hover:bg-surface-control hover:text-text border-border disabled:hover:text-muted inline-flex size-10 items-center justify-center rounded-l-lg border-r disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
       >
         <ChevronLeft class="size-4" aria-hidden="true" />
       </button>
@@ -201,7 +201,7 @@
         onclick={() => {
           onShiftWindow(WINDOW_SHIFT_HOURS);
         }}
-        class="text-muted hover:bg-surface hover:text-text disabled:hover:text-muted inline-flex size-10 items-center justify-center rounded-r-lg disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
+        class="text-muted hover:bg-surface-control hover:text-text disabled:hover:text-muted inline-flex size-10 items-center justify-center rounded-r-lg disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
       >
         <ChevronRight class="size-4" aria-hidden="true" />
       </button>
@@ -210,7 +210,7 @@
     <button
       type="button"
       onclick={onNow}
-      class="border-border text-text hover:bg-surface inline-flex h-10 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium transition-colors"
+      class="border-border text-text hover:bg-surface-control inline-flex h-10 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium transition-colors"
     >
       <LocateFixed class="text-accent-text size-4" aria-hidden="true" />
       Now

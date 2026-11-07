@@ -444,6 +444,72 @@ test('toggles light and dark from the header', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 });
 
+test('marks weekends with a rose underline in both themes', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.reload();
+  const marker = page.getByTestId('weekend-marker').first();
+  await expect(marker).toBeVisible();
+  expect(await marker.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(
+    'rgb(225, 29, 72)',
+  );
+
+  await page.getByRole('button', { name: 'Switch to dark mode' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  expect(await marker.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(
+    'rgb(251, 113, 133)',
+  );
+});
+
+test('keeps control surfaces distinct in both themes', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.reload();
+  const selectedDay = page.locator('[aria-current="date"]');
+  const offsetChip = page.getByTestId('relative-offset').first();
+  const background = (locator: typeof selectedDay) =>
+    locator.evaluate((element) => getComputedStyle(element).backgroundColor);
+
+  expect(await background(selectedDay)).toBe('rgb(236, 239, 241)');
+  expect(await background(offsetChip)).toBe('rgb(236, 239, 241)');
+
+  await page.getByRole('button', { name: 'Switch to dark mode' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect.poll(() => background(selectedDay)).toBe('rgb(58, 58, 58)');
+  await expect.poll(() => background(offsetChip)).toBe('rgb(58, 58, 58)');
+});
+
+test('keeps highlighted controls distinct in dark mode', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.reload();
+  const background = (locator: Locator) =>
+    locator.evaluate((element) => getComputedStyle(element).backgroundColor);
+
+  const day = page.getByRole('button', { name: 'Fri 6 2026' });
+  await day.hover();
+  await expect.poll(() => background(day)).toBe('rgb(58, 58, 58)');
+
+  await page.getByRole('button', { name: /set time/i }).click();
+  const selectedTab = page.getByRole('tab', { name: 'Exact' });
+  const unselectedTab = page.getByRole('tab', { name: 'Relative' });
+  expect(await background(selectedTab)).toBe('rgb(58, 58, 58)');
+  expect(await background(unselectedTab)).toBe('rgba(0, 0, 0, 0)');
+  await page.keyboard.press('Escape');
+
+  await page.getByRole('button', { name: 'Settings' }).click();
+  const selectedAccent = page.getByRole('button', { name: 'Blue accent' });
+  const unselectedAccent = page.getByRole('button', { name: 'Teal accent' });
+  expect(await background(selectedAccent)).toBe('rgb(58, 58, 58)');
+  expect(await background(unselectedAccent)).toBe('rgba(0, 0, 0, 0)');
+  await unselectedAccent.hover();
+  await expect.poll(() => background(unselectedAccent)).toBe('rgb(58, 58, 58)');
+  await page.keyboard.press('Escape');
+
+  await page.getByRole('button', { name: 'Add zone' }).click();
+  const activeResult = page.getByRole('option').first();
+  const inactiveResult = page.getByRole('option').nth(1);
+  expect(await background(activeResult)).toBe('rgb(58, 58, 58)');
+  expect(await background(inactiveResult)).toBe('rgba(0, 0, 0, 0)');
+});
+
 test('keeps light theme readable while the OS is dark', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.reload();
@@ -454,8 +520,8 @@ test('keeps light theme readable while the OS is dark', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await page.waitForTimeout(250);
 
-  const daytime = page.getByTestId('row-America/New_York').getByText('Daytime');
-  await expect(daytime).toBeVisible();
+  const status = page.getByTestId('row-America/New_York').getByTestId('row-status');
+  await expect(status).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   expect(
     results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical'),

@@ -63,8 +63,9 @@ The light theme follows Material Blue:
 
 | Token       | Value                 | Use                           |
 | ----------- | --------------------- | ----------------------------- |
-| Page        | `#f5f5f5`             | Outside the app surface       |
-| Surface     | `#ffffff`             | Header, board, controls       |
+| Page        | `#f5f5f5`             | App background and board      |
+| Raised      | `#ffffff`             | Header, dialogs, sticky cells |
+| Control     | `#eceff1`             | Inputs, selected chips, hover |
 | Text        | `#212121`             | Primary labels and numbers    |
 | Muted       | `#757575`             | Zone metadata and helpers     |
 | Accent      | `#1976d2`             | Primary actions and selection |
@@ -75,7 +76,7 @@ The light theme follows Material Blue:
 | Work cells  | `#ffffff`             | Working-hours cells           |
 | Home header | `#fff8e8`             | Home-zone name column         |
 | Today       | `#b7791f` / `#fbbf24` | Today underline and ring      |
-| Weekend     | `#90a4ae` / `#b0bec5` | Weekend underline             |
+| Weekend     | `#e11d48` / `#fb7185` | Weekend underline             |
 
 Status text uses the semantic warning and danger tokens.
 
@@ -84,7 +85,8 @@ Status text uses the semantic warning and danger tokens.
 | Token   | Value     | Use                                           |
 | ------- | --------- | --------------------------------------------- |
 | Surface | `#232323` | Page and board chrome                         |
-| Raised  | `#2d2d2d` | Header, sticky columns, controls              |
+| Control | `#3a3a3a` | Inputs, selected chips, hover fills           |
+| Raised  | `#2d2d2d` | Header, dialogs, sticky columns               |
 | Border  | `#414141` | Dividers and control edges                    |
 | Text    | `#e4e4e4` | Primary labels                                |
 | Muted   | `#c8c8c8` | Zone metadata and helpers (AA on home header) |

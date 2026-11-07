@@ -91,7 +91,7 @@
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg text-xl"
+          class="text-muted hover:bg-surface-control hover:text-text inline-flex size-10 items-center justify-center rounded-lg text-xl"
         >
           <span class="text-2xl" aria-hidden="true">×</span>
         </button>
@@ -154,8 +154,11 @@
                     onclick={() => {
                       onUpdate({ accent: accent.id });
                     }}
-                    class="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm"
-                    class:border-accent={settings.accent === accent.id}
+                    class={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors ${
+                      settings.accent === accent.id
+                        ? 'border-accent bg-surface-control text-accent-text'
+                        : 'border-border hover:bg-surface-control'
+                    }`}
                   >
                     <span class={`size-2.5 rounded-full ${accent.swatch}`} aria-hidden="true"
                     ></span>
@@ -250,7 +253,7 @@
                     stepMinutes: Number(event.currentTarget.value) as Settings['stepMinutes'],
                   });
                 }}
-                class="border-border bg-surface rounded-lg border px-2.5 py-1.5 text-base"
+                class="border-border bg-surface-control rounded-lg border px-2.5 py-1.5 text-base"
               >
                 <option value={5}>5 minutes</option>
                 <option value={15}>15 minutes</option>
@@ -269,7 +272,7 @@
               <input
                 type="time"
                 bind:value={workStart}
-                class="border-border bg-surface text-text mt-1 block rounded-lg border px-2 py-1.5 text-sm"
+                class="border-border bg-surface-control text-text mt-1 block rounded-lg border px-2 py-1.5 text-sm"
               />
             </label>
             <label class="text-muted text-sm">
@@ -277,7 +280,7 @@
               <input
                 type="time"
                 bind:value={workEnd}
-                class="border-border bg-surface text-text mt-1 block rounded-lg border px-2 py-1.5 text-sm"
+                class="border-border bg-surface-control text-text mt-1 block rounded-lg border px-2 py-1.5 text-sm"
               />
             </label>
             <button
@@ -304,7 +307,7 @@
               onclick={() => {
                 onAddZone();
               }}
-              class="border-border text-text hover:bg-surface h-9 rounded-lg border px-3 text-sm font-medium"
+              class="border-border text-text hover:bg-surface-control h-9 rounded-lg border px-3 text-sm font-medium"
             >
               Add zone
             </button>
@@ -331,7 +334,7 @@
                     onclick={() => {
                       onSetHome(zone.timeZone);
                     }}
-                    class="text-muted hover:bg-surface h-8 rounded px-2 text-sm disabled:opacity-30"
+                    class="text-muted hover:bg-surface-control h-8 rounded px-2 text-sm disabled:opacity-30"
                   >
                     Home
                   </button>
@@ -342,7 +345,7 @@
                     onclick={() => {
                       onReplace(moveZone(settings, zone.timeZone, -1));
                     }}
-                    class="text-muted hover:bg-surface h-8 rounded px-2 text-sm disabled:opacity-30"
+                    class="text-muted hover:bg-surface-control h-8 rounded px-2 text-sm disabled:opacity-30"
                   >
                     ↑
                   </button>
@@ -353,7 +356,7 @@
                     onclick={() => {
                       onReplace(moveZone(settings, zone.timeZone, 1));
                     }}
-                    class="text-muted hover:bg-surface h-8 rounded px-2 text-sm disabled:opacity-30"
+                    class="text-muted hover:bg-surface-control h-8 rounded px-2 text-sm disabled:opacity-30"
                   >
                     ↓
                   </button>
@@ -364,7 +367,7 @@
                     onclick={() => {
                       onReplace(removeZone(settings, zone.timeZone));
                     }}
-                    class="hover:bg-surface text-danger h-8 rounded px-2 text-sm disabled:opacity-30"
+                    class="hover:bg-surface-control text-danger h-8 rounded px-2 text-sm disabled:opacity-30"
                   >
                     ×
                   </button>
@@ -380,12 +383,12 @@
             <button
               type="button"
               onclick={handleExport}
-              class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
+              class="border-border text-text hover:bg-surface-control h-10 rounded-lg border px-3 text-sm font-medium"
             >
               Export JSON
             </button>
             <label
-              class="border-border text-text hover:bg-surface inline-flex h-10 cursor-pointer items-center rounded-lg border px-3 text-sm font-medium"
+              class="border-border text-text hover:bg-surface-control inline-flex h-10 cursor-pointer items-center rounded-lg border px-3 text-sm font-medium"
             >
               Import JSON
               <input
@@ -401,7 +404,7 @@
             <button
               type="button"
               onclick={resetAll}
-              class="hover:bg-surface text-danger h-10 rounded-lg px-3 text-sm font-medium"
+              class="hover:bg-surface-control text-danger h-10 rounded-lg px-3 text-sm font-medium"
             >
               Reset all settings
             </button>
@@ -421,7 +424,7 @@
           onclick={() => {
             onClose();
           }}
-          class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
+          class="border-border text-text hover:bg-surface-control h-10 rounded-lg border px-3 text-sm font-medium"
         >
           Done
         </button>

@@ -256,7 +256,7 @@
   aria-haspopup="dialog"
   aria-expanded={open}
   onclick={toggle}
-  class="border-border text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg border transition-colors"
+  class="border-border text-muted hover:bg-surface-control hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg border transition-colors"
 >
   <CalendarDays class="size-4" aria-hidden="true" />
 </button>
@@ -290,7 +290,7 @@
           placeholder="YYYY-MM-DD"
           aria-invalid={jumpError ? 'true' : undefined}
           aria-describedby={jumpError ? 'date-jump-error' : undefined}
-          class="border-border bg-surface text-text h-11 min-w-0 flex-1 rounded-lg border px-3 text-base"
+          class="border-border bg-surface-control text-text h-11 min-w-0 flex-1 rounded-lg border px-3 text-base"
         />
         <button
           type="submit"
@@ -312,7 +312,7 @@
         onclick={() => {
           shiftMonth(-1);
         }}
-        class="text-muted hover:bg-surface hover:text-text inline-flex size-9 items-center justify-center rounded-lg transition-colors"
+        class="text-muted hover:bg-surface-control hover:text-text inline-flex size-9 items-center justify-center rounded-lg transition-colors"
       >
         <ChevronLeft class="size-4" aria-hidden="true" />
       </button>
@@ -323,7 +323,7 @@
         onclick={() => {
           shiftMonth(1);
         }}
-        class="text-muted hover:bg-surface hover:text-text inline-flex size-9 items-center justify-center rounded-lg transition-colors"
+        class="text-muted hover:bg-surface-control hover:text-text inline-flex size-9 items-center justify-center rounded-lg transition-colors"
       >
         <ChevronRight class="size-4" aria-hidden="true" />
       </button>
@@ -351,8 +351,8 @@
             cell.date === viewDate
               ? 'bg-accent text-accent-contrast font-semibold'
               : cell.inMonth
-                ? 'text-text hover:bg-surface'
-                : 'text-muted hover:bg-surface'
+                ? 'text-text hover:bg-surface-control'
+                : 'text-muted hover:bg-surface-control'
           } ${cell.date === today && cell.date !== viewDate ? 'ring-home-accent/60 ring-1' : ''}`}
         >
           {cell.day}
@@ -367,7 +367,7 @@
           onToday();
           close(true);
         }}
-        class="text-accent-text hover:bg-surface rounded-lg px-2 py-1.5 text-sm font-medium transition-colors"
+        class="text-accent-text hover:bg-surface-control rounded-lg px-2 py-1.5 text-sm font-medium transition-colors"
       >
         Today
       </button>
@@ -376,7 +376,7 @@
         onclick={() => {
           close(true);
         }}
-        class="text-muted hover:bg-surface hover:text-text rounded-lg px-2 py-1.5 text-sm font-medium transition-colors"
+        class="text-muted hover:bg-surface-control hover:text-text rounded-lg px-2 py-1.5 text-sm font-medium transition-colors"
       >
         Close
       </button>

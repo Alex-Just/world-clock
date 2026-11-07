@@ -112,7 +112,7 @@
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface-control hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
         >
           <span class="text-2xl" aria-hidden="true">×</span>
         </button>
@@ -128,7 +128,7 @@
                 <input
                   type="date"
                   bind:value={startDate}
-                  class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+                  class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
                 />
               </label>
               <label class="text-muted text-xs">
@@ -136,14 +136,14 @@
                 <input
                   type="time"
                   bind:value={startTime}
-                  class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+                  class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
                 />
               </label>
               <label class="text-muted text-xs">
                 Start zone
                 <select
                   bind:value={startZone}
-                  class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+                  class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
                 >
                   {#each allZones as zone (zone)}
                     <option value={zone}>{zone}</option>
@@ -156,7 +156,7 @@
           <button
             type="button"
             onclick={swap}
-            class="border-border text-muted hover:bg-surface hover:text-text h-10 rounded-lg border px-3 text-sm font-medium"
+            class="border-border text-muted hover:bg-surface-control hover:text-text h-10 rounded-lg border px-3 text-sm font-medium"
           >
             Swap
           </button>
@@ -169,7 +169,7 @@
                 <input
                   type="date"
                   bind:value={endDate}
-                  class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+                  class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
                 />
               </label>
               <label class="text-muted text-xs">
@@ -177,14 +177,14 @@
                 <input
                   type="time"
                   bind:value={endTime}
-                  class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+                  class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
                 />
               </label>
               <label class="text-muted text-xs">
                 End zone
                 <select
                   bind:value={endZone}
-                  class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+                  class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
                 >
                   {#each allZones as zone (zone)}
                     <option value={zone}>{zone}</option>
@@ -216,7 +216,7 @@
 
           <div class="border-border mt-4 overflow-x-auto rounded-xl border">
             <table class="w-full text-left text-sm">
-              <thead class="bg-surface text-muted">
+              <thead class="bg-surface-control text-muted">
                 <tr>
                   <th class="px-3 py-2 font-medium">Zone</th>
                   <th class="px-3 py-2 font-medium">Local span</th>
@@ -247,7 +247,7 @@
           onclick={() => {
             onClose();
           }}
-          class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
+          class="border-border text-text hover:bg-surface-control h-10 rounded-lg border px-3 text-sm font-medium"
         >
           Cancel
         </button>

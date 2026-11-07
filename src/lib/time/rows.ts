@@ -5,6 +5,7 @@ import type {
   BandSegment,
   DateString,
   DayMarker,
+  DayPeriod,
   DstMarker,
   HourLabel,
   InstantMs,
@@ -218,12 +219,23 @@ export function isWorkingTime(
   return minutes >= start || minutes < end;
 }
 
+export function dayPeriodForHour(hour: number): DayPeriod {
+  if (hour >= 5 && hour < 8) return 'early-morning';
+  if (hour >= 8 && hour < 12) return 'morning';
+  if (hour >= 12 && hour < 18) return 'afternoon';
+  if (hour >= 18 && hour < 22) return 'evening';
+  return 'night';
+}
+
 export function buildZoneRow(zone: RowZone, axis: TimeAxis, options: RowOptions): ZoneRowModel {
   const local = Temporal.Instant.fromEpochMilliseconds(options.focusMs).toZonedDateTimeISO(
     zone.timeZone,
   );
+  const home = Temporal.Instant.fromEpochMilliseconds(options.focusMs).toZonedDateTimeISO(
+    axis.homeZone,
+  );
+  const sameDate = local.toPlainDate().equals(home.toPlainDate());
   const working = isWorkingTime(zone.timeZone, options.focusMs, options.workStart, options.workEnd);
-  const focusedStatus = working ? 'working' : local.hour >= 7 && local.hour < 22 ? 'day' : 'night';
 
   return {
     timeZone: zone.timeZone,
@@ -238,8 +250,9 @@ export function buildZoneRow(zone: RowZone, axis: TimeAxis, options: RowOptions)
       options.format,
       options.locale === undefined ? {} : { locale: options.locale },
     ),
-    focusedDate: formatDayMarker(options.focusMs, zone.timeZone, options.locale),
-    focusedStatus,
+    focusedDate: sameDate ? null : formatDayMarker(options.focusMs, zone.timeZone, options.locale),
+    focusedPeriod: dayPeriodForHour(local.hour),
+    focusedWorking: working,
     bands: buildRowBands(zone.timeZone, axis, options.workStart, options.workEnd),
     hourLabels: buildHourLabels(zone.timeZone, axis, options.format),
     dayMarkers: options.showDateLabels ? buildDayMarkers(zone.timeZone, axis, options.locale) : [],

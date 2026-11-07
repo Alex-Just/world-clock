@@ -147,7 +147,7 @@
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface-control hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
         >
           <span class="text-2xl" aria-hidden="true">×</span>
         </button>
@@ -162,9 +162,9 @@
           type="button"
           role="tab"
           aria-selected={tab === 'exact'}
-          class:bg-surface-raised={tab === 'exact'}
+          class:bg-surface-control={tab === 'exact'}
           class:text-text={tab === 'exact'}
-          class="text-muted hover:bg-surface-raised hover:text-text flex-1 rounded-md px-2 py-2 text-sm font-medium transition-colors"
+          class="text-muted hover:bg-surface-control hover:text-text flex-1 rounded-md px-2 py-2 text-sm font-medium transition-colors"
           onclick={() => {
             tab = 'exact';
           }}
@@ -175,9 +175,9 @@
           type="button"
           role="tab"
           aria-selected={tab === 'relative'}
-          class:bg-surface-raised={tab === 'relative'}
+          class:bg-surface-control={tab === 'relative'}
           class:text-text={tab === 'relative'}
-          class="text-muted hover:bg-surface-raised hover:text-text flex-1 rounded-md px-2 py-2 text-sm font-medium transition-colors"
+          class="text-muted hover:bg-surface-control hover:text-text flex-1 rounded-md px-2 py-2 text-sm font-medium transition-colors"
           onclick={() => {
             tab = 'relative';
           }}
@@ -193,7 +193,7 @@
             <input
               type="date"
               bind:value={exactDate}
-              class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+              class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
             />
           </label>
           <label class="text-muted text-xs">
@@ -201,14 +201,14 @@
             <input
               type="time"
               bind:value={exactTime}
-              class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+              class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
             />
           </label>
           <label class="text-muted text-xs">
             Zone
             <select
               bind:value={exactZone}
-              class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+              class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
             >
               {#each allZones as zone (zone)}
                 <option value={zone}>{zone}</option>
@@ -225,7 +225,7 @@
               min="0"
               step="0.5"
               bind:value={amount}
-              class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+              class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
             />
           </label>
           <div class="grid grid-cols-2 gap-2">
@@ -233,7 +233,7 @@
               Unit
               <select
                 bind:value={unit}
-                class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+                class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
               >
                 <option value="minutes">minutes</option>
                 <option value="hours">hours</option>
@@ -244,7 +244,7 @@
               Direction
               <select
                 bind:value={direction}
-                class="border-border bg-surface text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
+                class="border-border bg-surface-control text-text mt-1 w-full rounded-lg border px-2 py-1.5 text-sm"
               >
                 <option value="after">after</option>
                 <option value="before">before</option>
@@ -257,7 +257,7 @@
               onclick={() => {
                 applyQuick('1', 'days', 'before');
               }}
-              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
+              class="border-border text-muted hover:bg-surface-control h-9 rounded-lg border px-2.5 text-sm"
             >
               −1d
             </button>
@@ -266,14 +266,14 @@
               onclick={() => {
                 applyQuick('1', 'hours', 'before');
               }}
-              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
+              class="border-border text-muted hover:bg-surface-control h-9 rounded-lg border px-2.5 text-sm"
             >
               −1h
             </button>
             <button
               type="button"
               onclick={goNow}
-              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
+              class="border-border text-muted hover:bg-surface-control h-9 rounded-lg border px-2.5 text-sm"
             >
               Now
             </button>
@@ -282,7 +282,7 @@
               onclick={() => {
                 applyQuick('1', 'hours', 'after');
               }}
-              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
+              class="border-border text-muted hover:bg-surface-control h-9 rounded-lg border px-2.5 text-sm"
             >
               +1h
             </button>
@@ -291,7 +291,7 @@
               onclick={() => {
                 applyQuick('1', 'days', 'after');
               }}
-              class="border-border text-muted hover:bg-surface h-9 rounded-lg border px-2.5 text-sm"
+              class="border-border text-muted hover:bg-surface-control h-9 rounded-lg border px-2.5 text-sm"
             >
               +1d
             </button>
@@ -311,7 +311,7 @@
             onclick={() => {
               onClose();
             }}
-            class="border-border text-text hover:bg-surface h-10 rounded-lg border px-3 text-sm font-medium"
+            class="border-border text-text hover:bg-surface-control h-10 rounded-lg border px-3 text-sm font-medium"
           >
             Cancel
           </button>

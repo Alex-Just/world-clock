@@ -4,6 +4,7 @@ export type DateString = string;
 export type TimeString = string;
 export type TimeFormat = '24h' | '12h';
 export type BandKind = 'day' | 'twilight' | 'night';
+export type DayPeriod = 'night' | 'early-morning' | 'morning' | 'afternoon' | 'evening';
 export type Availability = 'in' | 'partial' | 'out' | 'multi-day';
 
 export interface DstInfo {
@@ -96,8 +97,9 @@ export interface ZoneRowModel {
   relativeOffsetMinutes: number;
   dst: DstInfo;
   focusedTime: string;
-  focusedDate: string;
-  focusedStatus: 'working' | 'day' | 'night';
+  focusedDate: string | null;
+  focusedPeriod: DayPeriod;
+  focusedWorking: boolean;
   bands: RowBands;
   hourLabels: HourLabel[];
   dayMarkers: DayMarker[];

@@ -28,6 +28,55 @@ it('renders a ruler, one row per zone, and focused local times', () => {
   expect(screen.getAllByTestId('hour-label').length).toBeGreaterThanOrEqual(24);
 });
 
+it('shows precise day periods and omits the home date', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-05', '24h'),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T12:00:00Z'),
+      nowMs: at('2026-11-05T12:00:00Z'),
+      followNow: true,
+      range: null,
+      settings,
+    },
+  });
+
+  const madrid = within(screen.getByTestId('row-Europe/Madrid'));
+  const newYork = within(screen.getByTestId('row-America/New_York'));
+  expect(madrid.getByText('Afternoon')).toBeInTheDocument();
+  expect(madrid.getByText('Working')).toBeInTheDocument();
+  expect(newYork.getByText('Early morning')).toBeInTheDocument();
+  expect(newYork.queryByText('Working')).toBeNull();
+  for (const status of screen.getAllByTestId('row-status')) {
+    expect(within(status).queryByText('Thu 5')).toBeNull();
+  }
+});
+
+it('shows a zone date only when it differs from the home date', () => {
+  const settings = createDefaultSettings('Europe/Madrid');
+  render(Board, {
+    props: {
+      axis: buildAxis('Europe/Madrid', '2026-11-06', '24h'),
+      zones: settings.zones,
+      homeZone: 'Europe/Madrid',
+      focusMs: at('2026-11-05T23:30:00Z'),
+      nowMs: at('2026-11-05T23:30:00Z'),
+      followNow: true,
+      range: null,
+      settings,
+    },
+  });
+
+  const newYork = within(screen.getByTestId('row-America/New_York'));
+  const madrid = within(screen.getByTestId('row-Europe/Madrid'));
+  expect(within(newYork.getByTestId('row-status')).getByText('Thu 5')).toBeInTheDocument();
+  expect(newYork.getByText('Evening')).toBeInTheDocument();
+  expect(within(madrid.getByTestId('row-status')).queryByText('Fri 6')).toBeNull();
+  expect(madrid.getByText('Night')).toBeInTheDocument();
+});
+
 it('draws the focus line and only draws now when it is in view', () => {
   const settings = createDefaultSettings('Europe/Madrid');
   const axis = buildAxis('Europe/Madrid', '2026-11-05', '24h');

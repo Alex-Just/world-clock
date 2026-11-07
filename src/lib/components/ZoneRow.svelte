@@ -2,7 +2,15 @@
   import { House } from '@lucide/svelte';
   import ZoneMenu from './ZoneMenu.svelte';
   import { formatOffset, formatUtcOffset } from '$lib/time/format';
-  import type { Availability, ZoneRowModel } from '$lib/time/types';
+  import type { Availability, DayPeriod, ZoneRowModel } from '$lib/time/types';
+
+  const PERIOD_LABELS: Record<DayPeriod, string> = {
+    night: 'Night',
+    'early-morning': 'Early morning',
+    morning: 'Morning',
+    afternoon: 'Afternoon',
+    evening: 'Evening',
+  };
 
   let {
     model,
@@ -81,21 +89,8 @@
     return `left: ${pct(position + 0.5 / Math.max(1, slots))}; transform: translateX(-50%);`;
   }
 
-  const statusLabel = $derived(
-    model.focusedStatus === 'working'
-      ? 'Working hours'
-      : model.focusedStatus === 'day'
-        ? 'Daytime'
-        : 'Night',
-  );
-
-  const statusClass = $derived(
-    model.focusedStatus === 'working'
-      ? 'text-accent-text'
-      : model.focusedStatus === 'day'
-        ? 'text-status-day'
-        : 'text-muted',
-  );
+  const periodLabel = $derived(PERIOD_LABELS[model.focusedPeriod]);
+  const periodClass = $derived(model.focusedPeriod === 'night' ? 'text-muted' : 'text-status-day');
 
   const rangeStatusLabel = $derived(
     rangeStatus === 'in'
@@ -147,7 +142,7 @@
         {#if model.relativeOffsetMinutes !== 0}
           <span
             data-testid="relative-offset"
-            class="bg-surface text-muted shrink-0 rounded px-1 text-xs tabular-nums sm:text-sm"
+            class="bg-surface-control text-muted shrink-0 rounded px-1 text-xs tabular-nums sm:text-sm"
             title={`UTC offset ${utcOffsetLabel}`}
           >
             {formatOffset(model.relativeOffsetMinutes)}
@@ -193,10 +188,19 @@
           <div class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full">
             {model.focusedTime}
           </div>
-          <div class="mt-0.5 flex items-baseline gap-1 text-xs max-sm:sr-only sm:text-sm">
-            <span class="text-muted">{model.focusedDate}</span>
-            <span class="text-muted">·</span>
-            <span class={statusClass}>{statusLabel}</span>
+          <div
+            data-testid="row-status"
+            class="mt-0.5 flex items-baseline gap-1 text-xs max-sm:sr-only sm:text-sm"
+          >
+            {#if model.focusedDate !== null}
+              <span class="text-muted">{model.focusedDate}</span>
+              <span class="text-muted" aria-hidden="true">·</span>
+            {/if}
+            <span class={periodClass}>{periodLabel}</span>
+            {#if model.focusedWorking}
+              <span class="text-muted" aria-hidden="true">·</span>
+              <span class="text-accent-text" title="Working hours">Working</span>
+            {/if}
           </div>
         {/if}
       </div>
@@ -211,7 +215,7 @@
           onclick={() => {
             menuOpen = !menuOpen;
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-8 items-center justify-center rounded-md transition-colors"
+          class="text-muted hover:bg-surface-control hover:text-text inline-flex size-8 items-center justify-center rounded-md transition-colors"
         >
           <span aria-hidden="true">⋯</span>
         </button>

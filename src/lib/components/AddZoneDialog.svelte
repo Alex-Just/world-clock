@@ -92,7 +92,7 @@
           onclick={() => {
             onClose();
           }}
-          class="text-muted hover:bg-surface hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
+          class="text-muted hover:bg-surface-control hover:text-text inline-flex size-10 items-center justify-center rounded-lg"
         >
           <span class="text-2xl" aria-hidden="true">×</span>
         </button>
@@ -113,7 +113,7 @@
             activeIndex = 0;
           }}
           onkeydown={handleKeyDown}
-          class="border-border bg-surface text-text placeholder:text-muted w-full rounded-lg border px-3 py-2 text-sm"
+          class="border-border bg-surface-control text-text placeholder:text-muted w-full rounded-lg border px-3 py-2 text-sm"
         />
 
         <p class="sr-only" aria-live="polite">{status}</p>
@@ -138,7 +138,9 @@
                   add(result.timeZone);
                 }
               }}
-              class="hover:bg-surface flex cursor-pointer items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-sm aria-disabled:cursor-default aria-disabled:opacity-50"
+              class={`flex cursor-pointer items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors aria-disabled:cursor-default aria-disabled:opacity-50 ${
+                index === activeIndex ? 'bg-surface-control' : 'hover:bg-surface-control'
+              }`}
             >
               <span class="flex min-w-0 items-baseline gap-2">
                 <span class="text-text truncate font-medium">{result.label}</span>

@@ -32,7 +32,7 @@
   type="button"
   title="Set an exact or relative time"
   onclick={onOpen}
-  class="group hover:bg-surface rounded-lg px-1 py-0.5 text-left transition-colors"
+  class="group hover:bg-surface-control rounded-lg px-1 py-0.5 text-left transition-colors"
 >
   <span
     class="text-muted block text-[2.125rem] leading-none font-light tracking-tight tabular-nums"

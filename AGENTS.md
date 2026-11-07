@@ -38,6 +38,18 @@ e2e/                  browser flows
 docs/architecture.md  current design
 ```
 
+## Metadata and deployment
+
+- `index.html` owns static SEO and social metadata: title, description,
+  canonical, Open Graph, Twitter card, and `WebApplication` JSON-LD.
+- Canonical, `og:url`, `og:title`, and `og:image` are absolute and target
+  `https://alex-just.github.io/world-clock/`. Update them together if the
+  deployment URL changes.
+- `public/og-image.png` is the 1200×630 social card. Keep it in sync when the
+  board's visual design changes.
+- `public/robots.txt` and `public/sitemap.xml` are copied into `dist/`; submit
+  the sitemap in Search Console after the deployment URL changes.
+
 ## Non-negotiable rules
 
 - Keep time math in `src/lib/time/`. Functions take explicit instants and zones.
@@ -84,10 +96,11 @@ docs/architecture.md  current design
   text that sits on themed surfaces.
 - Work-hours strip uses the amber `work-line` token; work cells use the
   white `band-work` token. Do not reuse the blue night palette for work markings.
-- Dark mode uses D10 Black Chrome (`#232323` / `#2d2d2d`) around the Warm Dark
-  A1.2 board tokens: warm brown bands, a deep-brown home header, light band
-  text, and the teal focus line. Do not reintroduce light blue or white board
-  cells in dark mode.
+- Dark mode uses D10 Black Chrome (`#232323` / `#2d2d2d` / `#3a3a3a`) around
+  the Warm Dark A1.2 board tokens: warm brown bands, a deep-brown home header,
+  light band text, and the teal focus line. `surface-control` keeps inputs,
+  chips, selected controls, and hover fills visible on raised panels. Do not
+  reintroduce light blue or white board cells in dark mode.
 - The home zone is marked by the `home-row-header` tint on its sticky name
   column and the `home-accent` row edge. Its timeline cells keep the normal
   day/twilight/night/work bands; never tint the whole home row.
@@ -103,6 +116,11 @@ docs/architecture.md  current design
   visible window. Draw the now marker only when now lies inside the window.
   Off-window range visuals stay hidden while the selection and summary remain.
 - Base bands are day 08:00–18:00, twilight 06:00–08:00 and 18:00–22:00, night 22:00–06:00.
+- Row status names the local day period: night 22:00–05:00, early morning
+  05:00–08:00, morning 08:00–12:00, afternoon 12:00–18:00, evening
+  18:00–22:00. Append a green "Working" when the focused time is inside the
+  configured work window. Show the date prefix only when the zone's focused
+  date differs from the home zone's focused date.
 - Click-drag a zone row to set a range; the duration bar above the board and row headers show the result.
 - Capture the visible axis at pointer-down for clicks and drags. A focus change
   may reset the window/day, so do not remap pointer positions against the new axis.
@@ -156,9 +174,9 @@ docs/architecture.md  current design
   sits inline with the header actions, centered while it clears the focus
   details and relative badge, then shifted right only as far as needed. Measure
   the header groups; do not hard-code a pixel nudge.
-- Weekend dates in the seven-day strip use a blue-gray underline; today uses
-  the dark-yellow home accent underline. Do not use background tints that
-  could be mistaken for the selected-date state.
+- Weekend dates in the seven-day strip use a rose underline; today uses the
+  dark-yellow home accent underline. Do not use background tints that could be
+  mistaken for the selected-date state.
 - Hide `GMT…`/`UTC…` abbreviations when the UTC offset is already visible.
   Format zero-minute offsets as `UTC+3`/`UTC−8`; zero is `UTC`.
 - Do not repeat metadata that equals the zone label. The UTC zone omits its
@@ -166,9 +184,11 @@ docs/architecture.md  current design
 - Mobile inputs and selects are 16px and at least 44px tall to avoid iOS zoom.
 - Keep primary pointer targets at least 24×24; aim for 32px or more.
 - Give every clickable control a visible hover state. Secondary controls use
-  `hover:bg-surface`; `surface-raised` is invisible on the white header.
-  Primary accent buttons use `hover:bg-accent/90`. Keep color transitions
-  consistent.
+  `hover:bg-surface-control`; `surface-raised` is invisible on the white
+  header. Inputs, selected chips, segmented-control fills, and active list
+  options use `bg-surface-control`; reserve `bg-surface` for the page and inset
+  tracks. Primary accent buttons use `hover:bg-accent/90`. Keep color
+  transitions consistent.
 - Actionable buttons, links, menu items, and option rows use a hand cursor;
   disabled controls keep the default cursor. Zone-menu items use
   `hover:bg-accent/10`; Remove uses `hover:bg-danger/10`.

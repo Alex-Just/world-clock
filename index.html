@@ -3,12 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>World Clock — Compare Time Zones at a Glance</title>
     <meta
       name="description"
-      content="A precise, local-first world clock board. Compare times, select any moment, and measure durations across time zones."
+      content="A precise, local-first world clock board. Compare times across time zones, pick any moment, and measure durations. Free, private, and no sign-up."
     />
+    <meta name="application-name" content="World Clock" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#232323" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="https://alex-just.github.io/world-clock/" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <title>World Clock</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="World Clock" />
+    <meta property="og:title" content="World Clock — Compare Time Zones at a Glance" />
+    <meta
+      property="og:description"
+      content="A precise, local-first world clock board. Compare times across time zones, pick any moment, and measure durations. Free, private, and no sign-up."
+    />
+    <meta property="og:url" content="https://alex-just.github.io/world-clock/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://alex-just.github.io/world-clock/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="World Clock board showing a shared day axis across seven time zones with the current moment highlighted."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="World Clock — Compare Time Zones at a Glance" />
+    <meta
+      name="twitter:description"
+      content="A precise, local-first world clock board. Compare times across time zones, pick any moment, and measure durations. Free, private, and no sign-up."
+    />
+    <meta name="twitter:image" content="https://alex-just.github.io/world-clock/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="World Clock board showing a shared day axis across seven time zones with the current moment highlighted."
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "World Clock",
+        "url": "https://alex-just.github.io/world-clock/",
+        "description": "A precise, local-first world clock board for desktop and mobile. Compare times across time zones, select any moment, and measure durations with working-hours availability. Free, private, and no sign-up.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and a modern browser",
+        "isAccessibleForFree": true,
+        "inLanguage": "en",
+        "image": "https://alex-just.github.io/world-clock/og-image.png",
+        "license": "https://opensource.org/license/mit",
+        "sameAs": ["https://github.com/Alex-Just/world-clock"],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Any number of IANA time zones on one continuous day axis",
+          "Precise local day periods and working-hours availability",
+          "Seven-day strip and month calendar with a date jump",
+          "Focus by click, tap, drag, keyboard, exact wall time, or relative offset",
+          "Range duration, wall-clock duration across DST, and per-zone availability",
+          "Light, dark, and system themes with six accents",
+          "Local-first data with JSON export and import"
+        ]
+      }
+    </script>
+
     <script>
       (() => {
         try {
@@ -32,6 +103,15 @@
   </head>
   <body>
     <div id="app"></div>
+    <noscript>
+      <main>
+        <h1>World Clock</h1>
+        <p>
+          A precise, local-first world clock board. Compare times across time zones, pick any
+          moment, and measure durations. Enable JavaScript to use the interactive board.
+        </p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

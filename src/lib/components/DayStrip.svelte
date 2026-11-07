@@ -42,9 +42,9 @@
 
   function dayClass(date: DateString): string {
     if (date === viewDate) {
-      return 'bg-surface text-accent-text font-semibold hover:bg-surface';
+      return 'bg-surface-control text-accent-text font-semibold hover:bg-surface-control';
     }
-    return 'hover:bg-surface';
+    return 'hover:bg-surface-control';
   }
 </script>
 
@@ -64,7 +64,7 @@
       onclick={() => {
         onShiftDay(-1);
       }}
-      class="text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
+      class="text-muted hover:bg-surface-control hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
     >
       <span aria-hidden="true">‹</span>
     </button>
@@ -99,7 +99,7 @@
       onclick={() => {
         onShiftDay(1);
       }}
-      class="text-muted hover:bg-surface hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
+      class="text-muted hover:bg-surface-control hover:text-text inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors"
     >
       <span aria-hidden="true">›</span>
     </button>
@@ -107,7 +107,7 @@
     <button
       type="button"
       onclick={onToday}
-      class="border-border text-text hover:bg-surface ml-1 h-10 shrink-0 rounded-lg border px-2.5 text-xs font-medium transition-colors"
+      class="border-border text-text hover:bg-surface-control ml-1 h-10 shrink-0 rounded-lg border px-2.5 text-xs font-medium transition-colors"
     >
       Today
     </button>

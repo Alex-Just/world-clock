@@ -9,6 +9,8 @@ availability without leaving the board.
 ## Features
 
 - Any number of IANA time zones on one continuous day axis.
+- Precise local day periods (early morning through night) with a working-hours
+  marker; dates appear only when a zone is on another day.
 - Seven-day strip plus a month calendar with a year/month/date jump for distant dates.
 - Focus by click, tap, drag, keyboard, exact wall time, or relative offset.
 - Relative badge shows a calendar breakdown, total duration, and comparison date/time.

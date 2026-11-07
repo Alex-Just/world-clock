@@ -67,7 +67,7 @@
       onclick={() => {
         onDetails();
       }}
-      class="border-border text-text hover:bg-surface h-9 rounded-lg border px-2 font-medium sm:px-2.5"
+      class="border-border text-text hover:bg-surface-control h-9 rounded-lg border px-2 font-medium sm:px-2.5"
     >
       Details
     </button>
@@ -76,7 +76,7 @@
       onclick={() => {
         onClear();
       }}
-      class="text-muted hover:bg-surface hover:text-text h-9 rounded-lg px-1.5 font-medium sm:px-2"
+      class="text-muted hover:bg-surface-control hover:text-text h-9 rounded-lg px-1.5 font-medium sm:px-2"
     >
       Clear
     </button>

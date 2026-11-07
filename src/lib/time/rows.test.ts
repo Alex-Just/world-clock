@@ -6,6 +6,7 @@ import {
   buildHourLabels,
   buildRowBands,
   buildZoneRow,
+  dayPeriodForHour,
 } from './rows';
 
 const at = (iso: string) => Date.parse(iso);
@@ -79,8 +80,25 @@ describe('labels and markers', () => {
   });
 });
 
+describe('day periods', () => {
+  it('classifies local hours into precise periods', () => {
+    expect(dayPeriodForHour(0)).toBe('night');
+    expect(dayPeriodForHour(4)).toBe('night');
+    expect(dayPeriodForHour(5)).toBe('early-morning');
+    expect(dayPeriodForHour(7)).toBe('early-morning');
+    expect(dayPeriodForHour(8)).toBe('morning');
+    expect(dayPeriodForHour(11)).toBe('morning');
+    expect(dayPeriodForHour(12)).toBe('afternoon');
+    expect(dayPeriodForHour(17)).toBe('afternoon');
+    expect(dayPeriodForHour(18)).toBe('evening');
+    expect(dayPeriodForHour(21)).toBe('evening');
+    expect(dayPeriodForHour(22)).toBe('night');
+    expect(dayPeriodForHour(23)).toBe('night');
+  });
+});
+
 describe('row model', () => {
-  it('shows the focused local time, date, status, and offsets', () => {
+  it('shows the focused time, period, and offsets without a same-date label', () => {
     const row = buildZoneRow({ timeZone: 'America/New_York', label: 'New York' }, madridAxis, {
       focusMs: at('2026-11-05T11:00:00Z'),
       workStart: '09:00',
@@ -90,9 +108,38 @@ describe('row model', () => {
       locale: 'en-US',
     });
     expect(row.focusedTime).toBe('06:00');
-    expect(row.focusedDate).toBe('Thu 5');
-    expect(row.focusedStatus).toBe('night');
+    expect(row.focusedDate).toBeNull();
+    expect(row.focusedPeriod).toBe('early-morning');
+    expect(row.focusedWorking).toBe(false);
     expect(row.relativeOffsetMinutes).toBe(-360);
     expect(row.abbreviation).toBe('EST');
+  });
+
+  it('shows a date only when it differs from the home zone date', () => {
+    const row = buildZoneRow({ timeZone: 'America/New_York', label: 'New York' }, madridAxis, {
+      focusMs: at('2026-11-05T23:30:00Z'),
+      workStart: '09:00',
+      workEnd: '17:00',
+      format: '24h',
+      showDateLabels: true,
+      locale: 'en-US',
+    });
+    expect(row.focusedTime).toBe('18:30');
+    expect(row.focusedDate).toBe('Thu 5');
+    expect(row.focusedPeriod).toBe('evening');
+  });
+
+  it('keeps working hours separate from the day period', () => {
+    const row = buildZoneRow({ timeZone: 'Europe/Madrid', label: 'Madrid' }, madridAxis, {
+      focusMs: at('2026-11-05T12:00:00Z'),
+      workStart: '09:00',
+      workEnd: '17:00',
+      format: '24h',
+      showDateLabels: true,
+      locale: 'en-US',
+    });
+    expect(row.focusedPeriod).toBe('afternoon');
+    expect(row.focusedWorking).toBe(true);
+    expect(row.focusedDate).toBeNull();
   });
 });
