@@ -82,14 +82,15 @@ Status text uses the semantic warning and danger tokens.
 
 ### Dark chrome (D10 Black Chrome)
 
-| Token   | Value     | Use                                           |
-| ------- | --------- | --------------------------------------------- |
-| Surface | `#232323` | Page and board chrome                         |
-| Control | `#3a3a3a` | Inputs, selected chips, hover fills           |
-| Raised  | `#2d2d2d` | Header, dialogs, sticky columns               |
-| Border  | `#414141` | Dividers and control edges                    |
-| Text    | `#e4e4e4` | Primary labels                                |
-| Muted   | `#c8c8c8` | Zone metadata and helpers (AA on home header) |
+| Token     | Value     | Use                                           |
+| --------- | --------- | --------------------------------------------- |
+| Surface   | `#232323` | Page and board chrome                         |
+| Control   | `#3a3a3a` | Inputs, selected chips, hover fills           |
+| Highlight | `#424242` | Offset badge and date-marker chips            |
+| Raised    | `#2d2d2d` | Header, dialogs, sticky columns               |
+| Border    | `#414141` | Dividers and control edges                    |
+| Text      | `#e4e4e4` | Primary labels                                |
+| Muted     | `#c8c8c8` | Zone metadata and helpers (AA on home header) |
 
 ### Warm Dark board (A1.2)
 
@@ -101,7 +102,6 @@ Status text uses the semantic warning and danger tokens.
 | Work cells  | `#7a665e` | Working-hours cells    |
 | Home header | `#65443a` | Home-zone name column  |
 | Band text   | `#fdf6f2` | Labels on board cells  |
-| Marker      | `#3a312d` | Date markers           |
 | Focus       | `#26a69a` | Focus line and handles |
 
 Dark mode uses near-black D10 chrome around the Warm Dark A1.2 board. Keep the

@@ -465,16 +465,19 @@ test('keeps control surfaces distinct in both themes', async ({ page }) => {
   await page.reload();
   const selectedDay = page.locator('[aria-current="date"]');
   const offsetChip = page.getByTestId('relative-offset').first();
+  const dateMarker = page.getByTestId('day-marker').first();
   const background = (locator: typeof selectedDay) =>
     locator.evaluate((element) => getComputedStyle(element).backgroundColor);
 
   expect(await background(selectedDay)).toBe('rgb(236, 239, 241)');
   expect(await background(offsetChip)).toBe('rgb(236, 239, 241)');
+  expect(await background(dateMarker)).toBe('rgb(236, 239, 241)');
 
   await page.getByRole('button', { name: 'Switch to dark mode' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await expect.poll(() => background(selectedDay)).toBe('rgb(58, 58, 58)');
-  await expect.poll(() => background(offsetChip)).toBe('rgb(58, 58, 58)');
+  await expect.poll(() => background(offsetChip)).toBe('rgb(66, 66, 66)');
+  await expect.poll(() => background(dateMarker)).toBe('rgb(66, 66, 66)');
 });
 
 test('keeps highlighted controls distinct in dark mode', async ({ page }) => {

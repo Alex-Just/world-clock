@@ -124,7 +124,8 @@ Import replaces the current document only after confirmation. Export includes
   Escape closes overlays, clears an active range, then returns the board to Now.
 - Tailwind `dark:` variants are bound to `data-theme='dark'` so the explicit
   theme works when the OS theme differs. Theme surfaces are `surface` (page),
-  `surface-control` (inputs, selected chips, hover fills), and `surface-raised`
+  `surface-control` (inputs, selected chips, hover fills), `surface-highlight`
+  (the relative-offset badge and date-marker chips), and `surface-raised`
   (header, dialogs, sticky columns); controls and active states must stay on
   `surface-control` so they remain visible against raised panels in both
   themes. Status, warning, danger, and accent text use semantic tokens defined

@@ -5,6 +5,7 @@
 @theme inline {
   --color-surface: var(--surface);
   --color-surface-control: var(--surface-control);
+  --color-surface-highlight: var(--surface-highlight);
   --color-surface-raised: var(--surface-raised);
   --color-text: var(--text);
   --color-muted: var(--muted);
@@ -21,8 +22,6 @@
   --color-home-accent: var(--home-accent);
   --color-weekend-line: var(--weekend-line);
   --color-band-text: var(--band-text);
-  --color-band-marker: var(--band-marker);
-  --color-band-marker-text: var(--band-marker-text);
   --color-now: var(--now);
   --color-focus-line: var(--focus-line);
   --color-focus-line-ui: var(--focus-line-ui);
@@ -40,6 +39,7 @@
   --ui-control-height: 2.75rem;
   --surface: #f5f5f5;
   --surface-control: #eceff1;
+  --surface-highlight: #eceff1;
   --surface-raised: #ffffff;
   --text: #212121;
   --muted: #616161;
@@ -52,8 +52,6 @@
   --band-night: #bbdefb;
   --band-work: #ffffff;
   --band-text: #212121;
-  --band-marker: #ffffff;
-  --band-marker-text: #212121;
   --work-line: #b45309;
   --home-row-header: #fff8e8;
   --home-accent: #b7791f;
@@ -76,6 +74,7 @@
      keeps WCAG AA ≥ 4.5:1. */
   --surface: #232323;
   --surface-control: #3a3a3a;
+  --surface-highlight: #424242;
   --surface-raised: #2d2d2d;
   --text: #e4e4e4;
   --muted: #c8c8c8;
@@ -85,8 +84,6 @@
   --band-night: #3c322e;
   --band-work: #7a665e;
   --band-text: #fdf6f2;
-  --band-marker: #3a312d;
-  --band-marker-text: #fdf6f2;
   --work-line: #fbbf24;
   --home-row-header: #65443a;
   --home-accent: #fbbf24;

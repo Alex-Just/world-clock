@@ -96,11 +96,12 @@ docs/architecture.md  current design
   text that sits on themed surfaces.
 - Work-hours strip uses the amber `work-line` token; work cells use the
   white `band-work` token. Do not reuse the blue night palette for work markings.
-- Dark mode uses D10 Black Chrome (`#232323` / `#2d2d2d` / `#3a3a3a`) around
-  the Warm Dark A1.2 board tokens: warm brown bands, a deep-brown home header,
-  light band text, and the teal focus line. `surface-control` keeps inputs,
-  chips, selected controls, and hover fills visible on raised panels. Do not
-  reintroduce light blue or white board cells in dark mode.
+- Dark mode uses D10 Black Chrome (`#232323` / `#2d2d2d` / `#3a3a3a` / `#424242`)
+  around the Warm Dark A1.2 board tokens: warm brown bands, a deep-brown home
+  header, light band text, and the teal focus line. `surface-control` keeps
+  inputs, chips, selected controls, and hover fills visible on raised panels;
+  `surface-highlight` brightens the relative-offset badge and date-marker chips.
+  Do not reintroduce light blue or white board cells in dark mode.
 - The home zone is marked by the `home-row-header` tint on its sticky name
   column and the `home-accent` row edge. Its timeline cells keep the normal
   day/twilight/night/work bands; never tint the whole home row.

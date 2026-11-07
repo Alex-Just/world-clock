@@ -142,7 +142,7 @@
         {#if model.relativeOffsetMinutes !== 0}
           <span
             data-testid="relative-offset"
-            class="bg-surface-control text-muted shrink-0 rounded px-1 text-xs tabular-nums sm:text-sm"
+            class="bg-surface-highlight text-muted shrink-0 rounded px-1 text-xs tabular-nums sm:text-sm"
             title={`UTC offset ${utcOffsetLabel}`}
           >
             {formatOffset(model.relativeOffsetMinutes)}
@@ -316,7 +316,7 @@
     {#each model.dayMarkers as marker (marker.position)}
       <div
         data-testid="day-marker"
-        class="border-border bg-band-marker text-band-marker-text absolute top-1 z-10 rounded border px-1.5 text-sm font-medium whitespace-nowrap"
+        class="border-border bg-surface-highlight text-text absolute top-1 z-10 rounded border px-1.5 text-sm font-medium whitespace-nowrap"
         style={labelStyle(marker.position)}
       >
         {marker.label}
