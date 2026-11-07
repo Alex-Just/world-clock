@@ -109,6 +109,12 @@ Import replaces the current document only after confirmation. Export includes
   with no pressed buttons so hover can recover from a missed pointerup.
 - On narrow screens the row header wraps the time block below the zone name;
   timeline labels stay legible instead of shrinking.
+- At `sm` and above the zone header uses two independent rows: the zone name
+  and focused time share the first, metadata and status the second. The status
+  line must not set the name column width; long status strings previously
+  truncated names such as "San Francisco" and "Denver".
+- The relative-offset chip is hidden below `sm`; the exact UTC offset remains
+  in the metadata.
 - Display settings control abbreviation, exact offset, DST badge, IANA name,
   date labels, and work bands. Offset-style abbreviations are suppressed when
   the exact UTC offset is shown; zero-minute offsets render as `UTC+3`. Metadata

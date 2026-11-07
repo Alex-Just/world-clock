@@ -127,30 +127,94 @@
 >
   <div
     role="gridcell"
-    class={`border-border sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 overflow-hidden border-r px-2 py-1 sm:w-[320px] sm:flex-nowrap sm:px-3 ${
+    class={`border-border sticky left-0 z-20 flex w-[120px] shrink-0 flex-wrap content-center items-center justify-between gap-x-2 gap-y-0.5 overflow-hidden border-r px-2 py-1 sm:w-[320px] sm:flex-col sm:flex-nowrap sm:items-stretch sm:justify-center sm:gap-y-1 sm:px-3 ${
       isHovered ? 'bg-accent/10' : isHome ? 'bg-home-row-header' : 'bg-surface-raised'
     }`}
     title={`${model.timeZone} · ${formatUtcOffset(model.offsetMinutes)}`}
   >
-    <div class="w-full min-w-0 sm:w-auto sm:flex-1">
-      <div class="flex items-center gap-1.5">
-        {#if isHome}
-          <House class="text-accent-text size-3 shrink-0" aria-hidden="true" />
-          <span class="sr-only">Home zone</span>
-        {/if}
-        <span class="text-text truncate text-sm font-medium sm:text-base">{model.label}</span>
-        {#if model.relativeOffsetMinutes !== 0}
-          <span
-            data-testid="relative-offset"
-            class="bg-surface-highlight text-muted shrink-0 rounded px-1 text-xs tabular-nums sm:text-sm"
-            title={`UTC offset ${utcOffsetLabel}`}
-          >
-            {formatOffset(model.relativeOffsetMinutes)}
-          </span>
-        {/if}
+    <div class="contents sm:flex sm:w-full sm:min-w-0 sm:items-start sm:justify-between sm:gap-2">
+      <div class="w-full min-w-0 max-sm:order-1 sm:w-auto sm:flex-1">
+        <div class="flex items-center gap-1.5">
+          {#if isHome}
+            <House class="text-accent-text size-3 shrink-0" aria-hidden="true" />
+            <span class="sr-only">Home zone</span>
+          {/if}
+          <span class="text-text truncate text-sm font-medium sm:text-base">{model.label}</span>
+          {#if model.relativeOffsetMinutes !== 0}
+            <span
+              data-testid="relative-offset"
+              class="bg-surface-highlight text-muted shrink-0 rounded px-1 text-xs tabular-nums max-sm:hidden sm:text-sm"
+              title={`UTC offset ${utcOffsetLabel}`}
+            >
+              {formatOffset(model.relativeOffsetMinutes)}
+            </span>
+          {/if}
+        </div>
       </div>
-      {#if hasMetadata}
-        <div class="text-muted mt-0.5 flex flex-wrap items-center gap-1 text-xs sm:text-base">
+
+      <div
+        class="flex w-full shrink-0 items-start justify-between gap-1 max-sm:order-3 sm:w-auto sm:justify-start"
+      >
+        <div
+          class="min-w-0 flex-1 text-right max-sm:flex max-sm:flex-wrap max-sm:items-baseline max-sm:gap-x-1 max-sm:text-left"
+        >
+          {#if rangeLabel !== null}
+            <div
+              data-testid="range-label-value"
+              class="text-text text-base leading-none font-medium tabular-nums max-sm:w-full max-sm:min-w-0 max-sm:basis-full max-sm:truncate max-sm:text-sm"
+              title={rangeLabel}
+            >
+              {rangeLabel}
+            </div>
+          {:else}
+            <div
+              class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full"
+            >
+              {model.focusedTime}
+            </div>
+          {/if}
+        </div>
+
+        <div class="relative shrink-0">
+          <button
+            bind:this={menuButton}
+            type="button"
+            aria-label={`Actions for ${model.label}`}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            onclick={() => {
+              menuOpen = !menuOpen;
+            }}
+            class="text-muted hover:bg-surface-control hover:text-text inline-flex size-8 items-center justify-center rounded-md transition-colors"
+          >
+            <span aria-hidden="true">⋯</span>
+          </button>
+          {#if menuOpen && menuButton}
+            <ZoneMenu
+              anchor={menuButton}
+              zone={{ timeZone: model.timeZone, label: model.label }}
+              {isHome}
+              {canMoveUp}
+              {canMoveDown}
+              {onSetHome}
+              {onRename}
+              {onMoveUp}
+              {onMoveDown}
+              {onRemove}
+              onClose={() => {
+                menuOpen = false;
+              }}
+            />
+          {/if}
+        </div>
+      </div>
+    </div>
+
+    <div class="contents sm:flex sm:w-full sm:min-w-0 sm:items-start sm:justify-between sm:gap-2">
+      <div
+        class="text-muted mt-0.5 flex w-full flex-wrap items-center gap-1 text-xs max-sm:order-2 sm:mt-0 sm:w-auto sm:flex-1 sm:text-base"
+      >
+        {#if hasMetadata}
           {#if showAbbreviationLabel}
             <span>{model.abbreviation}</span>
           {/if}
@@ -163,34 +227,22 @@
           {#if showIanaLabel}
             <span class="max-w-24 truncate sm:max-w-40">{model.timeZone}</span>
           {/if}
-        </div>
-      {/if}
-    </div>
+        {/if}
+      </div>
 
-    <div class="flex w-full shrink-0 items-start justify-between gap-1 sm:w-auto sm:justify-start">
       <div
-        class="min-w-0 flex-1 text-right max-sm:flex max-sm:flex-wrap max-sm:items-baseline max-sm:gap-x-1 max-sm:text-left"
+        class="mt-0.5 w-full text-right max-sm:order-4 max-sm:text-left sm:mt-0 sm:w-auto sm:shrink-0"
       >
         {#if rangeLabel !== null}
           <div
-            data-testid="range-label-value"
-            class="text-text text-base leading-none font-medium tabular-nums max-sm:w-full max-sm:min-w-0 max-sm:basis-full max-sm:truncate max-sm:text-sm"
-            title={rangeLabel}
-          >
-            {rangeLabel}
-          </div>
-          <div
-            class={`mt-0.5 text-xs max-sm:sr-only sm:text-sm ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
+            class={`text-xs sm:text-sm ${rangeStatus === 'in' ? 'text-accent-text' : 'text-muted'}`}
           >
             {rangeStatusLabel}
           </div>
         {:else}
-          <div class="text-text text-base leading-none font-medium tabular-nums max-sm:basis-full">
-            {model.focusedTime}
-          </div>
           <div
             data-testid="row-status"
-            class="mt-0.5 flex items-baseline gap-1 text-xs max-sm:sr-only sm:text-sm"
+            class="flex items-baseline justify-end gap-1 text-xs max-sm:flex-wrap max-sm:justify-start sm:text-sm"
           >
             {#if model.focusedDate !== null}
               <span class="text-muted">{model.focusedDate}</span>
@@ -198,43 +250,10 @@
             {/if}
             <span class={periodClass}>{periodLabel}</span>
             {#if model.focusedWorking}
-              <span class="text-muted" aria-hidden="true">·</span>
+              <span class="text-muted max-sm:hidden" aria-hidden="true">·</span>
               <span class="text-accent-text" title="Working hours">Working</span>
             {/if}
           </div>
-        {/if}
-      </div>
-
-      <div class="relative shrink-0">
-        <button
-          bind:this={menuButton}
-          type="button"
-          aria-label={`Actions for ${model.label}`}
-          aria-haspopup="menu"
-          aria-expanded={menuOpen}
-          onclick={() => {
-            menuOpen = !menuOpen;
-          }}
-          class="text-muted hover:bg-surface-control hover:text-text inline-flex size-8 items-center justify-center rounded-md transition-colors"
-        >
-          <span aria-hidden="true">⋯</span>
-        </button>
-        {#if menuOpen && menuButton}
-          <ZoneMenu
-            anchor={menuButton}
-            zone={{ timeZone: model.timeZone, label: model.label }}
-            {isHome}
-            {canMoveUp}
-            {canMoveDown}
-            {onSetHome}
-            {onRename}
-            {onMoveUp}
-            {onMoveDown}
-            {onRemove}
-            onClose={() => {
-              menuOpen = false;
-            }}
-          />
         {/if}
       </div>
     </div>

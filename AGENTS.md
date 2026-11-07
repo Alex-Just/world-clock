@@ -129,8 +129,10 @@ docs/architecture.md  current design
   focus loss, or an outside pointer-down restores it. This is visual only and
   must not set focus, change the range, or persist.
 - Hide the relative-time badge when it would only read "Now", and hide the
-  relative-offset chip when it is zero. The DST badge appears only while the
-  zone is observing daylight saving time.
+  relative-offset chip when it is zero. The relative-offset chip is also hidden
+  below `sm` so it cannot squeeze a long zone name; the exact offset remains in
+  the metadata. The DST badge appears only while the zone is observing daylight
+  saving time.
 - The relative badge is hidden below `sm`; at `sm` and above reserve its
   footprint and announce meaningful relative values through a separate polite
   live region. For long ranges show the calendar breakdown (`y`/`mo`/`d`/

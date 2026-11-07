@@ -549,6 +549,31 @@ test('keeps timeline hour and date labels readable', async ({ page }) => {
   expect(sizes.dayMarker).toBeGreaterThanOrEqual(12);
 });
 
+test('keeps full zone names visible when a status is long', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-07T23:42:00Z'));
+  await page.clock.runFor(1000);
+
+  for (const [zone, label] of [
+    ['America/Los_Angeles', 'San Francisco'],
+    ['America/Denver', 'Denver'],
+  ] as const) {
+    const name = page
+      .getByTestId(`row-${zone}`)
+      .locator('[role="gridcell"]')
+      .first()
+      .locator('span.text-text')
+      .first();
+    await expect(name).toHaveText(label);
+    expect(await name.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  }
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const status = page.getByTestId('row-America/Los_Angeles').getByTestId('row-status');
+  await expect(status).toBeVisible();
+  await expect(status).toContainText('Sat 7');
+  await expect(status).toContainText('Working');
+});
+
 test('uses no text smaller than 12px', async ({ page }) => {
   await expect(page.getByText('New York')).toBeVisible();
   const offenders = await page.evaluate(() =>
